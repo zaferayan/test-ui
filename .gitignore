@@ -145,3 +145,7 @@ dist
 
 # macOS
 .DS_Store
+
+# Vitrin sitesinin ihtiyaç duyduğu build çıktısı (canlı demo)
+!codex-5.6-sol-ef-2-medium/dist/
+!codex-5.6-sol-ef-2-medium/dist/**
