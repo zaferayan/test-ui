@@ -146,6 +146,83 @@
   .btn.primary:hover { background: rgba(97, 218, 251, 0.2); }
   .btn.disabled { opacity: 0.4; pointer-events: none; }
 
+  /* ---------- Similarity chart ---------- */
+  #analiz { padding: 56px 0 8px; border-top: 1px solid var(--border); }
+  #analiz h2 { font-size: 26px; margin-bottom: 6px; }
+  #analiz .sub { color: var(--text-dim); margin-bottom: 22px; font-size: 15px; max-width: 72ch; }
+  .chart-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 22px 22px 16px;
+  }
+  .chart-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
+  .chart-legend .key { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-dim); }
+  .chart-legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+  .simchart { position: relative; }
+  .sim-grid { position: absolute; top: 0; bottom: 0; left: 178px; right: 40px; pointer-events: none; }
+  .sim-grid i {
+    position: absolute; top: 0; bottom: 0; width: 1px;
+    background: #1d2740;
+  }
+  .sim-row {
+    position: relative; display: grid;
+    grid-template-columns: 168px 1fr; align-items: center; gap: 10px;
+    min-height: 26px; cursor: pointer; border-radius: 6px;
+  }
+  .sim-row:hover .sim-bar, .sim-row:focus-visible .sim-bar { filter: brightness(1.25); }
+  .sim-row:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; }
+  .sim-label {
+    font-size: 12.5px; color: var(--text-dim); text-align: right;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .sim-label b { color: var(--text); font-weight: 600; }
+  .sim-track { position: relative; height: 18px; margin-right: 40px; }
+  .sim-bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; }
+  .sim-val {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    font-size: 11.5px; color: var(--text-dim); font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .sim-axis {
+    display: grid; grid-template-columns: 168px 1fr; gap: 10px; margin-top: 8px;
+  }
+  .sim-axis .ticks { margin-right: 40px; }
+  .sim-axis .ticks { position: relative; height: 16px; }
+  .sim-axis .ticks span {
+    position: absolute; transform: translateX(-50%);
+    font-size: 10.5px; color: #6b7890; font-variant-numeric: tabular-nums;
+  }
+  .sim-note { color: #6b7890; font-size: 12px; margin-top: 14px; line-height: 1.6; }
+  .sim-table { margin-top: 18px; }
+  .sim-table summary { cursor: pointer; color: var(--text-dim); font-size: 13.5px; padding: 4px 0; }
+  .sim-table summary:hover { color: var(--accent); }
+  .sim-table table {
+    width: 100%; border-collapse: collapse; margin-top: 10px;
+    font-size: 12.5px; font-variant-numeric: tabular-nums;
+  }
+  .sim-table th, .sim-table td {
+    text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--border);
+  }
+  .sim-table th { color: var(--text-dim); font-weight: 600; }
+  .sim-table th:first-child, .sim-table td:first-child,
+  .sim-table th:nth-child(2), .sim-table td:nth-child(2) { text-align: left; }
+  .sim-tip {
+    position: fixed; z-index: 60; display: none; pointer-events: none;
+    background: var(--surface-2); border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px; padding: 10px 13px; font-size: 12.5px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5); min-width: 190px;
+  }
+  .sim-tip .t-head { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
+  .sim-tip .t-head .sw { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .sim-tip .t-head b { font-size: 13px; }
+  .sim-tip .t-row { display: flex; justify-content: space-between; gap: 16px; color: var(--text-dim); }
+  .sim-tip .t-row b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sim-tip .t-cta { margin-top: 7px; color: var(--accent); font-size: 11.5px; }
+  @media (max-width: 640px) {
+    .sim-row, .sim-axis { grid-template-columns: 118px 1fr; }
+    .sim-grid { left: 128px; right: 40px; }
+    .sim-label { font-size: 11px; }
+  }
+
   /* ---------- Compare ---------- */
   #karsilastir { padding: 56px 0 72px; border-top: 1px solid var(--border); }
   #karsilastir h2 { font-size: 26px; margin-bottom: 6px; }
@@ -272,11 +349,41 @@
     <button class="chip active" data-f="*">Tümü</button>
     <!-- family chips injected -->
     <div class="toolbar-spacer"></div>
+    <a class="btn-compare-link" href="#analiz" style="border-color: rgba(97,218,251,.5); color: var(--accent)">📊 Analiz</a>
     <a class="btn-compare-link" href="#karsilastir">⇄ Karşılaştır</a>
   </div>
 </nav>
 
 <main class="wrap" id="gallery"></main>
+
+<section id="analiz">
+  <div class="wrap">
+    <h2>📊 Orijinale benzerlik</h2>
+    <p class="sub">
+      Her çıktının ekran görüntüsü, orijinal görselle üç metrik üzerinden karşılaştırıldı:
+      yapısal benzerlik (SSIM), renk histogramı korelasyonu ve algısal parmak izi (pHash).
+      Skor bu üçünün ağırlıklı bileşimi (0–100). Bir satıra tıklayınca o çıktı orijinalle
+      karşılaştırma görünümünde açılır.
+    </p>
+    <div class="chart-card">
+      <div class="chart-legend" id="simLegend"></div>
+      <div class="simchart" id="simChart"></div>
+      <div class="sim-axis" aria-hidden="true">
+        <span></span>
+        <div class="ticks" id="simTicks"></div>
+      </div>
+      <p class="sim-note">
+        Skor = %45 SSIM + %30 renk histogramı + %25 pHash. Görüntüler karşılaştırma öncesi
+        aynı boyuta (512×768) ölçeklendi; skor orijinal infografiğe görsel yakınlığı ölçer,
+        kod kalitesini değil.
+      </p>
+      <details class="sim-table" id="simTable">
+        <summary>Tablo görünümü (tüm metrikler)</summary>
+      </details>
+    </div>
+  </div>
+</section>
+<div class="sim-tip" id="simTip" role="tooltip"></div>
 
 <section id="karsilastir">
   <div class="wrap">
@@ -407,6 +514,184 @@ chips.addEventListener("click", e => {
     sec.style.display = (chip.dataset.f === "*" || sec.dataset.family === chip.dataset.f) ? "" : "none";
   });
 });
+
+/* ---------- Similarity chart ---------- */
+/* SSIM + renk histogramı + pHash; 512x768'e ölçeklenmiş görüntüler üzerinde,
+   skor = 45*ssim + 30*hist + 25*phash (0-100) */
+const SCORES = {
+  "codex-5.6-sol-ef-5-ultra":  { ssim: 0.617, hist: 0.994, phash: 0.937, score: 81.0 },
+  "codex-5.6-sol-ef-2-medium": { ssim: 0.562, hist: 0.994, phash: 0.968, score: 79.3 },
+  "codex-5.6-sol-ef-1-low":    { ssim: 0.566, hist: 0.993, phash: 0.905, score: 77.8 },
+  "codex-5.6-sol-ef-4-xhigh":  { ssim: 0.544, hist: 0.994, phash: 0.937, score: 77.7 },
+  "composer-2.5-fast":         { ssim: 0.538, hist: 0.987, phash: 0.841, score: 74.8 },
+  "codex-5.6-sol-ef-3-high":   { ssim: 0.520, hist: 0.993, phash: 0.841, score: 74.2 },
+  "grok-4.5-ef-3-high":        { ssim: 0.535, hist: 0.995, phash: 0.778, score: 73.4 },
+  "fable-5-ef-5-max":          { ssim: 0.504, hist: 0.988, phash: 0.746, score: 71.0 },
+  "fable-5-ef-6-ultra":        { ssim: 0.506, hist: 0.961, phash: 0.778, score: 71.0 },
+  "fable-5-ef-2-medium":       { ssim: 0.494, hist: 0.994, phash: 0.651, score: 68.3 },
+  "opus-4.8-ef-4-xhigh":       { ssim: 0.508, hist: 0.917, phash: 0.714, score: 68.2 },
+  "fable-5-ef-1-low":          { ssim: 0.498, hist: 0.999, phash: 0.619, score: 67.9 },
+  "opus-4.8-ef-5-max":         { ssim: 0.494, hist: 0.981, phash: 0.651, score: 67.9 },
+  "grok-4.5-ef-1-low":         { ssim: 0.498, hist: 0.998, phash: 0.619, score: 67.8 },
+  "opus-4.8-ef-1-low":         { ssim: 0.478, hist: 0.992, phash: 0.651, score: 67.6 },
+  "composer-2.5":              { ssim: 0.505, hist: 0.996, phash: 0.587, score: 67.3 },
+  "fable-5-ef-3-high":         { ssim: 0.490, hist: 0.996, phash: 0.587, score: 66.6 },
+  "opus-4.8-ef-3-high":        { ssim: 0.476, hist: 0.937, phash: 0.683, score: 66.6 },
+  "grok-4.5-ef-2-medium":      { ssim: 0.475, hist: 0.997, phash: 0.556, score: 65.2 },
+  "fable-5-ef-4-xhigh":        { ssim: 0.484, hist: 0.841, phash: 0.619, score: 62.5 },
+  "opus-4.8-ef-2-medium":      { ssim: 0.475, hist: 0.865, phash: 0.619, score: 62.8 },
+};
+/* aile renkleri: 5'li set, koyu yüzeyde CVD + kontrast doğrulamasından geçirildi */
+const FAMILY_COLORS = {
+  "Fable 5": "#3987e5",
+  "Opus 4.8": "#c98500",
+  "Codex 5.6 Sol": "#e66767",
+  "Grok 4.5": "#d55181",
+  "Composer 2.5": "#d95926",
+};
+
+const simTip = document.getElementById("simTip");
+const ranked = MODELS.filter(m => SCORES[m.id])
+  .map(m => ({ ...m, ...SCORES[m.id] }))
+  .sort((a, b) => b.score - a.score);
+
+const simLegend = document.getElementById("simLegend");
+FAMILIES.forEach(fam => {
+  const k = document.createElement("span");
+  k.className = "key";
+  const sw = document.createElement("i");
+  sw.className = "sw";
+  sw.style.background = FAMILY_COLORS[fam];
+  k.append(sw, document.createTextNode(fam));
+  simLegend.appendChild(k);
+});
+
+const simChart = document.getElementById("simChart");
+const grid = document.createElement("div");
+grid.className = "sim-grid";
+[20, 40, 60, 80, 100].forEach(v => {
+  const line = document.createElement("i");
+  line.style.left = v + "%";
+  grid.appendChild(line);
+});
+simChart.appendChild(grid);
+
+ranked.forEach((m, i) => {
+  const row = document.createElement("div");
+  row.className = "sim-row";
+  row.tabIndex = 0;
+  row.dataset.id = m.id;
+  row.setAttribute("role", "button");
+  row.setAttribute("aria-label", `${label(m)}: ${m.score} puan. Orijinalle karşılaştırmak için seçin.`);
+
+  const lab = document.createElement("span");
+  lab.className = "sim-label";
+  const famB = document.createElement("b");
+  famB.textContent = m.family;
+  lab.append(famB, document.createTextNode(" · " + m.effort));
+
+  const track = document.createElement("div");
+  track.className = "sim-track";
+  const bar = document.createElement("div");
+  bar.className = "sim-bar";
+  bar.style.width = m.score + "%";
+  bar.style.background = FAMILY_COLORS[m.family];
+
+  const val = document.createElement("span");
+  val.className = "sim-val";
+  val.style.left = `calc(${m.score}% + 8px)`;
+  val.textContent = m.score.toFixed(1);
+
+  track.append(bar, val);
+  row.append(lab, track);
+
+  const showTip = e => {
+    simTip.replaceChildren();
+    const head = document.createElement("div");
+    head.className = "t-head";
+    const sw = document.createElement("i");
+    sw.className = "sw";
+    sw.style.background = FAMILY_COLORS[m.family];
+    const name = document.createElement("b");
+    name.textContent = `#${i + 1} · ${label(m)}`;
+    head.append(sw, name);
+    simTip.appendChild(head);
+    [["Skor", m.score.toFixed(1)], ["SSIM", m.ssim.toFixed(3)],
+     ["Renk histogramı", m.hist.toFixed(3)], ["pHash", m.phash.toFixed(3)]].forEach(([k, v]) => {
+      const r = document.createElement("div");
+      r.className = "t-row";
+      const kk = document.createElement("span");
+      kk.textContent = k;
+      const vv = document.createElement("b");
+      vv.textContent = v;
+      r.append(kk, vv);
+      simTip.appendChild(r);
+    });
+    const cta = document.createElement("div");
+    cta.className = "t-cta";
+    cta.textContent = "Orijinalle karşılaştırmak için tıkla →";
+    simTip.appendChild(cta);
+    simTip.style.display = "block";
+    const x = Math.min(e.clientX + 14, window.innerWidth - simTip.offsetWidth - 12);
+    const y = Math.min(e.clientY + 14, window.innerHeight - simTip.offsetHeight - 12);
+    simTip.style.left = x + "px";
+    simTip.style.top = y + "px";
+  };
+  row.addEventListener("pointermove", showTip);
+  row.addEventListener("pointerleave", () => { simTip.style.display = "none"; });
+  row.addEventListener("focus", e => {
+    const r = row.getBoundingClientRect();
+    showTip({ clientX: r.left + 200, clientY: r.top });
+  });
+  row.addEventListener("blur", () => { simTip.style.display = "none"; });
+  const goCompare = () => {
+    simTip.style.display = "none";
+    selA.value = "_original";
+    selB.value = m.id;
+    renderCompare();
+    document.getElementById("karsilastir").scrollIntoView({ behavior: "smooth" });
+  };
+  row.addEventListener("click", goCompare);
+  row.addEventListener("keydown", e => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); goCompare(); }
+  });
+
+  simChart.appendChild(row);
+});
+
+const simTicks = document.getElementById("simTicks");
+[0, 20, 40, 60, 80, 100].forEach(v => {
+  const t = document.createElement("span");
+  t.style.left = v + "%";
+  t.textContent = v;
+  simTicks.appendChild(t);
+});
+
+/* table view */
+const simTable = document.getElementById("simTable");
+const tbl = document.createElement("table");
+const thead = document.createElement("thead");
+const hr = document.createElement("tr");
+["#", "Model", "Skor", "SSIM", "Renk hist.", "pHash"].forEach(h => {
+  const th = document.createElement("th");
+  th.textContent = h;
+  hr.appendChild(th);
+});
+thead.appendChild(hr);
+tbl.appendChild(thead);
+const tbody = document.createElement("tbody");
+ranked.forEach((m, i) => {
+  const tr = document.createElement("tr");
+  [i + 1, label(m), m.score.toFixed(1), m.ssim.toFixed(3), m.hist.toFixed(3), m.phash.toFixed(3)]
+    .forEach(v => {
+      const td = document.createElement("td");
+      td.textContent = v;
+      tr.appendChild(td);
+    });
+  tbody.appendChild(tr);
+});
+tbl.appendChild(tbody);
+simTable.appendChild(tbl);
 
 /* ---------- Compare ---------- */
 const selA = document.getElementById("selA");

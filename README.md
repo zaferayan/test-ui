@@ -26,6 +26,16 @@ gibi bir linki doğrudan paylaşabilirsiniz.
 | Grok 4.5 | Low · Medium · High | 3 |
 | Composer 2.5 | Fast · Normal | 2 |
 
+## Orijinale benzerlik skoru
+
+Her çıktının ekran görüntüsü orijinal görselle üç metrik üzerinden karşılaştırıldı ve
+0–100 arası bileşik bir skora çevrildi: **%45 SSIM** (yapısal benzerlik) + **%30 renk
+histogramı korelasyonu** + **%25 pHash** (algısal parmak izi). İlk üç sıra: Codex 5.6 Sol
+Ultra (81.0), Codex 5.6 Sol Medium (79.3), Codex 5.6 Sol Low (77.8). Tüm sıralama,
+metrik detayları ve etkileşimli grafik sitedeki
+[📊 Analiz bölümünde](https://zaferayan.github.io/test-ui/#analiz). Skor görsel yakınlığı
+ölçer; kod kalitesi hakkında bir şey söylemez.
+
 ## Klasör yapısı
 
 - [`_original/`](_original/) — referans görsel (`ss.png`) ve prompt (`PROMPT.md`)
