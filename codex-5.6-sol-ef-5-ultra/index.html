@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="React.js'in temel özelliklerini, avantajlarını ve popüler araçlarını anlatan Türkçe infografik."
+    />
+    <title>React.js Infografik</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <svg class="svg-sprite" aria-hidden="true" focusable="false">
+      <defs>
+        <symbol id="react-mark" viewBox="0 0 200 180">
+          <g fill="none" stroke="currentColor" stroke-width="8">
+            <ellipse cx="100" cy="90" rx="92" ry="36" />
+            <ellipse cx="100" cy="90" rx="92" ry="36" transform="rotate(60 100 90)" />
+            <ellipse cx="100" cy="90" rx="92" ry="36" transform="rotate(120 100 90)" />
+          </g>
+          <circle cx="100" cy="90" r="17" fill="currentColor" />
+        </symbol>
+
+        <symbol id="puzzle" viewBox="0 0 64 64">
+          <path
+            d="M8 30c0-3 2-5 5-5h11v-9c0-4 3-7 7-7s7 3 7 7c0 3-2 6-5 7v2h10c3 0 5 2 5 5v8h2c1-3 4-5 7-5 4 0 7 3 7 7s-3 7-7 7c-3 0-6-2-7-5h-2v10c0 3-2 5-5 5H32V45c0-3-2-5-5-5s-5 2-5 5v12h-9c-3 0-5-2-5-5V30Z"
+            fill="currentColor"
+          />
+        </symbol>
+
+        <symbol id="bolt" viewBox="0 0 64 64">
+          <path d="M36 3 15 36h16l-3 25 22-35H35l1-23Z" fill="currentColor" />
+        </symbol>
+
+        <symbol id="flow" viewBox="0 0 64 64">
+          <path d="M12 33a20 20 0 0 1 35-13" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+          <path d="m47 12 1 11-11-1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M52 31a20 20 0 0 1-35 13" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+          <path d="m17 52-1-11 11 1" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+
+        <symbol id="growth" viewBox="0 0 64 64">
+          <rect x="9" y="43" width="10" height="14" rx="2" fill="currentColor" />
+          <rect x="27" y="35" width="10" height="22" rx="2" fill="currentColor" />
+          <rect x="45" y="25" width="10" height="32" rx="2" fill="currentColor" />
+          <path d="M9 30c12-1 25-7 42-22" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" />
+          <path d="m42 8 11-1-1 11" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+
+        <symbol id="code" viewBox="0 0 64 64">
+          <path d="m23 18-13 14 13 14M41 18l13 14-13 14M37 11 27 53" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+
+        <symbol id="components" viewBox="0 0 64 64">
+          <g fill="none" stroke="currentColor" stroke-width="4">
+            <rect x="9" y="9" width="18" height="18" rx="1" />
+            <rect x="37" y="9" width="18" height="18" rx="1" />
+            <rect x="9" y="37" width="18" height="18" rx="1" />
+            <rect x="37" y="37" width="18" height="18" rx="1" />
+          </g>
+        </symbol>
+
+        <symbol id="braces" viewBox="0 0 64 64">
+          <path d="M25 8h-4c-5 0-7 3-7 8v9c0 4-2 7-6 7 4 0 6 3 6 7v9c0 5 2 8 7 8h4M39 8h4c5 0 7 3 7 8v9c0 4 2 7 6 7-4 0-6 3-6 7v9c0 5-2 8-7 8h-4" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+        </symbol>
+
+        <symbol id="gear" viewBox="0 0 64 64">
+          <path d="m35 7 2 7c2 1 4 1 6 3l7-3 6 7-4 6c1 2 2 4 2 6l7 3-1 9-8 1c-1 2-2 4-4 5l1 8-8 4-5-6h-7l-5 6-8-4 1-8c-2-1-3-3-4-5l-8-1-1-9 7-3c0-2 1-4 2-6l-4-6 6-7 7 3c2-2 4-2 6-3l2-7h9Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" />
+          <circle cx="32" cy="35" r="9" fill="none" stroke="currentColor" stroke-width="4" />
+        </symbol>
+
+        <symbol id="check" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="23" fill="none" stroke="currentColor" stroke-width="3" />
+          <path d="m20 32 8 8 17-18" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M45 13h7v7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" />
+        </symbol>
+
+        <symbol id="heart" viewBox="0 0 64 64">
+          <path d="M32 51S11 39 11 23c0-7 5-12 12-12 4 0 8 2 9 6 2-4 6-6 10-6 7 0 11 5 11 12 0 16-21 28-21 28Z" fill="currentColor" />
+        </symbol>
+
+        <symbol id="community" viewBox="0 0 64 64">
+          <circle cx="24" cy="23" r="8" fill="currentColor" />
+          <circle cx="43" cy="25" r="7" fill="currentColor" opacity=".8" />
+          <circle cx="9" cy="27" r="6" fill="currentColor" opacity=".65" />
+          <path d="M10 52c1-12 6-18 14-18s14 6 15 18H10ZM34 51c0-7-2-12-5-16 4-3 9-3 13 0 5 3 7 8 7 16H34ZM2 49c0-8 2-13 7-16 3-2 7-1 10 1-4 4-6 9-6 15H2Z" fill="currentColor" />
+        </symbol>
+
+        <symbol id="briefcase" viewBox="0 0 64 64">
+          <path d="M23 17v-5c0-3 2-5 5-5h8c3 0 5 2 5 5v5h11c4 0 6 2 6 6v27c0 4-2 6-6 6H12c-4 0-6-2-6-6V23c0-4 2-6 6-6h11Zm5 0h8v-4h-8v4Z" fill="currentColor" />
+          <path d="M6 31h52M27 29v7h10v-7" fill="none" stroke="#f8fbfe" stroke-width="3" />
+        </symbol>
+
+        <symbol id="meta" viewBox="0 0 64 64">
+          <path d="M8 40c5-18 10-27 17-27 9 0 15 29 22 29 4 0 6-5 6-11 0-9-3-16-8-16-7 0-14 14-20 25-4 7-7 11-11 11-5 0-8-5-6-11Z" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <main class="poster">
+      <section class="hero" aria-labelledby="page-title">
+        <span class="spark spark-one" aria-hidden="true">✦</span>
+        <span class="spark spark-two" aria-hidden="true">＋</span>
+        <span class="spark spark-three" aria-hidden="true">✦</span>
+        <span class="spark spark-four" aria-hidden="true">°</span>
+
+        <div class="hero-mark" aria-hidden="true">
+          <svg viewBox="0 0 200 180"><use href="#react-mark" /></svg>
+        </div>
+
+        <div class="hero-copy">
+          <h1 id="page-title">React.js</h1>
+          <p class="hero-kicker">Kullanıcı arayüzleri için<br />JavaScript kütüphanesi</p>
+          <p class="hero-description">
+            React, etkileşimli ve yüksek performanslı web uygulamaları geliştirmek için kullanılan,
+            deklaratif ve bileşen tabanlı bir JavaScript kütüphanesidir.
+          </p>
+        </div>
+
+        <div class="browser-art" aria-hidden="true">
+          <svg viewBox="0 0 350 270">
+            <defs>
+              <linearGradient id="browserBar" x1="0" x2="1">
+                <stop offset="0" stop-color="#0874df" />
+                <stop offset="1" stop-color="#005bcd" />
+              </linearGradient>
+              <linearGradient id="browserImage" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#9fcffd" />
+                <stop offset="1" stop-color="#77b8f7" />
+              </linearGradient>
+              <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#adc5d6" flood-opacity=".55" />
+              </filter>
+            </defs>
+            <g filter="url(#shadow)">
+              <rect x="12" y="17" width="306" height="246" rx="12" fill="#fff" />
+              <path d="M24 17h282c7 0 12 5 12 12v20H12V29c0-7 5-12 12-12Z" fill="url(#browserBar)" />
+            </g>
+            <circle cx="32" cy="33" r="5" fill="#a9d5ff" />
+            <circle cx="48" cy="33" r="5" fill="#a9d5ff" />
+            <circle cx="64" cy="33" r="5" fill="#a9d5ff" />
+            <rect x="33" y="70" width="74" height="53" rx="6" fill="#e4ecf5" />
+            <rect x="127" y="70" width="170" height="101" rx="6" fill="url(#browserImage)" />
+            <path d="m127 159 41-42c6-6 12-6 18 0l35 34 20-19c5-5 10-5 15 0l41 39H127v-12Z" fill="#4699ed" />
+            <circle cx="228" cy="107" r="11" fill="#69b0f4" />
+            <rect x="141" y="85" width="52" height="8" rx="4" fill="#d3e9fc" />
+            <rect x="33" y="138" width="44" height="9" rx="5" fill="#dfe8f1" />
+            <rect x="33" y="159" width="74" height="8" rx="4" fill="#dfe8f1" />
+            <rect x="33" y="180" width="59" height="8" rx="4" fill="#dfe8f1" />
+            <rect x="33" y="201" width="47" height="8" rx="4" fill="#dfe8f1" />
+            <rect x="33" y="222" width="33" height="8" rx="4" fill="#dfe8f1" />
+            <rect x="127" y="188" width="107" height="11" rx="5" fill="#edf2f7" />
+            <rect x="127" y="216" width="75" height="27" rx="5" fill="#3d99ee" />
+            <g transform="translate(239 177)">
+              <circle cx="48" cy="48" r="50" fill="#21c8ef" />
+              <g transform="translate(17 19) scale(.31)" color="#fff">
+                <use href="#react-mark" />
+              </g>
+            </g>
+          </svg>
+        </div>
+      </section>
+
+      <section class="benefits" aria-label="React'in avantajları">
+        <article class="benefit">
+          <div class="benefit-icon" aria-hidden="true"><svg><use href="#puzzle" /></svg></div>
+          <h2>Bileşen tabanlı</h2>
+          <p>UI’ları küçük, yeniden kullanılabilir bileşenler halinde oluşturur.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-icon" aria-hidden="true"><svg><use href="#bolt" /></svg></div>
+          <h2>Yüksek performans</h2>
+          <p>Sanal DOM ile yalnızca değişen bölümleri güncelleyerek daha hızlı ve verimli çalışır.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-icon" aria-hidden="true"><svg><use href="#flow" /></svg></div>
+          <h2>Tek yönlü veri akışı</h2>
+          <p>Veri akışı daha öngörülebilir ve hataları tespit etmek daha kolaydır.</p>
+        </article>
+        <article class="benefit">
+          <div class="benefit-icon" aria-hidden="true"><svg><use href="#growth" /></svg></div>
+          <h2>Geniş ekosistem</h2>
+          <p>Zengin araçlar, topluluk desteği ve güçlü bir ekosisteme sahiptir.</p>
+        </article>
+      </section>
+
+      <section class="details-grid" aria-label="React temel bilgileri">
+        <article class="panel feature-panel">
+          <h2>Temel özellikler</h2>
+          <ul class="feature-list">
+            <li>
+              <div class="round-icon" aria-hidden="true"><svg><use href="#code" /></svg></div>
+              <div><h3>JSX</h3><p>JavaScript içine HTML benzeri sözdizimi yazarak daha okunabilir kodlar yazmanızı sağlar.</p></div>
+            </li>
+            <li>
+              <div class="round-icon" aria-hidden="true"><svg><use href="#components" /></svg></div>
+              <div><h3>Bileşenler (Components)</h3><p>UI’ı bağımsız ve yeniden kullanılabilir parçalara böler, geliştirmeyi kolaylaştırır.</p></div>
+            </li>
+            <li>
+              <div class="round-icon" aria-hidden="true"><svg><use href="#braces" /></svg></div>
+              <div><h3>State &amp; Props</h3><p>State (durum) değişen verileri, Props ise bileşenler arası veri iletişimini yönetir.</p></div>
+            </li>
+            <li>
+              <div class="round-icon" aria-hidden="true"><svg><use href="#gear" /></svg></div>
+              <div><h3>Lifecycle (Yaşam Döngüsü)</h3><p>Bileşenlerin oluşturulma, güncellenme ve kaldırılma aşamalarını yönetmenizi sağlar.</p></div>
+            </li>
+            <li>
+              <div class="round-icon" aria-hidden="true"><svg><use href="#check" /></svg></div>
+              <div><h3>Sanal DOM</h3><p>Gerçek DOM’u en verimli şekilde güncelleyerek daha iyi performans sunar.</p></div>
+            </li>
+          </ul>
+        </article>
+
+        <article class="panel component-panel">
+          <h2>Basit bir React bileşeni</h2>
+          <div class="code-window">
+            <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+            <pre aria-label="Merhaba Dünya React bileşeni"><code><span class="pink">import</span> React <span class="pink">from</span> <span class="green">'react'</span>;
+
+<span class="pink">function</span> <span class="cyan">MerhabaDunya</span>() {
+  <span class="pink">return</span> (
+    <span class="pink">&lt;div</span> style={{ color: <span class="green">'#61dafb'</span>,
+                 fontSize: <span class="green">'20px'</span> }}<span class="pink">&gt;</span>
+      Merhaba Dünya! <span aria-hidden="true">👋</span>
+    <span class="pink">&lt;/div&gt;</span>
+  );
+}
+
+<span class="pink">export default</span> <span class="yellow">MerhabaDunya</span>;</code></pre>
+          </div>
+          <div class="down-arrow" aria-hidden="true"></div>
+          <div class="preview-window">
+            <div class="preview-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <p>Merhaba Dünya! <span aria-hidden="true">👋</span></p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel tools-panel" aria-labelledby="tools-title">
+        <h2 id="tools-title">Popüler araçlar &amp; kütüphaneler</h2>
+        <div class="tools-grid">
+          <article class="tool">
+            <svg class="tool-logo router-logo" viewBox="0 0 90 62" aria-hidden="true">
+              <path d="M18 42 38 22h19l18 18" fill="none" stroke="#09213f" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 16" />
+              <path d="m50 12 25 25" fill="none" stroke="#ef525b" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 14" />
+              <circle cx="19" cy="42" r="7" fill="#09213f" /><circle cx="38" cy="22" r="7" fill="#09213f" /><circle cx="57" cy="22" r="7" fill="#ef525b" /><circle cx="75" cy="40" r="7" fill="#ef525b" />
+            </svg>
+            <h3>React Router</h3>
+            <p>Sayfa yönlendirme ve navigasyon yönetimi.</p>
+          </article>
+          <article class="tool">
+            <svg class="tool-logo" viewBox="0 0 80 70" aria-hidden="true">
+              <g fill="none" stroke="#764ac6" stroke-width="5">
+                <ellipse cx="40" cy="35" rx="27" ry="13" />
+                <ellipse cx="40" cy="35" rx="27" ry="13" transform="rotate(60 40 35)" />
+                <ellipse cx="40" cy="35" rx="27" ry="13" transform="rotate(120 40 35)" />
+              </g>
+              <circle cx="40" cy="35" r="6" fill="#764ac6" />
+            </svg>
+            <h3>Redux</h3>
+            <p>Global state yönetimi için öngörülebilir bir yapı sağlar.</p>
+          </article>
+          <article class="tool">
+            <svg class="tool-logo" viewBox="0 0 80 70" aria-hidden="true">
+              <g transform="translate(40 35)">
+                <g fill="#ed4657" stroke="#0b2141" stroke-width="3">
+                  <ellipse rx="9" ry="28" transform="rotate(0)" />
+                  <ellipse rx="9" ry="28" transform="rotate(45)" fill="#f69236" />
+                  <ellipse rx="9" ry="28" transform="rotate(90)" />
+                  <ellipse rx="9" ry="28" transform="rotate(135)" fill="#ffb83c" />
+                </g>
+                <circle r="9" fill="#172c4d" />
+              </g>
+            </svg>
+            <h3>React Query</h3>
+            <p>Sunucu durumunu çekmek, önbelleğe almak ve senkronize etmek için.</p>
+          </article>
+          <article class="tool">
+            <svg class="tool-logo" viewBox="0 0 90 70" aria-hidden="true">
+              <path d="M10 32c9-12 19-15 30-8l10 7c9 6 18 4 28-7-6 20-19 27-36 17l-9-6c-8-5-16-6-23-3Z" fill="#2ec2d6" />
+              <path d="M18 48c9-12 19-15 30-8l10 7c9 6 18 4 28-7-6 20-19 27-36 17l-9-6c-8-5-16-6-23-3Z" fill="#2ec2d6" opacity=".9" />
+            </svg>
+            <h3>Tailwind CSS</h3>
+            <p>Hızlı ve modern tasarımlar için CSS çerçevesi.</p>
+          </article>
+          <article class="tool">
+            <svg class="tool-logo" viewBox="0 0 78 70" aria-hidden="true">
+              <defs><linearGradient id="viteGradient" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#3ec9ff" /><stop offset="1" stop-color="#9a4cff" /></linearGradient></defs>
+              <path d="M6 8 72 5 39 65 6 8Z" fill="url(#viteGradient)" />
+              <path d="m43 1-19 36 15-2-3 26 20-37-15 2 2-25Z" fill="#ffe348" />
+            </svg>
+            <h3>Vite</h3>
+            <p>Hızlı geliştirme deneyimi sunan modern build aracı.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="why-strip" aria-label="Neden React">
+        <div class="why-title">
+          <span class="why-icon" aria-hidden="true"><svg><use href="#heart" /></svg></span>
+          <h2>Neden React?</h2>
+        </div>
+        <div class="why-item">
+          <svg class="meta-icon" aria-hidden="true"><use href="#meta" /></svg>
+          <p>Facebook (Meta) tarafından geliştirilir ve desteklenir.</p>
+        </div>
+        <div class="why-item">
+          <svg aria-hidden="true"><use href="#community" /></svg>
+          <p>Büyük ve aktif bir topluluğa sahiptir.</p>
+        </div>
+        <div class="why-item">
+          <svg aria-hidden="true"><use href="#briefcase" /></svg>
+          <p>Küçük projelerden kurumsal uygulamalara kadar ölçeklenebilir.</p>
+        </div>
+      </section>
+
+      <footer class="tagline"><span aria-hidden="true">★</span> Daha az kod, daha fazla üretkenlik! <span aria-hidden="true">★</span></footer>
+    </main>
+  </body>
+</html>

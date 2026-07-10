@@ -1,0 +1,1 @@
+Ekteki görseli web sayfası olarak kodla

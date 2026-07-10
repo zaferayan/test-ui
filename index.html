@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React.js İnfografik — AI Model Karşılaştırması</title>
+<meta name="description" content="Aynı prompt ile 21 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
+<style>
+  :root {
+    --bg: #0a0f1e;
+    --surface: #101729;
+    --surface-2: #16203a;
+    --border: rgba(255, 255, 255, 0.09);
+    --text: #e8edf5;
+    --text-dim: #93a1b8;
+    --accent: #61dafb;
+    --accent-b: #f778ba;
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  img { display: block; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Hero ---------- */
+  header.hero {
+    padding: 64px 0 40px;
+    background:
+      radial-gradient(900px 400px at 20% -10%, rgba(97, 218, 251, 0.13), transparent 65%),
+      radial-gradient(700px 350px at 85% 0%, rgba(247, 120, 186, 0.09), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-grid { display: grid; grid-template-columns: 1fr 300px; gap: 48px; align-items: center; }
+  .kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+  }
+  .kicker::before { content: ""; width: 22px; height: 2px; background: var(--accent); }
+  h1 { font-size: clamp(28px, 4vw, 42px); line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 16px; }
+  h1 em { font-style: normal; color: var(--accent); }
+  .hero p.lead { color: var(--text-dim); font-size: 17px; max-width: 56ch; margin-bottom: 22px; }
+  .prompt-box {
+    display: inline-flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 16px; margin-bottom: 26px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 14px;
+  }
+  .prompt-box .tag { color: var(--accent-b); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+  .stats { display: flex; gap: 36px; flex-wrap: wrap; }
+  .stat b { display: block; font-size: 26px; letter-spacing: -0.02em; }
+  .stat span { color: var(--text-dim); font-size: 13px; }
+  .hero-original { position: relative; }
+  .hero-original img {
+    width: 100%; border-radius: var(--radius); border: 1px solid var(--border);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); cursor: zoom-in;
+    transition: transform 0.25s ease;
+  }
+  .hero-original img:hover { transform: translateY(-4px); }
+  .hero-original figcaption {
+    position: absolute; left: 12px; bottom: 12px;
+    background: rgba(8, 12, 24, 0.82); backdrop-filter: blur(6px);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 5px 12px; font-size: 12px; color: var(--text);
+  }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(10, 15, 30, 0.86); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .toolbar-inner { display: flex; align-items: center; gap: 10px; padding: 12px 0; overflow-x: auto; }
+  .chip {
+    flex-shrink: 0; padding: 7px 16px; border-radius: 999px; cursor: pointer;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--text-dim); font-size: 13.5px; font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .chip:hover { color: var(--text); border-color: rgba(255, 255, 255, 0.25); }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: #06121c; font-weight: 600; }
+  .toolbar-spacer { flex: 1; }
+  .btn-compare-link {
+    flex-shrink: 0; padding: 7px 16px; border-radius: 999px;
+    border: 1px solid rgba(247, 120, 186, 0.5); color: var(--accent-b);
+    font-size: 13.5px; font-weight: 600;
+  }
+  .btn-compare-link:hover { background: rgba(247, 120, 186, 0.12); }
+
+  /* ---------- Gallery ---------- */
+  main { padding: 40px 0 20px; }
+  section.family { margin-bottom: 48px; }
+  .family-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .family-head h2 { font-size: 22px; letter-spacing: -0.01em; }
+  .family-head .count { color: var(--text-dim); font-size: 13px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 18px; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    overflow: hidden; display: flex; flex-direction: column;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px); border-color: rgba(97, 218, 251, 0.4);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  }
+  .thumb { position: relative; aspect-ratio: 3 / 4; overflow: hidden; cursor: zoom-in; background: var(--surface-2); }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+  .thumb::after {
+    content: "Büyüt ⤢"; position: absolute; right: 8px; bottom: 8px;
+    background: rgba(8, 12, 24, 0.85); border: 1px solid var(--border); border-radius: 6px;
+    padding: 3px 9px; font-size: 11px; opacity: 0; transition: opacity 0.15s ease;
+  }
+  .thumb:hover::after { opacity: 1; }
+  .card-body { padding: 13px 14px 14px; display: flex; flex-direction: column; gap: 9px; flex: 1; }
+  .card-title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .card-title { font-size: 14.5px; font-weight: 600; }
+  .badge {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid; flex-shrink: 0;
+  }
+  .b-low    { color: #9aa7ba; border-color: rgba(154, 167, 186, 0.45); }
+  .b-fast   { color: #9aa7ba; border-color: rgba(154, 167, 186, 0.45); }
+  .b-medium { color: #58a6ff; border-color: rgba(88, 166, 255, 0.5); }
+  .b-normal { color: #58a6ff; border-color: rgba(88, 166, 255, 0.5); }
+  .b-high   { color: #56d4bc; border-color: rgba(86, 212, 188, 0.5); }
+  .b-xhigh  { color: #e3b341; border-color: rgba(227, 179, 65, 0.5); }
+  .b-max    { color: #f0883e; border-color: rgba(240, 136, 62, 0.5); }
+  .b-ultra  { color: #f778ba; border-color: rgba(247, 120, 186, 0.5); }
+  .card-meta { color: var(--text-dim); font-size: 12px; }
+  .card-actions { display: flex; gap: 8px; margin-top: auto; }
+  .btn {
+    flex: 1; text-align: center; padding: 7px 10px; border-radius: 8px; cursor: pointer;
+    font-size: 12.5px; font-weight: 600; border: 1px solid var(--border);
+    background: var(--surface-2); color: var(--text); transition: all 0.15s ease;
+  }
+  .btn:hover { border-color: rgba(97, 218, 251, 0.55); color: var(--accent); }
+  .btn.primary { background: rgba(97, 218, 251, 0.12); border-color: rgba(97, 218, 251, 0.4); color: var(--accent); }
+  .btn.primary:hover { background: rgba(97, 218, 251, 0.2); }
+  .btn.disabled { opacity: 0.4; pointer-events: none; }
+
+  /* ---------- Compare ---------- */
+  #karsilastir { padding: 56px 0 72px; border-top: 1px solid var(--border); }
+  #karsilastir h2 { font-size: 26px; margin-bottom: 6px; }
+  #karsilastir .sub { color: var(--text-dim); margin-bottom: 26px; font-size: 15px; }
+  .cmp-controls {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px;
+  }
+  .cmp-controls select {
+    background: var(--surface); color: var(--text); border: 1px solid var(--border);
+    border-radius: 9px; padding: 9px 12px; font-size: 14px; max-width: 46vw;
+  }
+  .cmp-controls select:focus { outline: none; border-color: var(--accent); }
+  .swap-btn {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    border-radius: 9px; padding: 8px 13px; cursor: pointer; font-size: 15px;
+  }
+  .swap-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .mode-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 9px; overflow: hidden; margin-left: auto; }
+  .mode-toggle button {
+    background: var(--surface); border: none; color: var(--text-dim);
+    padding: 9px 18px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+  .mode-toggle button.active { background: var(--accent); color: #06121c; }
+  .cmp-legend { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 13.5px; font-weight: 600; }
+  .cmp-legend .la { color: var(--accent); }
+  .cmp-legend .lb { color: var(--accent-b); }
+
+  .cmp-stage {
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); overflow: hidden;
+  }
+  /* slider mode */
+  .slider-scroll { max-height: 74vh; overflow-y: auto; }
+  .slider-wrap { position: relative; display: grid; cursor: col-resize; touch-action: pan-y; }
+  .slider-wrap img { grid-area: 1 / 1; width: 100%; align-self: start; user-select: none; -webkit-user-drag: none; }
+  .slider-wrap img.top { clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+  .slider-divider {
+    position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 0;
+    border-left: 2px solid var(--accent); pointer-events: none;
+    box-shadow: 0 0 14px rgba(97, 218, 251, 0.7);
+  }
+  .slider-handle {
+    position: sticky; top: 45%; margin-left: -19px;
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--accent); color: #06121c;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; letter-spacing: -1px;
+  }
+  /* side-by-side mode */
+  .sbs { display: grid; grid-template-columns: 1fr 1fr; }
+  .sbs-pane { min-width: 0; }
+  .sbs-pane + .sbs-pane { border-left: 1px solid var(--border); }
+  .sbs-pane .pane-scroll { max-height: 74vh; overflow-y: auto; }
+  .sbs-pane img { width: 100%; }
+  .sbs-note { padding: 10px 14px; color: var(--text-dim); font-size: 12.5px; border-top: 1px solid var(--border); }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 100; display: none;
+    background: rgba(4, 7, 16, 0.93); backdrop-filter: blur(8px);
+  }
+  .lightbox.open { display: flex; flex-direction: column; }
+  .lb-bar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 22px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .lb-title { font-weight: 600; font-size: 15px; }
+  .lb-bar .spacer { flex: 1; }
+  .lb-close {
+    background: var(--surface); border: 1px solid var(--border); color: var(--text);
+    width: 36px; height: 36px; border-radius: 50%; font-size: 17px; cursor: pointer;
+  }
+  .lb-close:hover { border-color: var(--accent); color: var(--accent); }
+  .lb-body { flex: 1; overflow: auto; padding: 26px; }
+  .lb-body img { max-width: min(960px, 94%); margin: 0 auto; border-radius: 10px; border: 1px solid var(--border); }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 30px 0 44px;
+    color: var(--text-dim); font-size: 13.5px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-original { max-width: 300px; }
+    .sbs { grid-template-columns: 1fr; }
+    .sbs-pane + .sbs-pane { border-left: none; border-top: 1px solid var(--border); }
+    .mode-toggle { margin-left: 0; }
+    .cmp-controls select { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="kicker">AI Kodlama Benchmark'ı</div>
+      <h1>Tek prompt, <em>21 model çıktısı</em>:<br>React.js infografiği</h1>
+      <p class="lead">
+        ChatGPT'nin ürettiği bir infografik görseli, tek cümlelik bir prompt ile
+        5 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
+        Sonuçları inceleyin, orijinalle veya birbiriyle karşılaştırın.
+      </p>
+      <div class="prompt-box">
+        <span class="tag">PROMPT</span>
+        “Ekteki görseli web sayfası olarak kodla”
+      </div>
+      <div class="stats">
+        <div class="stat"><b>5</b><span>Model ailesi</span></div>
+        <div class="stat"><b>21</b><span>Çıktı</span></div>
+        <div class="stat"><b>6</b><span>Effort seviyesi</span></div>
+      </div>
+    </div>
+    <figure class="hero-original">
+      <img src="thumbs/_original.jpg" alt="Orijinal ChatGPT infografiği" data-lb="_original">
+      <figcaption>🎯 Orijinal görsel (ChatGPT)</figcaption>
+    </figure>
+  </div>
+</header>
+
+<nav class="toolbar">
+  <div class="wrap toolbar-inner" id="chips">
+    <button class="chip active" data-f="*">Tümü</button>
+    <!-- family chips injected -->
+    <div class="toolbar-spacer"></div>
+    <a class="btn-compare-link" href="#karsilastir">⇄ Karşılaştır</a>
+  </div>
+</nav>
+
+<main class="wrap" id="gallery"></main>
+
+<section id="karsilastir">
+  <div class="wrap">
+    <h2>⇄ Karşılaştır</h2>
+    <p class="sub">İki çıktıyı seçin; kaydırıcıyla üst üste ya da senkron kaydırmalı yan yana inceleyin.</p>
+
+    <div class="cmp-controls">
+      <select id="selA" aria-label="Sol / A"></select>
+      <button class="swap-btn" id="swapBtn" title="Yer değiştir">⇄</button>
+      <select id="selB" aria-label="Sağ / B"></select>
+      <div class="mode-toggle">
+        <button id="modeSlider" class="active">Kaydırıcı</button>
+        <button id="modeSbs">Yan Yana</button>
+      </div>
+    </div>
+
+    <div class="cmp-legend">
+      <span class="la" id="legendA"></span>
+      <span class="lb" id="legendB"></span>
+    </div>
+
+    <div class="cmp-stage" id="stage"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Tüm çıktılar aynı prompt ve aynı referans görselle üretildi · Temmuz 2026</span>
+    <span>Ekran görüntüleri her modelin ürettiği sayfadan alındı</span>
+  </div>
+</footer>
+
+<div class="lightbox" id="lightbox">
+  <div class="lb-bar">
+    <span class="lb-title" id="lbTitle"></span>
+    <div class="spacer"></div>
+    <a class="btn primary" id="lbDemo" target="_blank" rel="noopener" style="flex:0 0 auto">Canlı Demo ↗</a>
+    <button class="lb-close" id="lbClose" aria-label="Kapat">✕</button>
+  </div>
+  <div class="lb-body" id="lbBody"></div>
+</div>
+
+<script>
+const ORIGINAL = {
+  id: "_original", family: "Orijinal", name: "Orijinal (ChatGPT görseli)",
+  effort: null, w: 1024, h: 1536, demo: null
+};
+
+const MODELS = [
+  { id: "fable-5-ef-1-low",       family: "Fable 5",     effort: "Low",    w: 2346, h: 3876, demo: "fable-5-ef-1-low/react-infografik.html" },
+  { id: "fable-5-ef-2-medium",    family: "Fable 5",     effort: "Medium", w: 2346, h: 3370, demo: "fable-5-ef-2-medium/index.html" },
+  { id: "fable-5-ef-3-high",      family: "Fable 5",     effort: "High",   w: 2346, h: 3726, demo: "fable-5-ef-3-high/react-infografik.html" },
+  { id: "fable-5-ef-4-xhigh",     family: "Fable 5",     effort: "XHigh",  w: 2346, h: 3524, demo: "fable-5-ef-4-xhigh/react-infografik.html" },
+  { id: "fable-5-ef-5-max",       family: "Fable 5",     effort: "Max",    w: 2346, h: 3634, demo: "fable-5-ef-5-max/react-infografik.html" },
+  { id: "fable-5-ef-6-ultra",     family: "Fable 5",     effort: "Ultra",  w: 2346, h: 3786, demo: "fable-5-ef-6-ultra/react-infografik.html" },
+  { id: "opus-4.8-ef-1-low",      family: "Opus 4.8",    effort: "Low",    w: 2316, h: 3184, demo: "opus-4.8-ef-1-low/index.html" },
+  { id: "opus-4.8-ef-2-medium",   family: "Opus 4.8",    effort: "Medium", w: 2316, h: 3524, demo: "opus-4.8-ef-2-medium/react-infografik.html" },
+  { id: "opus-4.8-ef-3-high",     family: "Opus 4.8",    effort: "High",   w: 2316, h: 3482, demo: "opus-4.8-ef-3-high/index.html" },
+  { id: "opus-4.8-ef-4-xhigh",    family: "Opus 4.8",    effort: "XHigh",  w: 2316, h: 3608, demo: "opus-4.8-ef-4-xhigh/index.html" },
+  { id: "opus-4.8-ef-5-max",      family: "Opus 4.8",    effort: "Max",    w: 2160, h: 3846, demo: "opus-4.8-ef-5-max/react-infografik.html" },
+  { id: "codex-5.6-sol-ef-1-low",    family: "Codex 5.6 Sol", effort: "Low",    w: 2316, h: 3590, demo: "codex-5.6-sol-ef-1-low/index.html" },
+  { id: "codex-5.6-sol-ef-2-medium", family: "Codex 5.6 Sol", effort: "Medium", w: 2316, h: 3084, demo: "codex-5.6-sol-ef-2-medium/dist/index.html" },
+  { id: "codex-5.6-sol-ef-3-high",   family: "Codex 5.6 Sol", effort: "High",   w: 2316, h: 3560, demo: null, note: "Next.js (SSR) — statik demo yok" },
+  { id: "codex-5.6-sol-ef-4-xhigh",  family: "Codex 5.6 Sol", effort: "XHigh",  w: 2316, h: 3094, demo: null, note: "Next.js (SSR) — statik demo yok" },
+  { id: "codex-5.6-sol-ef-5-ultra",  family: "Codex 5.6 Sol", effort: "Ultra",  w: 2316, h: 3070, demo: "codex-5.6-sol-ef-5-ultra/index.html" },
+  { id: "grok-4.5-ef-1-low",      family: "Grok 4.5",    effort: "Low",    w: 2316, h: 2714, demo: "grok-4.5-ef-1-low/index.html" },
+  { id: "grok-4.5-ef-2-medium",   family: "Grok 4.5",    effort: "Medium", w: 2316, h: 3312, demo: "grok-4.5-ef-2-medium/index.html" },
+  { id: "grok-4.5-ef-3-high",     family: "Grok 4.5",    effort: "High",   w: 2316, h: 3194, demo: "grok-4.5-ef-3-high/index.html" },
+  { id: "composer-2.5-fast",      family: "Composer 2.5", effort: "Fast",   w: 2316, h: 2880, demo: "composer-2.5-fast/index.html" },
+  { id: "composer-2.5",           family: "Composer 2.5", effort: "Normal", w: 2316, h: 3306, demo: "composer-2.5/index.html" },
+];
+
+const ALL = [ORIGINAL, ...MODELS];
+const byId = Object.fromEntries(ALL.map(m => [m.id, m]));
+const thumb = m => `thumbs/${m.id}.jpg`;
+const full = m => `${m.id}/ss.png`;
+const label = m => m.effort ? `${m.family} · ${m.effort}` : m.name;
+const FAMILIES = [...new Set(MODELS.map(m => m.family))];
+
+/* ---------- Gallery ---------- */
+const gallery = document.getElementById("gallery");
+FAMILIES.forEach(fam => {
+  const items = MODELS.filter(m => m.family === fam);
+  const sec = document.createElement("section");
+  sec.className = "family";
+  sec.dataset.family = fam;
+  sec.innerHTML = `
+    <div class="family-head"><h2>${fam}</h2><span class="count">${items.length} çıktı</span></div>
+    <div class="grid">
+      ${items.map(m => `
+        <article class="card">
+          <div class="thumb" data-lb="${m.id}">
+            <img src="${thumb(m)}" alt="${label(m)} ekran görüntüsü" loading="lazy" decoding="async">
+          </div>
+          <div class="card-body">
+            <div class="card-title-row">
+              <span class="card-title">${m.family}</span>
+              <span class="badge b-${m.effort.toLowerCase()}">${m.effort}</span>
+            </div>
+            <div class="card-meta">${m.w}×${m.h}px${m.note ? " · " + m.note : ""}</div>
+            <div class="card-actions">
+              ${m.demo
+                ? `<a class="btn primary" href="${m.demo}" target="_blank" rel="noopener">Canlı Demo ↗</a>`
+                : `<span class="btn primary disabled">Demo yok</span>`}
+              <button class="btn" data-cmp="${m.id}" title="Orijinal görselle karşılaştır">vs Orijinal</button>
+            </div>
+          </div>
+        </article>`).join("")}
+    </div>`;
+  gallery.appendChild(sec);
+});
+
+/* ---------- Filter chips ---------- */
+const chips = document.getElementById("chips");
+const spacer = chips.querySelector(".toolbar-spacer");
+FAMILIES.forEach(fam => {
+  const b = document.createElement("button");
+  b.className = "chip";
+  b.dataset.f = fam;
+  b.textContent = fam;
+  chips.insertBefore(b, spacer);
+});
+chips.addEventListener("click", e => {
+  const chip = e.target.closest(".chip");
+  if (!chip) return;
+  chips.querySelectorAll(".chip").forEach(c => c.classList.toggle("active", c === chip));
+  document.querySelectorAll("section.family").forEach(sec => {
+    sec.style.display = (chip.dataset.f === "*" || sec.dataset.family === chip.dataset.f) ? "" : "none";
+  });
+});
+
+/* ---------- Compare ---------- */
+const selA = document.getElementById("selA");
+const selB = document.getElementById("selB");
+const stage = document.getElementById("stage");
+let mode = "slider";
+let sliderPos = 50;
+
+function fillSelect(sel) {
+  sel.innerHTML = ALL.map(m => `<option value="${m.id}">${label(m)}</option>`).join("");
+}
+fillSelect(selA);
+fillSelect(selB);
+selA.value = "_original";
+selB.value = "fable-5-ef-5-max";
+
+function renderCompare() {
+  const A = byId[selA.value], B = byId[selB.value];
+  document.getElementById("legendA").textContent = "◀ " + label(A);
+  document.getElementById("legendB").textContent = label(B) + " ▶";
+
+  if (mode === "slider") {
+    stage.innerHTML = `
+      <div class="slider-scroll">
+        <div class="slider-wrap" id="sliderWrap" style="--pos:${sliderPos}%">
+          <img src="${full(B)}" alt="${label(B)}">
+          <img class="top" src="${full(A)}" alt="${label(A)}">
+          <div class="slider-divider"><div class="slider-handle">◂▸</div></div>
+        </div>
+      </div>`;
+    const wrap = document.getElementById("sliderWrap");
+    const move = e => {
+      const r = wrap.getBoundingClientRect();
+      sliderPos = Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100));
+      wrap.style.setProperty("--pos", sliderPos + "%");
+    };
+    wrap.addEventListener("pointerdown", e => {
+      wrap.setPointerCapture(e.pointerId);
+      move(e);
+      const onMove = ev => move(ev);
+      const onUp = () => {
+        wrap.removeEventListener("pointermove", onMove);
+        wrap.removeEventListener("pointerup", onUp);
+      };
+      wrap.addEventListener("pointermove", onMove);
+      wrap.addEventListener("pointerup", onUp);
+    });
+  } else {
+    stage.innerHTML = `
+      <div class="sbs">
+        <div class="sbs-pane"><div class="pane-scroll" id="paneA"><img src="${full(A)}" alt="${label(A)}"></div></div>
+        <div class="sbs-pane"><div class="pane-scroll" id="paneB"><img src="${full(B)}" alt="${label(B)}"></div></div>
+      </div>
+      <div class="sbs-note">İpucu: paneller orantılı olarak senkron kayar; yükseklikler farklı olduğundan birebir hizalanmayabilir.</div>`;
+    const pA = document.getElementById("paneA"), pB = document.getElementById("paneB");
+    let lock = false;
+    const sync = (src, dst) => () => {
+      if (lock) return;
+      lock = true;
+      const max = src.scrollHeight - src.clientHeight;
+      const ratio = max > 0 ? src.scrollTop / max : 0;
+      dst.scrollTop = ratio * (dst.scrollHeight - dst.clientHeight);
+      requestAnimationFrame(() => { lock = false; });
+    };
+    pA.addEventListener("scroll", sync(pA, pB));
+    pB.addEventListener("scroll", sync(pB, pA));
+  }
+  updateHash();
+}
+
+selA.addEventListener("change", renderCompare);
+selB.addEventListener("change", renderCompare);
+document.getElementById("swapBtn").addEventListener("click", () => {
+  [selA.value, selB.value] = [selB.value, selA.value];
+  renderCompare();
+});
+document.getElementById("modeSlider").addEventListener("click", () => setMode("slider"));
+document.getElementById("modeSbs").addEventListener("click", () => setMode("sbs"));
+function setMode(m) {
+  mode = m;
+  document.getElementById("modeSlider").classList.toggle("active", m === "slider");
+  document.getElementById("modeSbs").classList.toggle("active", m === "sbs");
+  renderCompare();
+}
+
+/* "vs Orijinal" buttons */
+document.addEventListener("click", e => {
+  const btn = e.target.closest("[data-cmp]");
+  if (!btn) return;
+  selA.value = "_original";
+  selB.value = btn.dataset.cmp;
+  renderCompare();
+  document.getElementById("karsilastir").scrollIntoView({ behavior: "smooth" });
+});
+
+/* Deep link: #cmp=a~b~mode */
+function updateHash() {
+  history.replaceState(null, "", `#cmp=${selA.value}~${selB.value}~${mode}`);
+}
+(function restoreHash() {
+  const m = location.hash.match(/^#cmp=([^~]+)~([^~]+)~(slider|sbs)$/);
+  if (m && byId[decodeURIComponent(m[1])] && byId[decodeURIComponent(m[2])]) {
+    selA.value = decodeURIComponent(m[1]);
+    selB.value = decodeURIComponent(m[2]);
+    mode = m[3];
+    document.getElementById("modeSlider").classList.toggle("active", mode === "slider");
+    document.getElementById("modeSbs").classList.toggle("active", mode === "sbs");
+  }
+})();
+renderCompare();
+
+/* ---------- Lightbox ---------- */
+const lightbox = document.getElementById("lightbox");
+const lbBody = document.getElementById("lbBody");
+const lbDemo = document.getElementById("lbDemo");
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-lb]");
+  if (!t) return;
+  const m = byId[t.dataset.lb];
+  document.getElementById("lbTitle").textContent = label(m);
+  lbBody.innerHTML = `<img src="${full(m)}" alt="${label(m)}">`;
+  lbDemo.style.display = m.demo ? "" : "none";
+  if (m.demo) lbDemo.href = m.demo;
+  lightbox.classList.add("open");
+  document.body.style.overflow = "hidden";
+});
+function closeLb() {
+  lightbox.classList.remove("open");
+  lbBody.innerHTML = "";
+  document.body.style.overflow = "";
+}
+document.getElementById("lbClose").addEventListener("click", closeLb);
+lightbox.addEventListener("click", e => { if (e.target === lightbox || e.target === lbBody) closeLb(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeLb(); });
+</script>
+</body>
+</html>

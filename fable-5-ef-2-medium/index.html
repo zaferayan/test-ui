@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React.js — Kullanıcı Arayüzleri için JavaScript Kütüphanesi</title>
+<style>
+  :root {
+    --react-blue: #61dafb;
+    --blue: #2f6fed;
+    --blue-soft: #dbeafe;
+    --ink: #16223a;
+    --muted: #4b5b74;
+    --bg: #eaf3fb;
+    --card: #ffffff;
+    --panel-blue: #e3eefb;
+    --panel-green: #e4f4ee;
+    --code-bg: #1e2430;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    background: linear-gradient(160deg, #eef6fd 0%, #e6f0fa 50%, #eaf4f0 100%);
+    color: var(--ink);
+    padding: 32px 16px;
+  }
+  .page { max-width: 1024px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+  /* ---------- Header ---------- */
+  header { display: grid; grid-template-columns: 170px 1fr 320px; gap: 28px; align-items: start; }
+  .logo { width: 160px; height: 160px; }
+  .logo svg { width: 100%; height: 100%; animation: spin 24s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  h1 { font-size: 64px; font-weight: 800; letter-spacing: -2px; }
+  .subtitle { color: #2ab6e8; font-weight: 800; font-size: 20px; letter-spacing: 0.5px; margin: 10px 0 14px; line-height: 1.3; }
+  .intro { color: var(--muted); font-size: 15px; line-height: 1.6; max-width: 420px; }
+
+  .browser { background: var(--card); border-radius: 14px; box-shadow: 0 12px 30px rgba(30,60,120,.12); overflow: hidden; position: relative; }
+  .browser-bar { background: var(--blue); height: 30px; display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.75); }
+  .browser-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .skeleton { background: #dfe8f5; border-radius: 6px; height: 10px; }
+  .skeleton.short { width: 55%; }
+  .hero-img {
+    background: var(--blue-soft); border-radius: 8px; height: 110px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .btn-skel { background: var(--blue); border-radius: 6px; height: 22px; width: 90px; }
+  .badge {
+    position: absolute; right: -14px; bottom: -14px; width: 84px; height: 84px; border-radius: 50%;
+    background: var(--react-blue); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 18px rgba(40,140,190,.35);
+  }
+  .badge svg { width: 56px; height: 56px; }
+
+  /* ---------- Feature row ---------- */
+  .features { display: grid; grid-template-columns: repeat(4, 1fr); background: transparent; }
+  .feature { padding: 8px 20px; text-align: center; }
+  .feature + .feature { border-left: 1px solid #c9d9ec; }
+  .feature .icon {
+    width: 84px; height: 84px; margin: 0 auto 16px; border-radius: 50%;
+    background: var(--blue-soft); display: flex; align-items: center; justify-content: center;
+    color: var(--blue); font-size: 34px;
+  }
+  .feature h3 { font-size: 16px; font-weight: 800; margin-bottom: 8px; letter-spacing: 0.3px; }
+  .feature p { color: var(--muted); font-size: 13.5px; line-height: 1.55; }
+
+  /* ---------- Two panels ---------- */
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .panel { border-radius: 20px; padding: 28px; }
+  .panel.blue { background: var(--panel-blue); }
+  .panel.green { background: var(--panel-green); }
+  .panel h2 { text-align: center; font-size: 22px; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 22px; }
+
+  .trait { display: flex; gap: 16px; padding: 14px 0; }
+  .trait + .trait { border-top: 1px solid #c8d8ec; }
+  .trait .t-icon {
+    flex: 0 0 52px; width: 52px; height: 52px; border-radius: 50%;
+    background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700;
+  }
+  .trait h4 { color: var(--blue); font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .trait p { color: var(--muted); font-size: 13.5px; line-height: 1.5; }
+
+  .code-window { background: var(--code-bg); border-radius: 14px; padding: 18px 20px; box-shadow: 0 10px 24px rgba(20,40,80,.25); }
+  .code-dots { display: flex; gap: 7px; margin-bottom: 14px; }
+  .code-dots span { width: 11px; height: 11px; border-radius: 50%; }
+  .code-dots span:nth-child(1) { background: #ef5350; }
+  .code-dots span:nth-child(2) { background: #ffca28; }
+  .code-dots span:nth-child(3) { background: #66bb6a; }
+  pre { font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 13px; line-height: 1.7; color: #d7dde8; overflow-x: auto; }
+  .kw { color: #c792ea; } .fn { color: #82aaff; } .str { color: #ecc48d; }
+  .tag { color: #7fdbca; } .attr { color: #addb67; } .txt { color: #ffd66e; }
+
+  .arrow { text-align: center; font-size: 26px; color: var(--ink); margin: 10px 0; }
+  .output {
+    background: #fff; border: 1px solid #d5e2f0; border-radius: 14px; padding: 14px 20px 26px;
+    box-shadow: 0 8px 20px rgba(30,60,120,.08);
+  }
+  .output .code-dots span { background: #9fb4cc; }
+  .output-text { text-align: center; color: #f4b73f; font-size: 24px; font-weight: 700; margin-top: 6px; }
+
+  /* ---------- Tools ---------- */
+  .tools { background: var(--panel-blue); border-radius: 20px; padding: 28px; }
+  .tools h2 { text-align: center; font-size: 22px; font-weight: 800; margin-bottom: 26px; letter-spacing: 0.5px; }
+  .tools-grid { display: grid; grid-template-columns: repeat(5, 1fr); }
+  .tool { text-align: center; padding: 0 14px; }
+  .tool + .tool { border-left: 1px solid #c2d4ea; }
+  .tool .t-logo { height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; font-size: 40px; }
+  .tool h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+  .tool p { color: var(--muted); font-size: 12.5px; line-height: 1.5; }
+
+  /* ---------- Why React ---------- */
+  .why { background: #ffffffcc; border-radius: 18px; padding: 20px 26px; display: grid; grid-template-columns: auto 1fr 1fr 1fr; gap: 20px; align-items: center; }
+  .why-title { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 16px; padding-right: 12px; }
+  .why-title .heart { width: 44px; height: 44px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .why-item { display: flex; align-items: center; gap: 12px; border-left: 1px solid #ccdaec; padding-left: 20px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+  .why-item .w-icon { flex: 0 0 auto; font-size: 24px; color: var(--blue); }
+
+  footer { text-align: center; color: var(--blue); font-weight: 800; font-size: 18px; letter-spacing: 0.5px; padding: 6px 0 12px; }
+  footer .star { color: #f4b73f; margin: 0 10px; }
+
+  @media (max-width: 900px) {
+    header { grid-template-columns: 1fr; text-align: center; }
+    .logo { margin: 0 auto; }
+    .intro { margin: 0 auto; }
+    .browser { max-width: 360px; margin: 0 auto; width: 100%; }
+    .features, .tools-grid { grid-template-columns: 1fr 1fr; gap: 20px 0; }
+    .panels { grid-template-columns: 1fr; }
+    .why { grid-template-columns: 1fr; }
+    .why-item { border-left: none; border-top: 1px solid #ccdaec; padding: 14px 0 0; }
+    h1 { font-size: 48px; }
+  }
+  @media (max-width: 520px) {
+    .features, .tools-grid { grid-template-columns: 1fr; }
+    .feature + .feature, .tool + .tool { border-left: none; border-top: 1px solid #c9d9ec; padding-top: 16px; margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ================= HEADER ================= -->
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="-11 -10.5 22 21" xmlns="http://www.w3.org/2000/svg">
+        <circle r="2.05" fill="#2ab6e8"/>
+        <g stroke="#2ab6e8" stroke-width="1" fill="none">
+          <ellipse rx="10" ry="4.5"/>
+          <ellipse rx="10" ry="4.5" transform="rotate(60)"/>
+          <ellipse rx="10" ry="4.5" transform="rotate(120)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div>
+      <h1>React.js</h1>
+      <div class="subtitle">KULLANICI ARAYÜZLERİ İÇİN<br>JAVASCRIPT KÜTÜPHANESİ</div>
+      <p class="intro">React, etkileşimli ve yüksek performanslı web uygulamaları geliştirmek için kullanılan, deklaratif ve bileşen tabanlı bir JavaScript kütüphanesidir.</p>
+    </div>
+
+    <div class="browser">
+      <div class="browser-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      <div class="browser-body">
+        <div class="skeleton short"></div>
+        <div class="hero-img">
+          <svg width="70" height="52" viewBox="0 0 70 52" aria-hidden="true">
+            <rect width="70" height="52" rx="6" fill="#bfd6f7"/>
+            <circle cx="52" cy="14" r="6" fill="#8fb6ee"/>
+            <path d="M6 44 L26 22 L40 38 L50 28 L64 44 Z" fill="#5b8fe0"/>
+          </svg>
+        </div>
+        <div class="skeleton"></div>
+        <div class="skeleton"></div>
+        <div class="skeleton short"></div>
+        <div class="btn-skel"></div>
+      </div>
+      <div class="badge" aria-hidden="true">
+        <svg viewBox="-11 -10.5 22 21" xmlns="http://www.w3.org/2000/svg">
+          <circle r="2.05" fill="#1e2430"/>
+          <g stroke="#1e2430" stroke-width="1" fill="none">
+            <ellipse rx="10" ry="4.5"/>
+            <ellipse rx="10" ry="4.5" transform="rotate(60)"/>
+            <ellipse rx="10" ry="4.5" transform="rotate(120)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="features">
+    <div class="feature">
+      <div class="icon">🧩</div>
+      <h3>BİLEŞEN TABANLI</h3>
+      <p>UI'ları küçük, yeniden kullanılabilir bileşenler halinde oluşturur.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">⚡</div>
+      <h3>YÜKSEK PERFORMANS</h3>
+      <p>Sanal DOM ile yalnızca değişen bölümleri güncelleyerek daha hızlı ve verimli çalışır.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">🔄</div>
+      <h3>TEK YÖNLÜ VERİ AKIŞI</h3>
+      <p>Veri akışı daha öngörülebilir ve hataları tespit etmek daha kolaydır.</p>
+    </div>
+    <div class="feature">
+      <div class="icon">📈</div>
+      <h3>GENİŞ EKOSİSTEM</h3>
+      <p>Zengin araçlar, topluluk desteği ve güçlü bir ekosisteme sahiptir.</p>
+    </div>
+  </section>
+
+  <!-- ================= PANELS ================= -->
+  <section class="panels">
+    <div class="panel blue">
+      <h2>TEMEL ÖZELLİKLER</h2>
+
+      <div class="trait">
+        <div class="t-icon">&lt;/&gt;</div>
+        <div>
+          <h4>JSX</h4>
+          <p>JavaScript içine HTML benzeri sözdizimi yazarak daha okunabilir kodlar yazmanızı sağlar.</p>
+        </div>
+      </div>
+
+      <div class="trait">
+        <div class="t-icon">▦</div>
+        <div>
+          <h4>BİLEŞENLER (COMPONENTS)</h4>
+          <p>UI'ı bağımsız ve yeniden kullanılabilir parçalara böler, geliştirmeyi kolaylaştırır.</p>
+        </div>
+      </div>
+
+      <div class="trait">
+        <div class="t-icon">{ }</div>
+        <div>
+          <h4>STATE &amp; PROPS</h4>
+          <p>State (durum) değişen verileri, Props ise bileşenler arası veri iletişimini yönetir.</p>
+        </div>
+      </div>
+
+      <div class="trait">
+        <div class="t-icon">⚙</div>
+        <div>
+          <h4>LIFECYCLE (YAŞAM DÖNGÜSÜ)</h4>
+          <p>Bileşenlerin oluşturulma, güncellenme ve kaldırılma aşamalarını yönetmenizi sağlar.</p>
+        </div>
+      </div>
+
+      <div class="trait">
+        <div class="t-icon">✓</div>
+        <div>
+          <h4>SANAL DOM</h4>
+          <p>Gerçek DOM'u en verimli şekilde güncelleyerek daha iyi performans sunar.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel green">
+      <h2>BASİT BİR REACT BİLEŞENİ</h2>
+
+      <div class="code-window">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+<pre><code><span class="kw">import</span> React <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="fn">MerhabaDunya</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div</span> <span class="attr">style</span>={{ <span class="attr">color</span>: <span class="str">'#61dafb'</span>,
+              <span class="attr">fontSize</span>: <span class="str">'20px'</span> }}<span class="tag">&gt;</span>
+      <span class="txt">Merhaba Dünya! 👋</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+
+<span class="kw">export default</span> <span class="fn">MerhabaDunya</span>;</code></pre>
+      </div>
+
+      <div class="arrow">↓</div>
+
+      <div class="output">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <div class="output-text">Merhaba Dünya! 👋</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOLS ================= -->
+  <section class="tools">
+    <h2>POPÜLER ARAÇLAR &amp; KÜTÜPHANELER</h2>
+    <div class="tools-grid">
+      <div class="tool">
+        <div class="t-logo">
+          <svg width="54" height="54" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="6" cy="18" r="3" fill="#1c1c1c"/>
+            <circle cx="12" cy="6" r="3.4" fill="#ef4444"/>
+            <circle cx="18" cy="13" r="3" fill="#ef4444"/>
+            <path d="M8 16 L11 8 M13.5 8.5 L16.5 11.5" stroke="#1c1c1c" stroke-width="1.6"/>
+          </svg>
+        </div>
+        <h3>React Router</h3>
+        <p>Sayfa yönlendirme ve navigasyon yönetimi.</p>
+      </div>
+      <div class="tool">
+        <div class="t-logo" style="color:#7c3aed;">
+          <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="1.8" aria-hidden="true">
+            <circle cx="9" cy="10" r="4.5"/>
+            <circle cx="15" cy="14" r="4.5"/>
+          </svg>
+        </div>
+        <h3>Redux</h3>
+        <p>Global state yönetimi için öngörülebilir bir yapı sağlar.</p>
+      </div>
+      <div class="tool">
+        <div class="t-logo">
+          <svg width="54" height="54" viewBox="0 0 24 24" aria-hidden="true">
+            <g fill="#ef4444">
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(0 12 12)" fill="none" stroke="#ef4444" stroke-width="2"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)" fill="none" stroke="#ef4444" stroke-width="2"/>
+              <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)" fill="none" stroke="#ef4444" stroke-width="2"/>
+              <circle cx="12" cy="12" r="2.4" fill="#ffca28"/>
+            </g>
+          </svg>
+        </div>
+        <h3>React Query</h3>
+        <p>Sunucu durumunu çekmek, önbelleğe almak ve senkronize etmek için.</p>
+      </div>
+      <div class="tool">
+        <div class="t-logo">
+          <svg width="58" height="36" viewBox="0 0 54 33" aria-hidden="true">
+            <path fill="#38bdf8" d="M27 0C19.8 0 15.3 3.6 13.5 10.8c2.7-3.6 5.85-4.95 9.45-4.05 2.05.51 3.52 2 5.14 3.64C30.75 13.09 33.81 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.05-.51-3.52-2-5.14-3.64C36.75 3.11 33.69 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.05.51 3.52 2 5.14 3.64 2.66 2.7 5.72 5.81 12.41 5.81 7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.05-.51-3.52-2-5.14-3.64-2.66-2.7-5.72-5.81-12.41-5.81z"/>
+          </svg>
+        </div>
+        <h3>Tailwind CSS</h3>
+        <p>Hızlı ve modern tasarımlar için CSS çerçevesi.</p>
+      </div>
+      <div class="tool">
+        <div class="t-logo">
+          <svg width="50" height="50" viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="vite1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#41d1ff"/><stop offset="1" stop-color="#bd34fe"/>
+              </linearGradient>
+            </defs>
+            <path d="M2 3 L12 21 L22 3 L12 6.5 Z" fill="url(#vite1)"/>
+            <path d="M13.5 2 L9 12 h3 l-1.5 8 6-11 h-3.2 Z" fill="#ffd62e" stroke="#fff" stroke-width="0.4"/>
+          </svg>
+        </div>
+        <h3>Vite</h3>
+        <p>Hızlı geliştirme deneyimi sunan modern build aracı.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY REACT ================= -->
+  <section class="why">
+    <div class="why-title"><span class="heart">♥</span> NEDEN REACT?</div>
+    <div class="why-item"><span class="w-icon">∞</span> Facebook (Meta) tarafından geliştirilir ve desteklenir.</div>
+    <div class="why-item"><span class="w-icon">👥</span> Büyük ve aktif bir topluluğa sahiptir.</div>
+    <div class="why-item"><span class="w-icon">💼</span> Küçük projelerden kurumsal uygulamalara kadar ölçeklenebilir.</div>
+  </section>
+
+  <footer>
+    <span class="star">★</span> DAHA AZ KOD, DAHA FAZLA ÜRETKENLİK! <span class="star">★</span>
+  </footer>
+
+</div>
+</body>
+</html>

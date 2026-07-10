@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React.js — Kullanıcı Arayüzleri İçin JavaScript Kütüphanesi</title>
+<style>
+  :root {
+    --react-cyan: #61dafb;
+    --react-blue: #1877f2;
+    --deep-blue: #0f2a5e;
+    --dark-navy: #16213e;
+    --text-dark: #1f2d3d;
+    --text-body: #5a6b7f;
+    --bg-page: #eef2fb;
+    --panel-blue: #dce7fb;
+    --panel-green: #e3f0e8;
+    --code-bg: #1e2438;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #c7d2e8;
+    color: var(--text-dark);
+    padding: 40px 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .infographic {
+    max-width: 1024px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #f2f6fd 0%, #e7eefb 100%);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(15, 42, 94, 0.25);
+    padding: 44px 48px 34px;
+  }
+
+  /* ---------- Header ---------- */
+  .header {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    margin-bottom: 44px;
+  }
+  .header-logo { flex: 0 0 auto; padding-top: 6px; }
+  .header-logo svg { width: 172px; height: 152px; }
+  .header-text { flex: 1; min-width: 0; padding-top: 4px; }
+  .header-text h1 {
+    font-size: 66px;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: var(--deep-blue);
+    line-height: 0.95;
+  }
+  .header-sub {
+    color: var(--react-cyan);
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: 0.5px;
+    margin: 10px 0 16px;
+    text-transform: uppercase;
+    line-height: 1.25;
+  }
+  .header-desc {
+    color: var(--text-body);
+    font-size: 15.5px;
+    line-height: 1.6;
+    max-width: 380px;
+  }
+  .header-illu { flex: 0 0 300px; position: relative; }
+  .browser-mock {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(15,42,94,0.15);
+    overflow: hidden;
+  }
+  .browser-bar {
+    background: var(--react-blue);
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 12px;
+  }
+  .browser-bar span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.85); }
+  .browser-body { padding: 18px; display: flex; gap: 14px; }
+  .browser-left { flex: 0 0 42%; display: flex; flex-direction: column; gap: 9px; }
+  .browser-left .bar { height: 12px; border-radius: 4px; background: #d7e3f6; }
+  .browser-left .block { height: 58px; border-radius: 6px; background: #d7e3f6; margin-top: 4px; }
+  .browser-right { flex: 1; display: flex; flex-direction: column; gap: 9px; }
+  .browser-img {
+    height: 82px; border-radius: 6px;
+    background: linear-gradient(135deg, #8fb6f2 0%, #5a8de8 100%);
+    position: relative; overflow: hidden;
+  }
+  .browser-img::before {
+    content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
+    background: #4a7fd8;
+    clip-path: polygon(0 60%, 30% 20%, 55% 55%, 78% 25%, 100% 55%, 100% 100%, 0 100%);
+  }
+  .browser-img::after {
+    content: ""; position: absolute; top: 14px; right: 18px; width: 14px; height: 14px;
+    border-radius: 50%; background: #cfe0fa;
+  }
+  .browser-right .bar { height: 11px; border-radius: 4px; background: #d7e3f6; }
+  .browser-right .bar.short { width: 60%; }
+  .browser-right .btn { height: 26px; width: 90px; border-radius: 6px; background: var(--react-blue); margin-top: 2px; }
+  .header-illu .badge {
+    position: absolute; right: -6px; bottom: -22px;
+    width: 92px; height: 92px; border-radius: 50%;
+    background: var(--react-cyan);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(97,218,251,0.5);
+  }
+  .header-illu .badge svg { width: 60px; height: 54px; }
+
+  /* ---------- Feature row ---------- */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-bottom: 40px;
+  }
+  .feature { text-align: center; padding: 0 18px; position: relative; }
+  .feature + .feature::before {
+    content: ""; position: absolute; left: 0; top: 14px; bottom: 14px;
+    width: 1px; background: #cdd8ec;
+  }
+  .feature-icon {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: #d3e3fb;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
+  .feature-icon svg { width: 42px; height: 42px; }
+  .feature h3 {
+    font-size: 15px; font-weight: 800; color: var(--deep-blue);
+    letter-spacing: 0.3px; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .feature p { font-size: 13px; line-height: 1.5; color: var(--text-body); }
+
+  /* ---------- Two panels ---------- */
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+    margin-bottom: 36px;
+  }
+  .panel { border-radius: 16px; padding: 28px 30px; }
+  .panel.left { background: var(--panel-blue); }
+  .panel.right { background: var(--panel-green); }
+  .panel h2 {
+    font-size: 21px; font-weight: 800; color: var(--deep-blue);
+    letter-spacing: 0.4px; margin-bottom: 22px; text-transform: uppercase;
+  }
+  .panel.right h2 { text-align: left; }
+
+  .feat-item { display: flex; gap: 16px; margin-bottom: 20px; }
+  .feat-item:last-child { margin-bottom: 0; }
+  .feat-badge {
+    flex: 0 0 auto; width: 46px; height: 46px; border-radius: 12px;
+    background: var(--react-blue);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .feat-badge svg { width: 24px; height: 24px; }
+  .feat-body h4 {
+    font-size: 15px; font-weight: 800; color: var(--react-blue);
+    margin-bottom: 4px; letter-spacing: 0.2px;
+  }
+  .feat-body p { font-size: 13px; line-height: 1.5; color: var(--text-body); }
+
+  /* ---------- Code block ---------- */
+  .code-window {
+    background: var(--code-bg);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 26px rgba(15,42,94,0.22);
+  }
+  .code-dots { display: flex; gap: 8px; padding: 14px 16px 6px; }
+  .code-dots span { width: 12px; height: 12px; border-radius: 50%; }
+  .code-dots .r { background: #ff5f56; }
+  .code-dots .y { background: #ffbd2e; }
+  .code-dots .g { background: #27c93f; }
+  .code-window pre {
+    margin: 0; padding: 8px 20px 22px;
+    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 13.5px; line-height: 1.75; color: #d6deeb;
+    overflow-x: auto;
+  }
+  .kw { color: #c792ea; }
+  .fn { color: #82aaff; }
+  .str { color: #c3e88d; }
+  .tag { color: #f07178; }
+  .attr { color: #ffcb6b; }
+  .cyanv { color: #61dafb; }
+  .plain { color: #d6deeb; }
+
+  .arrow-down { text-align: center; margin: 14px 0; }
+  .arrow-down svg { width: 20px; height: 34px; }
+
+  .output-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px 22px;
+    box-shadow: 0 6px 18px rgba(15,42,94,0.1);
+  }
+  .output-box .dots { display: flex; gap: 7px; margin-bottom: 14px; }
+  .output-box .dots span { width: 9px; height: 9px; border-radius: 50%; background: #c9d4e6; }
+  .output-text {
+    color: var(--react-cyan); font-size: 22px; font-weight: 700; text-align: center;
+    padding: 6px 0;
+  }
+
+  /* ---------- Tools ---------- */
+  .tools-section {
+    background: var(--panel-blue);
+    border-radius: 16px;
+    padding: 30px 34px 34px;
+    margin-bottom: 30px;
+  }
+  .tools-section h2 {
+    text-align: center; font-size: 23px; font-weight: 800;
+    color: var(--deep-blue); letter-spacing: 0.5px; margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .tools-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .tool { text-align: center; padding: 0 14px; position: relative; }
+  .tool + .tool::before {
+    content: ""; position: absolute; left: 0; top: 6px; bottom: 6px;
+    width: 1px; background: #c2d0ea;
+  }
+  .tool-icon { height: 54px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .tool-icon svg { width: 50px; height: 50px; }
+  .tool h4 { font-size: 16px; font-weight: 800; color: var(--deep-blue); margin-bottom: 8px; }
+  .tool p { font-size: 12.5px; line-height: 1.45; color: var(--text-body); }
+
+  /* ---------- Why bar ---------- */
+  .why-bar {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr;
+    gap: 26px;
+    align-items: center;
+    padding: 18px 6px 26px;
+    border-top: 1px solid #cdd8ec;
+    border-bottom: 1px solid #cdd8ec;
+    margin-bottom: 22px;
+  }
+  .why-title { display: flex; align-items: center; gap: 12px; }
+  .why-title svg { width: 34px; height: 34px; }
+  .why-title span { font-weight: 800; color: var(--deep-blue); font-size: 15px; letter-spacing: 0.3px; }
+  .why-item { display: flex; gap: 12px; align-items: center; }
+  .why-item svg { width: 30px; height: 30px; flex: 0 0 auto; }
+  .why-item p { font-size: 12.5px; line-height: 1.45; color: var(--text-body); }
+
+  /* ---------- Footer ---------- */
+  .footer-cta {
+    text-align: center;
+    color: var(--react-blue);
+    font-weight: 800;
+    font-size: 17px;
+    letter-spacing: 1px;
+    padding-top: 6px;
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+  }
+  .footer-cta .star { color: var(--react-cyan); }
+
+  @media (max-width: 780px) {
+    .infographic { padding: 26px 20px; }
+    .header { flex-direction: column; }
+    .header-illu { flex: 0 0 auto; width: 100%; max-width: 320px; }
+    .header-text h1 { font-size: 52px; }
+    .features { grid-template-columns: repeat(2, 1fr); gap: 26px 0; }
+    .feature:nth-child(3)::before, .feature:nth-child(odd)::before { display: none; }
+    .panels { grid-template-columns: 1fr; }
+    .tools-grid { grid-template-columns: repeat(2, 1fr); gap: 24px 0; }
+    .tool::before { display: none; }
+    .why-bar { grid-template-columns: 1fr; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="infographic">
+
+  <!-- ============ HEADER ============ -->
+  <header class="header">
+    <div class="header-logo">
+      <!-- React atom logo -->
+      <svg viewBox="-11.5 -10.23 23 20.46" xmlns="http://www.w3.org/2000/svg">
+        <circle r="2" fill="#0f2a5e"/>
+        <g stroke="#61dafb" stroke-width="1" fill="none">
+          <ellipse rx="11" ry="4.2"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="header-text">
+      <h1>React.js</h1>
+      <div class="header-sub">Kullanıcı Arayüzleri İçin<br>Javascript Kütüphanesi</div>
+      <p class="header-desc">React, etkileşimli ve yüksek performanslı web uygulamaları geliştirmek için kullanılan, deklaratif ve bileşen tabanlı bir JavaScript kütüphanesidir.</p>
+    </div>
+
+    <div class="header-illu">
+      <div class="browser-mock">
+        <div class="browser-bar"><span></span><span></span><span></span></div>
+        <div class="browser-body">
+          <div class="browser-left">
+            <div class="bar"></div>
+            <div class="block"></div>
+          </div>
+          <div class="browser-right">
+            <div class="browser-img"></div>
+            <div class="bar"></div>
+            <div class="bar short"></div>
+            <div class="btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="badge">
+        <svg viewBox="-11.5 -10.23 23 20.46" xmlns="http://www.w3.org/2000/svg">
+          <circle r="2" fill="#fff"/>
+          <g stroke="#fff" stroke-width="1" fill="none">
+            <ellipse rx="11" ry="4.2"/>
+            <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+            <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ FEATURE ROW ============ -->
+  <section class="features">
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="#1877f2"><path d="M20.5 11H19V7c0-1.1-.9-2-2-2h-4V3.5C13 2.12 11.88 1 10.5 1S8 2.12 8 3.5V5H4c-1.1 0-1.99.9-1.99 2v3.8H3.5c1.49 0 2.7 1.21 2.7 2.7s-1.21 2.7-2.7 2.7H2V19c0 1.1.9 2 2 2h3.8v-1.5c0-1.49 1.21-2.7 2.7-2.7 1.49 0 2.7 1.21 2.7 2.7V21H17c1.1 0 2-.9 2-2v-4h1.5c1.38 0 2.5-1.12 2.5-2.5S21.88 11 20.5 11z"/></svg>
+      </div>
+      <h3>Bileşen Tabanlı</h3>
+      <p>UI'ları küçük, yeniden kullanılabilir bileşenler halinde oluşturur.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="#1877f2"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+      </div>
+      <h3>Yüksek Performans</h3>
+      <p>Sanal DOM ile yalnızca değişen bölümleri güncelleyerek daha hızlı ve verimli çalışır.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1877f2" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 1-9 9c-2.4 0-4.6-.94-6.2-2.5"/><path d="M3 12a9 9 0 0 1 9-9c2.4 0 4.6.94 6.2 2.5"/><polyline points="21 3 21 8 16 8"/><polyline points="3 21 3 16 8 16"/></svg>
+      </div>
+      <h3>Tek Yönlü Veri Akışı</h3>
+      <p>Veri akışı daha öngörülebilir ve hataları tespit etmek daha kolaydır.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24" fill="#1877f2"><path d="M3.5 18.5l6-6 4 4L22 6.9 20.6 5.5l-7.1 8.1-4-4L2 17z"/></svg>
+      </div>
+      <h3>Geniş Ekosistem</h3>
+      <p>Zengin araçlar, topluluk desteği ve güçlü bir ekosisteme sahiptir.</p>
+    </div>
+  </section>
+
+  <!-- ============ TWO PANELS ============ -->
+  <section class="panels">
+    <!-- LEFT: Temel Özellikler -->
+    <div class="panel left">
+      <h2>Temel Özellikler</h2>
+
+      <div class="feat-item">
+        <div class="feat-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 6 3 12 8 18"/><polyline points="16 6 21 12 16 18"/></svg>
+        </div>
+        <div class="feat-body">
+          <h4>JSX</h4>
+          <p>JavaScript içine HTML benzeri sözdizimi yazarak daha okunabilir kodlar yazmanızı sağlar.</p>
+        </div>
+      </div>
+
+      <div class="feat-item">
+        <div class="feat-badge">
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
+        </div>
+        <div class="feat-body">
+          <h4>Bileşenler (Components)</h4>
+          <p>UI'ı bağımsız ve yeniden kullanılabilir parçalara böler, geliştirmeyi kolaylaştırır.</p>
+        </div>
+      </div>
+
+      <div class="feat-item">
+        <div class="feat-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H7a2 2 0 0 0-2 2v1a2 2 0 0 1-2 2 2 2 0 0 1 2 2v1a2 2 0 0 0 2 2h2"/><path d="M15 4h2a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2 2 2 0 0 0-2 2v1a2 2 0 0 1-2 2h-2"/></svg>
+        </div>
+        <div class="feat-body">
+          <h4>State &amp; Props</h4>
+          <p>State (durum) değişen verileri, Props ise bileşenler arası veri iletişimini yönetir.</p>
+        </div>
+      </div>
+
+      <div class="feat-item">
+        <div class="feat-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <div class="feat-body">
+          <h4>Lifecycle (Yaşam Döngüsü)</h4>
+          <p>Bileşenlerin oluşturulma, güncellenme ve kaldırılma aşamalarını yönetmenizi sağlar.</p>
+        </div>
+      </div>
+
+      <div class="feat-item">
+        <div class="feat-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12 11 14.5 15.5 9.5"/></svg>
+        </div>
+        <div class="feat-body">
+          <h4>Sanal DOM</h4>
+          <p>Gerçek DOM'u en verimli şekilde güncelleyerek daha iyi performans sunar.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Basit Bir React Bileşeni -->
+    <div class="panel right">
+      <h2>Basit Bir React Bileşeni</h2>
+      <div class="code-window">
+        <div class="code-dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+        <pre><span class="kw">import</span> <span class="plain">React</span> <span class="kw">from</span> <span class="str">'react'</span><span class="plain">;</span>
+
+<span class="kw">function</span> <span class="fn">MerhabaDunya</span><span class="plain">() {</span>
+  <span class="kw">return</span> <span class="plain">(</span>
+    <span class="tag">&lt;div</span> <span class="attr">style</span><span class="plain">={{</span> <span class="plain">color:</span> <span class="str">'#61dafb'</span><span class="plain">,</span>
+            <span class="plain">fontSize:</span> <span class="str">'20px'</span> <span class="plain">}}&gt;</span>
+    <span class="plain">Merhaba Dünya! 👋</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="plain">);</span>
+<span class="plain">}</span>
+
+<span class="kw">export</span> <span class="kw">default</span> <span class="plain">MerhabaDunya;</span></pre>
+      </div>
+
+      <div class="arrow-down">
+        <svg viewBox="0 0 20 34" fill="none" stroke="#16213e" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="2" x2="10" y2="26"/><polyline points="3 20 10 30 17 20"/></svg>
+      </div>
+
+      <div class="output-box">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="output-text">Merhaba Dünya! 👋</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TOOLS ============ -->
+  <section class="tools-section">
+    <h2>Popüler Araçlar &amp; Kütüphaneler</h2>
+    <div class="tools-grid">
+      <div class="tool">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="5" cy="6" r="2.4" fill="#1a1a2e"/><circle cx="19" cy="6" r="2.4" fill="#e0384d"/><circle cx="12" cy="13" r="2.4" fill="#e0384d"/><circle cx="6" cy="19" r="2.4" fill="#1a1a2e"/><circle cx="18" cy="19" r="2.4" fill="#1a1a2e"/><g stroke="#1a1a2e" stroke-width="1.2"><line x1="5" y1="6" x2="12" y2="13"/><line x1="19" y1="6" x2="12" y2="13"/><line x1="12" y1="13" x2="6" y2="19"/><line x1="12" y1="13" x2="18" y2="19"/></g></svg>
+        </div>
+        <h4>React Router</h4>
+        <p>Sayfa yönlendirme ve navigasyon yönetimi.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#764abc" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14.5c1.6-.4 2.8-1.9 2.8-3.6 0-2-1.7-3.7-3.8-3.7-1.6 0-3 1-3.6 2.4"/><path d="M8.5 8.5C6.8 9.6 4 11.8 4 14.3c0 2.4 2.8 3.7 6 3.7 2.4 0 4.3-.6 5.2-1.6"/><path d="M9.5 15.5C7.8 13.9 6 10.6 7.3 8.3c1-1.8 3.6-2.6 6.4-2.3"/><circle cx="15" cy="14.7" r="1.4" fill="#764abc" stroke="none"/><circle cx="7.6" cy="8.1" r="1.4" fill="#764abc" stroke="none"/><circle cx="9.7" cy="16.2" r="1.4" fill="#764abc" stroke="none"/></svg>
+        </div>
+        <h4>Redux</h4>
+        <p>Global state yönetimi için öngörülebilir bir yapı sağlar.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><ellipse cx="12" cy="12" rx="10" ry="4.6" fill="none" stroke="#e0384d" stroke-width="1.6"/><ellipse cx="12" cy="12" rx="10" ry="4.6" fill="none" stroke="#ff5c7a" stroke-width="1.6" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.6" fill="none" stroke="#e0384d" stroke-width="1.6" transform="rotate(120 12 12)"/><circle cx="12" cy="12" r="2.3" fill="#e0384d"/></svg>
+        </div>
+        <h4>React Query</h4>
+        <p>Sunucu durumunu çekmek, önbelleğe almak ve senkronize etmek için.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 10c1-3 3-4.5 6-4.5 4.5 0 5 3 8.2 3.8-.9 2.7-3 4.2-6 4.2-4.5 0-5-3-8.2-3.5z" fill="#38bdf8"/><path d="M2 15c1-3 3-4.5 6-4.5 4.5 0 5 3 8.2 3.8-.9 2.7-3 4.2-6 4.2-4.5 0-5-3-8.2-3.5z" fill="#38bdf8"/></svg>
+        </div>
+        <h4>Tailwind CSS</h4>
+        <p>Hızlı ve modern tasarımlar için CSS çerçevesi.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="viteg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#41d1ff"/><stop offset="1" stop-color="#bd34fe"/></linearGradient></defs><path d="M12 3l9 2-8.4 15.5c-.3.5-.9.5-1.2 0L3 5z" fill="url(#viteg)"/><path d="M15.5 3.2l-5 1 .3 8.3-2.6.5 2.1 4.2.4-6.6-2.6-.5z" fill="#ffd028"/></svg>
+        </div>
+        <h4>Vite</h4>
+        <p>Hızlı geliştirme deneyimi sunan modern build aracı.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY BAR ============ -->
+  <section class="why-bar">
+    <div class="why-title">
+      <svg viewBox="0 0 24 24" fill="#1877f2"><path d="M12 21s-7.5-4.9-10-9.3C.3 8.4 1.7 5 5 5c2 0 3.2 1.1 4 2.3C9.8 6.1 11 5 13 5c3.3 0 4.7 3.4 3 6.7C19.5 16.1 12 21 12 21z" transform="translate(0.5,0)"/></svg>
+      <span>NEDEN REACT?</span>
+    </div>
+    <div class="why-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1877f2" stroke-width="1.6"><path d="M3 15c0-3 1.5-5 3.2-5 1.3 0 2.1 1 2.8 2.5M21 15c0-3-1.5-5-3.2-5-1.3 0-2.1 1-2.8 2.5" stroke-linecap="round"/><path d="M8.8 12.5C9.6 11 10.7 10 12 10s2.4 1 3.2 2.5" stroke-linecap="round"/></svg>
+      <p>Facebook (Meta) tarafından geliştirilir ve desteklenir.</p>
+    </div>
+    <div class="why-item">
+      <svg viewBox="0 0 24 24" fill="#1877f2"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.4"/><path d="M3 19c0-3 2.7-5 6-5s6 2 6 5v1H3z"/><path d="M15 13.5c2.6.2 5 1.9 5 4.5v1h-4"/></svg>
+      <p>Büyük ve aktif bir topluluğa sahiptir.</p>
+    </div>
+    <div class="why-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#1877f2" stroke-width="1.7"><rect x="3" y="8" width="18" height="11" rx="2"/><path d="M9 8V6a3 3 0 0 1 6 0v2" stroke-linecap="round"/><line x1="3" y1="13" x2="21" y2="13"/></svg>
+      <p>Küçük projelerden kurumsal uygulamalara kadar ölçeklenebilir.</p>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <div class="footer-cta">
+    <span class="star">★</span>
+    <span>DAHA AZ KOD, DAHA FAZLA ÜRETKENLİK!</span>
+    <span class="star">★</span>
+  </div>
+
+</div>
+</body>
+</html>

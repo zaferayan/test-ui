@@ -6,6 +6,7 @@
 <title>React.js — Kullanıcı Arayüzleri için JavaScript Kütüphanesi</title>
 <style>
   :root{
+    color-scheme:light;
     --bg:#EDF4FB;
     --surface:#FFFFFF;
     --surface-2:#E9F2FA;
@@ -21,36 +22,6 @@
     --code-ink:#D8E1EC;
     --shadow:0 12px 32px rgba(21,39,68,.09);
   }
-  @media (prefers-color-scheme: dark){
-    :root{
-      --bg:#0C1420;
-      --surface:#16212F;
-      --surface-2:#1B2938;
-      --tint:#182635;
-      --mint:#162A2A;
-      --ink:#E7F0FA;
-      --muted:#93A5BD;
-      --blue:#6FA5FF;
-      --blue-soft:#213550;
-      --line:#28394E;
-      --code-bg:#111823;
-      --code-ink:#D8E1EC;
-      --shadow:0 12px 32px rgba(0,0,0,.4);
-    }
-  }
-  :root[data-theme="light"]{
-    --bg:#EDF4FB; --surface:#FFFFFF; --surface-2:#E9F2FA; --tint:#DFEDF9;
-    --mint:#E4F4EF; --ink:#152744; --muted:#5B6C87; --react:#61DAFB;
-    --blue:#2F6BE0; --blue-soft:#D9E8F8; --line:#C9DAEC;
-    --code-bg:#1E2530; --code-ink:#D8E1EC; --shadow:0 12px 32px rgba(21,39,68,.09);
-  }
-  :root[data-theme="dark"]{
-    --bg:#0C1420; --surface:#16212F; --surface-2:#1B2938; --tint:#182635;
-    --mint:#162A2A; --ink:#E7F0FA; --muted:#93A5BD; --react:#61DAFB;
-    --blue:#6FA5FF; --blue-soft:#213550; --line:#28394E;
-    --code-bg:#111823; --code-ink:#D8E1EC; --shadow:0 12px 32px rgba(0,0,0,.4);
-  }
-
   *{box-sizing:border-box}
   body{
     background:var(--bg);

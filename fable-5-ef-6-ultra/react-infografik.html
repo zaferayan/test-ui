@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React.js — Kullanıcı Arayüzleri İçin JavaScript Kütüphanesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #e9f2fb;
+    --navy: #17263e;
+    --ink: #3d4d66;
+    --cyan: #61dafb;
+    --cyan-deep: #21b6e8;
+    --blue: #2e7cf6;
+    --blue-dark: #2563eb;
+    --circle-soft: #d5e7fa;
+    --card-blue: #ddebfa;
+    --card-mint: #ddf0ec;
+    --card-white: #f7fbff;
+    --line: #c6dbf0;
+    --code-bg: #232a38;
+    --gold: #f6b93b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Nunito', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
+  }
+
+  .page {
+    position: relative;
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 44px 28px 36px;
+    overflow: hidden;
+  }
+
+  /* ---- scattered decorations ---- */
+  .deco { position: absolute; pointer-events: none; user-select: none; }
+  .deco svg { display: block; }
+
+  /* ================= HERO ================= */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 36px;
+    align-items: center;
+  }
+
+  .hero-left { display: flex; gap: 30px; align-items: flex-start; }
+
+  .hero-logo { flex: 0 0 190px; }
+  .hero-logo svg { width: 190px; height: 175px; display: block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .hero-logo .atom { transform-origin: center; animation: spin 24s linear infinite; }
+
+  .hero-title { font-size: 64px; font-weight: 900; color: var(--navy); letter-spacing: -1px; line-height: 1.05; }
+  .hero-sub {
+    margin-top: 14px;
+    font-size: 21px;
+    font-weight: 800;
+    color: var(--cyan-deep);
+    letter-spacing: .5px;
+    line-height: 1.3;
+  }
+  .hero-desc { margin-top: 16px; font-size: 16.5px; max-width: 420px; }
+
+  /* browser mockup */
+  .mockup { position: relative; }
+  .browser {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 18px 40px rgba(46, 124, 246, .16);
+    overflow: hidden;
+  }
+  .browser-bar {
+    height: 34px;
+    background: #4a86f7;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0 14px;
+  }
+  .browser-bar i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.85); }
+  .browser-body { padding: 18px 20px 22px; }
+  .skline { height: 9px; border-radius: 5px; background: #dde7f3; margin-bottom: 9px; }
+  .skline.w60 { width: 60%; }
+  .skline.w80 { width: 80%; }
+  .skline.w45 { width: 45%; }
+  .sk-img {
+    height: 118px;
+    border-radius: 10px;
+    background: #cfe3fb;
+    margin: 12px 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .sk-img svg { width: 96px; height: 76px; }
+  .sk-btn { width: 88px; height: 26px; border-radius: 6px; background: #4a86f7; margin-top: 12px; }
+  .mock-badge {
+    position: absolute;
+    right: -26px;
+    bottom: -26px;
+    width: 104px;
+    height: 104px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #6fdcfb, #2fc0ee);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 12px 26px rgba(33, 182, 232, .35);
+  }
+  .mock-badge svg { width: 62px; height: 56px; }
+
+  /* ================= FEATURES ROW ================= */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 54px;
+  }
+  .feature {
+    text-align: center;
+    padding: 6px 22px;
+    border-left: 1.5px solid var(--line);
+  }
+  .feature:first-child { border-left: none; }
+  .feature-icon {
+    width: 88px;
+    height: 88px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: var(--circle-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .feature-icon svg { width: 40px; height: 40px; }
+  .feature h2 { font-size: 16.5px; font-weight: 900; color: var(--navy); letter-spacing: .3px; margin-bottom: 8px; }
+  .feature p { font-size: 14.5px; }
+
+  /* ================= TWO CARDS ================= */
+  .duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+    margin-top: 48px;
+  }
+  .card {
+    border-radius: 22px;
+    padding: 30px 32px;
+  }
+  .card h2 {
+    text-align: center;
+    font-size: 23px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: .6px;
+    margin-bottom: 24px;
+  }
+  .card-blue { background: var(--card-blue); }
+  .card-mint { background: var(--card-mint); }
+
+  .flist { list-style: none; }
+  .flist li {
+    display: flex;
+    gap: 18px;
+    padding: 15px 0;
+    border-bottom: 1.5px solid rgba(46, 124, 246, .16);
+  }
+  .flist li:last-child { border-bottom: none; padding-bottom: 4px; }
+  .flist li:first-child { padding-top: 2px; }
+  .fbullet {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 16px rgba(46, 124, 246, .25);
+  }
+  .fbullet svg { width: 28px; height: 28px; }
+  .fbullet .glyph {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 19px;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+  .flist h3 { font-size: 16px; font-weight: 900; color: #1d6ef5; letter-spacing: .3px; margin-bottom: 4px; }
+  .flist p { font-size: 14.5px; }
+
+  /* code editor */
+  .editor {
+    background: var(--code-bg);
+    border-radius: 16px;
+    padding: 16px 22px 22px;
+    box-shadow: 0 16px 34px rgba(23, 38, 62, .28);
+  }
+  .editor-dots { display: flex; gap: 8px; margin-bottom: 14px; }
+  .editor-dots i { width: 12px; height: 12px; border-radius: 50%; }
+  .editor-dots i:nth-child(1) { background: #ff5f57; }
+  .editor-dots i:nth-child(2) { background: #febc2e; }
+  .editor-dots i:nth-child(3) { background: #28c840; }
+  .editor pre {
+    font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+    font-size: 13.5px;
+    line-height: 1.75;
+    color: #e6edf3;
+    overflow-x: auto;
+  }
+  .tok-kw { color: #ff7eb6; }          /* import, from, function, return, export default */
+  .tok-fn { color: #ffd76d; }          /* MerhabaDunya */
+  .tok-str-c { color: #7ee0f5; }       /* 'react' */
+  .tok-str-o { color: #ffb86c; }       /* '#61dafb', '20px' */
+  .tok-tag { color: #61dafb; }         /* <div> */
+  .tok-attr { color: #9ef0a5; }        /* style, color, fontSize */
+  .tok-pln { color: #e6edf3; }
+  .tok-pun { color: #9fb0c3; }
+
+  .flow-arrow { display: flex; justify-content: center; padding: 10px 0; }
+  .flow-arrow svg { width: 26px; height: 44px; }
+
+  .result-box {
+    background: #fff;
+    border: 1.5px solid #dbe7f4;
+    border-radius: 14px;
+    padding: 14px 20px 24px;
+    box-shadow: 0 10px 24px rgba(23, 38, 62, .08);
+  }
+  .result-dots { display: flex; gap: 6px; margin-bottom: 12px; }
+  .result-dots i { width: 9px; height: 9px; border-radius: 50%; background: #b9c8da; }
+  .result-text {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--gold);
+  }
+
+  /* ================= TOOLS ================= */
+  .tools-card {
+    background: var(--card-white);
+    border-radius: 22px;
+    padding: 34px 26px 30px;
+    margin-top: 34px;
+    box-shadow: 0 12px 30px rgba(46, 124, 246, .08);
+  }
+  .tools-card h2 {
+    text-align: center;
+    font-size: 23px;
+    font-weight: 900;
+    color: var(--navy);
+    letter-spacing: .6px;
+    margin-bottom: 28px;
+  }
+  .tools {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .tool {
+    text-align: center;
+    padding: 4px 16px;
+    border-left: 1.5px solid var(--line);
+  }
+  .tool:first-child { border-left: none; }
+  .tool-logo { height: 62px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+  .tool-logo svg { height: 52px; width: auto; }
+  .tool h3 { font-size: 16px; font-weight: 900; color: var(--navy); margin-bottom: 6px; }
+  .tool p { font-size: 13.5px; }
+
+  /* ================= WHY REACT ================= */
+  .why-card {
+    background: var(--card-white);
+    border-radius: 20px;
+    padding: 22px 28px;
+    margin-top: 26px;
+    box-shadow: 0 12px 30px rgba(46, 124, 246, .08);
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr;
+    gap: 22px;
+    align-items: center;
+  }
+  .why-label { display: flex; align-items: center; gap: 12px; padding-right: 8px; }
+  .why-label .heart {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 46px;
+  }
+  .why-label .heart svg { width: 24px; height: 24px; }
+  .why-label b { font-size: 17px; font-weight: 900; color: var(--navy); letter-spacing: .4px; }
+  .why-item {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    font-size: 14px;
+    border-left: 1.5px solid var(--line);
+    padding-left: 22px;
+  }
+  .why-item svg { width: 30px; height: 30px; flex: 0 0 30px; }
+
+  /* ================= FOOTER ================= */
+  .tagline {
+    margin-top: 34px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: .8px;
+    color: var(--blue-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .tagline svg { width: 18px; height: 18px; }
+
+  /* ================= RESPONSIVE ================= */
+  @media (max-width: 1000px) {
+    .hero { grid-template-columns: 1fr; }
+    .mockup { max-width: 430px; margin: 10px auto 20px; }
+    .hero-title { font-size: 54px; }
+    .deco { display: none; }
+  }
+  @media (max-width: 860px) {
+    .features { grid-template-columns: 1fr 1fr; row-gap: 34px; }
+    .feature:nth-child(3) { border-left: none; }
+    .duo { grid-template-columns: 1fr; }
+    .tools { grid-template-columns: 1fr 1fr 1fr; row-gap: 28px; }
+    .tool:nth-child(4) { border-left: none; }
+    .why-card { grid-template-columns: 1fr; gap: 16px; }
+    .why-item { border-left: none; padding-left: 0; }
+  }
+  @media (max-width: 560px) {
+    .page { padding: 30px 18px; }
+    .hero-left { flex-direction: column; gap: 16px; }
+    .hero-logo { flex: 0 0 auto; }
+    .hero-logo svg { width: 130px; height: 120px; }
+    .hero-title { font-size: 44px; }
+    .features { grid-template-columns: 1fr; }
+    .feature { border-left: none; padding: 6px 4px; }
+    .tools { grid-template-columns: 1fr 1fr; }
+    .tool { border-left: none; padding: 4px 8px; }
+    .card { padding: 24px 20px; }
+    .mock-badge { right: -8px; bottom: -18px; width: 84px; height: 84px; }
+    .mock-badge svg { width: 50px; height: 46px; }
+    .tagline { font-size: 17px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- decorations -->
+  <span class="deco" aria-hidden="true" style="top:150px; left:54%;">
+    <svg width="22" height="22" viewBox="0 0 22 22"><path d="M11 2v18M2 11h18" stroke="#61dafb" stroke-width="3.5" stroke-linecap="round"/></svg>
+  </span>
+  <span class="deco" aria-hidden="true" style="top:46px; right:64px;">
+    <svg width="15" height="15" viewBox="0 0 22 22"><path d="M11 2v18M2 11h18" stroke="#b8cee8" stroke-width="4" stroke-linecap="round"/></svg>
+  </span>
+  <span class="deco" aria-hidden="true" style="top:330px; right:30px;">
+    <svg width="17" height="17" viewBox="0 0 22 22"><path d="M11 3v16M3 11h16M5.5 5.5l11 11M16.5 5.5l-11 11" stroke="#c3d6ec" stroke-width="2.6" stroke-linecap="round"/></svg>
+  </span>
+  <span class="deco" aria-hidden="true" style="top:60px; left:44%;"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#b9d6f5"/></svg></span>
+  <span class="deco" aria-hidden="true" style="top:290px; left:16px;"><svg width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="none" stroke="#9fc4ea" stroke-width="2.5"/></svg></span>
+  <span class="deco" aria-hidden="true" style="top:470px; left:46%;"><svg width="10" height="10" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" fill="#bcd8f6"/></svg></span>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero">
+    <div class="hero-left">
+      <div class="hero-logo" aria-hidden="true">
+        <svg viewBox="-12 -11 24 22">
+          <g class="atom">
+            <circle r="2.05" fill="#61dafb"/>
+            <g stroke="#61dafb" stroke-width="1" fill="none">
+              <ellipse rx="10.5" ry="4.2"/>
+              <ellipse rx="10.5" ry="4.2" transform="rotate(60)"/>
+              <ellipse rx="10.5" ry="4.2" transform="rotate(120)"/>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1 class="hero-title">React.js</h1>
+        <p class="hero-sub">KULLANICI ARAYÜZLERİ İÇİN<br>JAVASCRIPT KÜTÜPHANESİ</p>
+        <p class="hero-desc">React, etkileşimli ve yüksek performanslı web uygulamaları geliştirmek için kullanılan, deklaratif ve bileşen tabanlı bir JavaScript kütüphanesidir.</p>
+      </div>
+    </div>
+
+    <div class="mockup" aria-hidden="true">
+      <div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i></div>
+        <div class="browser-body">
+          <div class="skline w60"></div>
+          <div class="skline w45"></div>
+          <div class="sk-img">
+            <svg viewBox="0 0 96 76">
+              <rect x="0" y="0" width="96" height="76" rx="8" fill="#cfe3fb"/>
+              <circle cx="66" cy="22" r="9" fill="#a8c9f3"/>
+              <path d="M8 62 34 30l18 22 12-14 24 24z" fill="#5b9cf8"/>
+              <path d="M8 62 34 30l18 22-8 10z" fill="#3f7fe8"/>
+            </svg>
+          </div>
+          <div class="skline w80"></div>
+          <div class="skline w60"></div>
+          <div class="skline w45"></div>
+          <div class="sk-btn"></div>
+        </div>
+      </div>
+      <div class="mock-badge">
+        <svg viewBox="-12 -11 24 22">
+          <circle r="2.2" fill="#fff"/>
+          <g stroke="#fff" stroke-width="1.1" fill="none">
+            <ellipse rx="10.5" ry="4.2"/>
+            <ellipse rx="10.5" ry="4.2" transform="rotate(60)"/>
+            <ellipse rx="10.5" ry="4.2" transform="rotate(120)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="features">
+    <div class="feature">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#2e7cf6"><path d="M20.5 11H19V7a2 2 0 0 0-2-2h-4V3.5a2.5 2.5 0 0 0-5 0V5H4a2 2 0 0 0-2 2v3.8h1.5a2.7 2.7 0 0 1 0 5.4H2V20a2 2 0 0 0 2 2h3.8v-1.5a2.7 2.7 0 0 1 5.4 0V22H17a2 2 0 0 0 2-2v-4h1.5a2.5 2.5 0 0 0 0-5z"/></svg>
+      </div>
+      <h2>BİLEŞEN TABANLI</h2>
+      <p>UI'ları küçük, yeniden kullanılabilir bileşenler halinde oluşturur.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#2e7cf6"><path d="M13.2 1.5 4.3 13.4c-.3.4 0 1 .5 1h5.1l-1.6 7.5c-.1.6.6.9 1 .5l9.4-12.3c.3-.4 0-1-.5-1h-5.2l1.7-7c.2-.6-.6-1-.9-.6z"/></svg>
+      </div>
+      <h2>YÜKSEK PERFORMANS</h2>
+      <p>Sanal DOM ile yalnızca değişen bölümleri güncelleyerek daha hızlı ve verimli çalışır.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#2e7cf6"><path d="M12 6V3.2c0-.5-.5-.7-.9-.4L7 6.4c-.3.2-.3.7 0 .9l4.1 3.6c.4.3.9.1.9-.4V8c3.3 0 6 2.7 6 6 0 .8-.15 1.55-.42 2.24l1.5 1.5A7.9 7.9 0 0 0 20 14c0-4.4-3.6-8-8-8zm0 14c-3.3 0-6-2.7-6-6 0-.8.15-1.55.42-2.24l-1.5-1.5A7.9 7.9 0 0 0 4 14c0 4.4 3.6 8 8 8v2.8c0 .5.5.7.9.4l4.1-3.6c.3-.2.3-.7 0-.9l-4.1-3.6c-.4-.3-.9-.1-.9.4V20z"/></svg>
+      </div>
+      <h2>TEK YÖNLÜ VERİ AKIŞI</h2>
+      <p>Veri akışı daha öngörülebilir ve hataları tespit etmek daha kolaydır.</p>
+    </div>
+    <div class="feature">
+      <div class="feature-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#2e7cf6">
+          <rect x="3" y="14" width="4" height="7" rx="1"/>
+          <rect x="10" y="10" width="4" height="11" rx="1"/>
+          <rect x="17" y="12" width="4" height="9" rx="1"/>
+          <path d="M4 9.6 9.5 5l3.6 2.6L18 4.4V7h2V1.5h-5.5v2h2.6l-4 2.7L9.4 3.5 2.7 8z"/>
+        </svg>
+      </div>
+      <h2>GENİŞ EKOSİSTEM</h2>
+      <p>Zengin araçlar, topluluk desteği ve güçlü bir ekosisteme sahiptir.</p>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES CARD + CODE CARD ================= -->
+  <section class="duo">
+    <div class="card card-blue">
+      <h2>TEMEL ÖZELLİKLER</h2>
+      <ul class="flist">
+        <li>
+          <div class="fbullet" aria-hidden="true"><span class="glyph">&lt;/&gt;</span></div>
+          <div>
+            <h3>JSX</h3>
+            <p>JavaScript içine HTML benzeri sözdizimi yazarak daha okunabilir kodlar yazmanızı sağlar.</p>
+          </div>
+        </li>
+        <li>
+          <div class="fbullet" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="#fff">
+              <rect x="4" y="4" width="7" height="7" rx="1.5"/>
+              <rect x="13" y="4" width="7" height="7" rx="1.5"/>
+              <rect x="4" y="13" width="7" height="7" rx="1.5"/>
+              <rect x="13" y="13" width="7" height="7" rx="1.5"/>
+            </svg>
+          </div>
+          <div>
+            <h3>BİLEŞENLER (COMPONENTS)</h3>
+            <p>UI'ı bağımsız ve yeniden kullanılabilir parçalara böler, geliştirmeyi kolaylaştırır.</p>
+          </div>
+        </li>
+        <li>
+          <div class="fbullet" aria-hidden="true"><span class="glyph">{&nbsp;}</span></div>
+          <div>
+            <h3>STATE &amp; PROPS</h3>
+            <p>State (durum) değişen verileri, Props ise bileşenler arası veri iletişimini yönetir.</p>
+          </div>
+        </li>
+        <li>
+          <div class="fbullet" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="#fff"><path d="M19.14 12.94c.04-.31.06-.62.06-.94s-.02-.63-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96c-.5-.38-1.04-.7-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.58.24-1.12.56-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22L2.65 8.84a.5.5 0 0 0 .12.64l2.03 1.58c-.04.31-.06.62-.06.94s.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.13.23.4.32.61.22l2.39-.96c.5.38 1.04.7 1.62.94l.36 2.54c.04.24.25.42.5.42h3.84c.25 0 .46-.18.5-.42l.36-2.54c.58-.24 1.12-.56 1.62-.94l2.39.96c.21.1.48.01.61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
+          </div>
+          <div>
+            <h3>LIFECYCLE (YAŞAM DÖNGÜSÜ)</h3>
+            <p>Bileşenlerin oluşturulma, güncellenme ve kaldırılma aşamalarını yönetmenizi sağlar.</p>
+          </div>
+        </li>
+        <li>
+          <div class="fbullet" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="m8 12.5 2.7 2.7L16.5 9.5"/>
+            </svg>
+          </div>
+          <div>
+            <h3>SANAL DOM</h3>
+            <p>Gerçek DOM'u en verimli şekilde güncelleyerek daha iyi performans sunar.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card card-mint">
+      <h2>BASİT BİR REACT BİLEŞENİ</h2>
+      <div class="editor">
+        <div class="editor-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+<pre><code><span class="tok-kw">import</span> <span class="tok-pln">React</span> <span class="tok-kw">from</span> <span class="tok-str-c">'react'</span><span class="tok-pun">;</span>
+
+<span class="tok-kw">function</span> <span class="tok-fn">MerhabaDunya</span><span class="tok-pun">()</span> <span class="tok-pun">{</span>
+  <span class="tok-kw">return</span> <span class="tok-pun">(</span>
+    <span class="tok-pun">&lt;</span><span class="tok-tag">div</span> <span class="tok-attr">style</span><span class="tok-pun">={{</span> <span class="tok-attr">color</span><span class="tok-pun">:</span> <span class="tok-str-o">'#61dafb'</span><span class="tok-pun">,</span>
+                  <span class="tok-attr">fontSize</span><span class="tok-pun">:</span> <span class="tok-str-o">'20px'</span> <span class="tok-pun">}}&gt;</span>
+      <span class="tok-pln">Merhaba Dünya! 👋</span>
+    <span class="tok-pun">&lt;/</span><span class="tok-tag">div</span><span class="tok-pun">&gt;</span>
+  <span class="tok-pun">);</span>
+<span class="tok-pun">}</span>
+
+<span class="tok-kw">export default</span> <span class="tok-fn">MerhabaDunya</span><span class="tok-pun">;</span></code></pre>
+      </div>
+
+      <div class="flow-arrow" aria-hidden="true">
+        <svg viewBox="0 0 26 44" fill="none">
+          <path d="M13 2v32" stroke="#17263e" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M4.5 32 13 42l8.5-10z" fill="#17263e"/>
+        </svg>
+      </div>
+
+      <div class="result-box">
+        <div class="result-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+        <p class="result-text">Merhaba Dünya! 👋</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TOOLS ================= -->
+  <section class="tools-card">
+    <h2>POPÜLER ARAÇLAR &amp; KÜTÜPHANELER</h2>
+    <div class="tools">
+      <div class="tool">
+        <div class="tool-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 52">
+            <path d="M10 40C18 40 20 30 30 22s16-10 24-8" fill="none" stroke="#d9dee7" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="10" cy="40" r="8" fill="#111827"/>
+            <circle cx="30" cy="22" r="10.5" fill="#ef4444"/>
+            <circle cx="54" cy="14" r="7" fill="#ef4444"/>
+            <circle cx="48" cy="40" r="7" fill="#111827"/>
+          </svg>
+        </div>
+        <h3>React Router</h3>
+        <p>Sayfa yönlendirme ve navigasyon yönetimi.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 52" fill="none" stroke="#7c3aed" stroke-width="4.5" stroke-linecap="round">
+            <path d="M20 38c-6.5 0-11-4.2-11-9.8 0-4 2.4-7.3 6-8.9"/>
+            <path d="M22 12.5c2.9-3.3 7.3-4.9 11.7-3.9 5.4 1.2 9.3 5.6 9.8 10.8"/>
+            <path d="M46.5 25.5c3.2 1.7 5.2 4.8 5.2 8.4 0 5.6-4.9 9.6-11 9.6H30"/>
+            <circle cx="20" cy="38" r="4.5" fill="#7c3aed" stroke="none"/>
+            <circle cx="20.5" cy="14.5" r="4.5" fill="#7c3aed" stroke="none"/>
+            <circle cx="44.5" cy="21.5" r="4.5" fill="#7c3aed" stroke="none"/>
+          </svg>
+        </div>
+        <h3>Redux</h3>
+        <p>Global state yönetimi için öngörülebilir bir yapı sağlar.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 52">
+            <g transform="translate(32 26)">
+              <g fill="#ef4444">
+                <ellipse rx="6.5" ry="17" transform="rotate(0)"/>
+                <ellipse rx="6.5" ry="17" transform="rotate(60)"/>
+                <ellipse rx="6.5" ry="17" transform="rotate(120)"/>
+              </g>
+              <circle r="7.5" fill="#b91c1c"/>
+              <circle r="3.4" fill="#fecaca"/>
+            </g>
+          </svg>
+        </div>
+        <h3>React Query</h3>
+        <p>Sunucu durumunu çekmek, önbelleğe almak ve senkronize etmek için.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-logo" aria-hidden="true">
+          <svg viewBox="0 0 54 33" fill="#14b4c6">
+            <path d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.05.51 3.52 2 5.15 3.65C30.75 13.05 33.82 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.05-.51-3.52-2-5.15-3.65C36.75 3.15 33.68 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.05.51 3.52 2 5.15 3.65 2.65 2.65 5.72 5.8 12.4 5.8 7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.05-.51-3.52-2-5.15-3.65-2.65-2.65-5.72-5.8-12.4-5.8z"/>
+          </svg>
+        </div>
+        <h3>Tailwind CSS</h3>
+        <p>Hızlı ve modern tasarımlar için CSS çerçevesi.</p>
+      </div>
+      <div class="tool">
+        <div class="tool-logo" aria-hidden="true">
+          <svg viewBox="0 0 64 52">
+            <defs>
+              <linearGradient id="viteBody" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#41d1ff"/>
+                <stop offset="1" stop-color="#bd34fe"/>
+              </linearGradient>
+              <linearGradient id="viteBolt" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ffea83"/>
+                <stop offset="1" stop-color="#ffa800"/>
+              </linearGradient>
+            </defs>
+            <path d="M61 8.5 33.2 48.3c-.6.8-1.8.8-2.4 0L3 8.5c-.7-1 .2-2.3 1.4-2.1l26.2 4.4c.3 0 .5 0 .8 0l26.2-4.4c1.2-.2 2.1 1.1 1.4 2.1z" fill="url(#viteBody)"/>
+            <path d="M41.5 3.5 30 5.9c-.3.1-.5.3-.5.6l-.7 11.3c0 .4.4.7.8.6l3-.7c.4-.1.8.3.7.7l-.9 4.3c-.1.4.3.8.8.7l1.8-.6c.4-.1.8.3.7.7l-1.4 6.8c-.1.6.7.9 1 .3l.2-.3 8.7-17.5c.2-.4-.1-.9-.6-.8l-3.1.6c-.4.1-.8-.3-.6-.7l2-6.9c.1-.4-.2-.8-.6-.7z" fill="url(#viteBolt)"/>
+          </svg>
+        </div>
+        <h3>Vite</h3>
+        <p>Hızlı geliştirme deneyimi sunan modern build aracı.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WHY REACT ================= -->
+  <section class="why-card">
+    <div class="why-label">
+      <span class="heart" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </span>
+      <b>NEDEN REACT?</b>
+    </div>
+    <div class="why-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2e7cf6" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+        <path d="M9.4 9.6C8.5 8.6 7.4 8 6.1 8 3.8 8 2 9.8 2 12s1.8 4 4.1 4c1.3 0 2.4-.6 3.3-1.6L14.6 9.6c.9-1 2-1.6 3.3-1.6 2.3 0 4.1 1.8 4.1 4s-1.8 4-4.1 4c-1.3 0-2.4-.6-3.3-1.6"/>
+      </svg>
+      <span>Facebook (Meta) tarafından geliştirilir ve desteklenir.</span>
+    </div>
+    <div class="why-item">
+      <svg viewBox="0 0 24 24" fill="#2e7cf6" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+      <span>Büyük ve aktif bir topluluğa sahiptir.</span>
+    </div>
+    <div class="why-item">
+      <svg viewBox="0 0 24 24" fill="#2e7cf6" aria-hidden="true"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+      <span>Küçük projelerden kurumsal uygulamalara kadar ölçeklenebilir.</span>
+    </div>
+  </section>
+
+  <!-- ================= TAGLINE ================= -->
+  <footer class="tagline">
+    <svg viewBox="0 0 24 24" fill="#2e7cf6" aria-hidden="true"><path d="M12 2l2.6 6.6L21 10.4l-5.2 4.5 1.6 6.8L12 18l-5.4 3.7 1.6-6.8L3 10.4l6.4-1.8z"/></svg>
+    DAHA AZ KOD, DAHA FAZLA ÜRETKENLİK!
+    <svg viewBox="0 0 24 24" fill="#2e7cf6" aria-hidden="true"><path d="M12 2l2.6 6.6L21 10.4l-5.2 4.5 1.6 6.8L12 18l-5.4 3.7 1.6-6.8L3 10.4l6.4-1.8z"/></svg>
+  </footer>
+
+</div>
+</body>
+</html>
