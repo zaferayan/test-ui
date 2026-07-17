@@ -1,11 +1,11 @@
-# Tek prompt, 21 model çıktısı: React.js infografiği
+# Tek prompt, 22 model çıktısı: React.js infografiği
 
 [![Site ekran görüntüsü](.github/screenshot.png)](https://zaferayan.github.io/test-ui/)
 
 **🔗 Canlı site:** [zaferayan.github.io/test-ui](https://zaferayan.github.io/test-ui/)
 
 ChatGPT'nin ürettiği bir React.js infografik görseli ([`_original/ss.png`](_original/ss.png)),
-tek cümlelik bir prompt ile 5 farklı AI kodlama modeline — farklı effort seviyelerinde —
+tek cümlelik bir prompt ile 6 farklı AI kodlama modeline — farklı effort seviyelerinde —
 web sayfası olarak kodlatıldı:
 
 > **PROMPT:** "Ekteki görseli web sayfası olarak kodla"
@@ -25,6 +25,7 @@ gibi bir linki doğrudan paylaşabilirsiniz.
 | Codex 5.6 Sol | Low · Medium · High · XHigh · Ultra | 5 |
 | Grok 4.5 | Low · Medium · High | 3 |
 | Composer 2.5 | Fast · Normal | 2 |
+| Kimi K3 | Max | 1 |
 
 ## Orijinale benzerlik skoru
 
@@ -49,4 +50,6 @@ metrik detayları ve etkileşimli grafik sitedeki
   (tek istisna: Codex Medium'un Vite build'indeki mutlak `/assets/` yolları, demo alt
   klasörden açılabilsin diye göreceli yola çevrildi).
 - Codex High ve XHigh çıktıları Next.js (SSR) uygulaması olduğundan statik canlı demoları yok.
-- Tüm çıktılar aynı gün, aynı prompt ve aynı referans görselle üretildi (Temmuz 2026).
+- Tüm çıktılar aynı prompt ve aynı referans görselle üretildi (Temmuz 2026).
+- Kimi K3 yalnızca tek effort seviyesi sunuyor; klasör adı diğerleriyle uyum için
+  `kimi-k3-ef-5-max` olarak tutuldu.

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>React.js İnfografik — AI Model Karşılaştırması</title>
-<meta name="description" content="Aynı prompt ile 21 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
+<meta name="description" content="Aynı prompt ile 22 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
 <style>
   :root {
     --bg: #0a0f1e;
@@ -154,9 +154,8 @@
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 22px 22px 16px;
   }
-  .chart-legend { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 18px; }
-  .chart-legend .key { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-dim); }
-  .chart-legend .sw { width: 12px; height: 12px; border-radius: 3px; }
+  .chart-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .chart-chips .chip { font-size: 12.5px; padding: 5px 13px; }
   .simchart { position: relative; }
   .sim-grid { position: absolute; top: 0; bottom: 0; left: 178px; right: 40px; pointer-events: none; }
   .sim-grid i {
@@ -176,7 +175,12 @@
   }
   .sim-label b { color: var(--text); font-weight: 600; }
   .sim-track { position: relative; height: 18px; margin-right: 40px; }
-  .sim-bar { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0; }
+  .sim-bar {
+    position: absolute; left: 0; top: 0; bottom: 0; border-radius: 0 4px 4px 0;
+    background: #3987e5; transition: background 0.15s ease;
+  }
+  .sim-row.dim .sim-bar { background: #39445f; }
+  .sim-row.dim .sim-label, .sim-row.dim .sim-val { opacity: 0.55; }
   .sim-val {
     position: absolute; top: 50%; transform: translateY(-50%);
     font-size: 11.5px; color: var(--text-dim); font-variant-numeric: tabular-nums;
@@ -211,8 +215,7 @@
     border-radius: 10px; padding: 10px 13px; font-size: 12.5px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5); min-width: 190px;
   }
-  .sim-tip .t-head { display: flex; align-items: center; gap: 7px; margin-bottom: 7px; }
-  .sim-tip .t-head .sw { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+  .sim-tip .t-head { margin-bottom: 7px; }
   .sim-tip .t-head b { font-size: 13px; }
   .sim-tip .t-row { display: flex; justify-content: space-between; gap: 16px; color: var(--text-dim); }
   .sim-tip .t-row b { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -321,10 +324,10 @@
   <div class="wrap hero-grid">
     <div>
       <div class="kicker">AI Kodlama Benchmark'ı</div>
-      <h1>Tek prompt, <em>21 model çıktısı</em>:<br>React.js infografiği</h1>
+      <h1>Tek prompt, <em>22 model çıktısı</em>:<br>React.js infografiği</h1>
       <p class="lead">
         ChatGPT'nin ürettiği bir infografik görseli, tek cümlelik bir prompt ile
-        5 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
+        6 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
         Sonuçları inceleyin, orijinalle veya birbiriyle karşılaştırın.
       </p>
       <div class="prompt-box">
@@ -332,8 +335,8 @@
         “Ekteki görseli web sayfası olarak kodla”
       </div>
       <div class="stats">
-        <div class="stat"><b>5</b><span>Model ailesi</span></div>
-        <div class="stat"><b>21</b><span>Çıktı</span></div>
+        <div class="stat"><b>6</b><span>Model ailesi</span></div>
+        <div class="stat"><b>22</b><span>Çıktı</span></div>
         <div class="stat"><b>6</b><span>Effort seviyesi</span></div>
       </div>
     </div>
@@ -362,11 +365,12 @@
     <p class="sub">
       Her çıktının ekran görüntüsü, orijinal görselle üç metrik üzerinden karşılaştırıldı:
       yapısal benzerlik (SSIM), renk histogramı korelasyonu ve algısal parmak izi (pHash).
-      Skor bu üçünün ağırlıklı bileşimi (0–100). Bir satıra tıklayınca o çıktı orijinalle
-      karşılaştırma görünümünde açılır.
+      Skor bu üçünün ağırlıklı bileşimi (0–100). Bir aile çipine tıklayarak o ailenin
+      barlarını vurgulayabilir, bir satıra tıklayarak o çıktıyı orijinalle karşılaştırma
+      görünümünde açabilirsiniz.
     </p>
     <div class="chart-card">
-      <div class="chart-legend" id="simLegend"></div>
+      <div class="chart-chips" id="simChips" role="group" aria-label="Aile vurgusu"></div>
       <div class="simchart" id="simChart"></div>
       <div class="sim-axis" aria-hidden="true">
         <span></span>
@@ -454,6 +458,7 @@ const MODELS = [
   { id: "grok-4.5-ef-3-high",     family: "Grok 4.5",    effort: "High",   w: 2316, h: 3194, demo: "grok-4.5-ef-3-high/index.html" },
   { id: "composer-2.5-fast",      family: "Composer 2.5", effort: "Fast",   w: 2316, h: 2880, demo: "composer-2.5-fast/index.html" },
   { id: "composer-2.5",           family: "Composer 2.5", effort: "Normal", w: 2316, h: 3306, demo: "composer-2.5/index.html" },
+  { id: "kimi-k3-ef-5-max",       family: "Kimi K3",      effort: "Max",    w: 2346, h: 3498, demo: "kimi-k3-ef-5-max/index.html" },
 ];
 
 const ALL = [ORIGINAL, ...MODELS];
@@ -537,33 +542,40 @@ const SCORES = {
   "composer-2.5":              { ssim: 0.505, hist: 0.996, phash: 0.587, score: 67.3 },
   "fable-5-ef-3-high":         { ssim: 0.490, hist: 0.996, phash: 0.587, score: 66.6 },
   "opus-4.8-ef-3-high":        { ssim: 0.476, hist: 0.937, phash: 0.683, score: 66.6 },
+  "kimi-k3-ef-5-max":          { ssim: 0.496, hist: 0.9996, phash: 0.683, score: 69.4 },
   "grok-4.5-ef-2-medium":      { ssim: 0.475, hist: 0.997, phash: 0.556, score: 65.2 },
   "fable-5-ef-4-xhigh":        { ssim: 0.484, hist: 0.841, phash: 0.619, score: 62.5 },
   "opus-4.8-ef-2-medium":      { ssim: 0.475, hist: 0.865, phash: 0.619, score: 62.8 },
 };
-/* aile renkleri: 5'li set, koyu yüzeyde CVD + kontrast doğrulamasından geçirildi */
-const FAMILY_COLORS = {
-  "Fable 5": "#3987e5",
-  "Opus 4.8": "#c98500",
-  "Codex 5.6 Sol": "#e66767",
-  "Grok 4.5": "#d55181",
-  "Composer 2.5": "#d95926",
-};
+/* Tek seri (skor) → tek renk; aile kimliği satır etiketinde. 6 aileyi aynı anda
+   6 renkle kodlamak CVD/normal-görüş ayrım tabanını geçemiyor (doğrulayıcı: en kötü
+   çift ΔE < taban) — bu yüzden aile vurgusu çiplerle: seçilen aile renkli, kalanı gri. */
 
 const simTip = document.getElementById("simTip");
 const ranked = MODELS.filter(m => SCORES[m.id])
   .map(m => ({ ...m, ...SCORES[m.id] }))
   .sort((a, b) => b.score - a.score);
 
-const simLegend = document.getElementById("simLegend");
-FAMILIES.forEach(fam => {
-  const k = document.createElement("span");
-  k.className = "key";
-  const sw = document.createElement("i");
-  sw.className = "sw";
-  sw.style.background = FAMILY_COLORS[fam];
-  k.append(sw, document.createTextNode(fam));
-  simLegend.appendChild(k);
+const simChips = document.getElementById("simChips");
+let emphFam = null;
+function applyEmphasis() {
+  document.querySelectorAll(".sim-row").forEach(r => {
+    r.classList.toggle("dim", emphFam !== null && r.dataset.family !== emphFam);
+  });
+  simChips.querySelectorAll(".chip").forEach(c => {
+    c.classList.toggle("active", emphFam === null ? c.dataset.f === "*" : c.dataset.f === emphFam);
+  });
+}
+["*", ...FAMILIES].forEach(f => {
+  const b = document.createElement("button");
+  b.className = "chip" + (f === "*" ? " active" : "");
+  b.dataset.f = f;
+  b.textContent = f === "*" ? "Tümü" : f;
+  b.addEventListener("click", () => {
+    emphFam = (f === "*" || emphFam === f) ? null : f;
+    applyEmphasis();
+  });
+  simChips.appendChild(b);
 });
 
 const simChart = document.getElementById("simChart");
@@ -581,6 +593,7 @@ ranked.forEach((m, i) => {
   row.className = "sim-row";
   row.tabIndex = 0;
   row.dataset.id = m.id;
+  row.dataset.family = m.family;
   row.setAttribute("role", "button");
   row.setAttribute("aria-label", `${label(m)}: ${m.score} puan. Orijinalle karşılaştırmak için seçin.`);
 
@@ -595,7 +608,6 @@ ranked.forEach((m, i) => {
   const bar = document.createElement("div");
   bar.className = "sim-bar";
   bar.style.width = m.score + "%";
-  bar.style.background = FAMILY_COLORS[m.family];
 
   const val = document.createElement("span");
   val.className = "sim-val";
@@ -609,12 +621,9 @@ ranked.forEach((m, i) => {
     simTip.replaceChildren();
     const head = document.createElement("div");
     head.className = "t-head";
-    const sw = document.createElement("i");
-    sw.className = "sw";
-    sw.style.background = FAMILY_COLORS[m.family];
     const name = document.createElement("b");
     name.textContent = `#${i + 1} · ${label(m)}`;
-    head.append(sw, name);
+    head.append(name);
     simTip.appendChild(head);
     [["Skor", m.score.toFixed(1)], ["SSIM", m.ssim.toFixed(3)],
      ["Renk histogramı", m.hist.toFixed(3)], ["pHash", m.phash.toFixed(3)]].forEach(([k, v]) => {
