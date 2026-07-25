@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>React.js — Kullanıcı Arayüzleri İçin JavaScript Kütüphanesi</title>
+<meta name="description" content="React.js infografiği: bileşen tabanlı yapı, sanal DOM, temel özellikler, örnek bileşen ve popüler React araçları.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#f8fbfe;
+  --navy:#06213f;
+  --ink:#485167;
+  --blue:#0a6edc;
+  --blue-head:#0b64d8;
+  --blue-soft:#1b87ee;
+  --blue-bright:#0e7efe;
+  --cyan:#22cffd;
+  --cyan-text:#17c9fb;
+  --panel-blue-a:#e4f3fd;
+  --panel-blue-b:#ecf8fe;
+  --panel-mint-a:#e0f4f2;
+  --panel-mint-b:#ecfbfa;
+  --panel-soft-a:#e9f4fd;
+  --panel-soft-b:#ecf6fe;
+  --icon-bg:#e1f3fc;
+  --line:#d4dfeb;
+  --line-cool:#cddff0;
+  --line-card:#cfe4f8;
+  --code-bg:#20323e;
+  --mono:"Fira Code",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+
+body{
+  margin:0;
+  background:#e7eef7;
+  font-family:"Figtree","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  color:var(--navy);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+svg{display:block}
+p{margin:0}
+
+/* ---------- sheet ---------- */
+.sheet{
+  position:relative;
+  width:1024px;
+  max-width:100%;
+  margin:0 auto;
+  padding:0 30px 19px;
+  background:var(--page);
+  overflow:hidden;
+}
+
+/* ---------- decorative marks ---------- */
+.spark{position:absolute;pointer-events:none}
+.spark--dot-1{left:589px;top:43px;width:12px;height:12px;border-radius:50%;background:#acd7fe}
+.spark--dot-2{left:467px;top:316px;width:5px;height:5px;border-radius:50%;background:#d5eefd}
+.spark--ring{left:80px;top:282px;width:14px;height:14px;border-radius:50%;border:2.5px solid #c8e2fd}
+.spark--plus{color:#b6dafe}
+.spark--plus-1{left:966px;top:38px;width:14px;height:14px}
+.spark--plus-2{left:594px;top:124px;width:19px;height:19px}
+.spark--plus-3{left:40px;top:239px;width:12px;height:12px}
+.spark--plus::before,.spark--plus::after{
+  content:"";position:absolute;inset:0;margin:auto;background:currentColor;border-radius:1px;
+}
+.spark--plus::before{width:100%;height:2.6px}
+.spark--plus::after{width:2.6px;height:100%}
+
+/* ---------- hero ---------- */
+.hero{display:flex;align-items:flex-start;padding-top:44px}
+.hero__logo{flex:none;width:195px;margin-left:3px;color:var(--cyan)}
+.hero__text{flex:none;width:365px;margin-left:25px;padding-top:1px}
+.hero__mock{flex:none;width:324px;margin-left:38px;margin-top:18px}
+.hero__logo svg,.hero__mock svg{width:100%;height:auto}
+
+.hero h1{
+  margin:0 0 0 -10px;
+  font-size:80px;
+  font-weight:700;
+  line-height:1;
+  letter-spacing:-.005em;
+  color:var(--navy);
+}
+.hero__kicker{
+  margin:12px 0 0;
+  font-size:21px;
+  font-weight:700;
+  line-height:31px;
+  letter-spacing:.45px;
+  color:var(--cyan-text);
+}
+.hero__lead{
+  margin:13px 0 0;
+  max-width:362px;
+  font-size:16px;
+  line-height:27px;
+  color:var(--ink);
+}
+
+/* ---------- feature row ---------- */
+.features{
+  display:grid;
+  grid-template-columns:213fr 266fr 253fr 233fr;
+  margin-top:24px;
+}
+.feature{position:relative;text-align:center;padding:0 26px}
+.feature+.feature::before{
+  content:"";position:absolute;left:0;top:4px;bottom:6px;width:1px;background:var(--line);
+}
+.feature__icon{
+  width:92px;height:92px;margin:0 auto;border-radius:50%;
+  background:var(--icon-bg);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);
+}
+.feature h3{
+  margin:10px 0 0;
+  font-size:16.5px;
+  font-weight:700;
+  line-height:22px;
+  letter-spacing:.2px;
+  color:var(--navy);
+}
+.feature p{margin-top:5px;font-size:15px;line-height:23px;color:var(--ink)}
+
+/* ---------- panels ---------- */
+.panels{display:flex;gap:15px;margin-top:31px;align-items:stretch}
+
+.panel{border-radius:17px}
+.panel__title{
+  margin:0;
+  font-size:22.7px;
+  font-weight:700;
+  letter-spacing:.3px;
+  line-height:1;
+  text-align:center;
+  color:var(--navy);
+}
+.panel--list{
+  flex:0 0 481px;
+  padding:26px 22px 23px 28px;
+  background:linear-gradient(180deg,var(--panel-blue-a),var(--panel-blue-b));
+}
+.panel--code{
+  flex:1 1 auto;
+  padding:26px 29px 19px 26px;
+  background:linear-gradient(180deg,var(--panel-mint-a),var(--panel-mint-b));
+}
+
+/* --- feature list (left panel) --- */
+.flist{margin:23px 0 0;padding:0;list-style:none}
+.flist__item{position:relative;display:flex;gap:25px}
+.flist__item+.flist__item{margin-top:13.3px;padding-top:11.2px}
+.flist__item+.flist__item::before{
+  content:"";position:absolute;top:0;left:83px;right:0;height:1px;background:var(--line-card);
+}
+.flist__badge{
+  flex:none;width:58px;height:58px;border-radius:50%;
+  background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.flist__body{flex:1 1 auto;min-width:0}
+.flist__body h3{
+  margin:0;
+  font-size:17px;
+  font-weight:700;
+  line-height:20px;
+  letter-spacing:.15px;
+  color:var(--blue-head);
+}
+.flist__body p{margin-top:6px;font-size:15.4px;line-height:23px;color:var(--ink)}
+
+/* --- code panel --- */
+.code{
+  margin-top:20px;
+  border-radius:12px;
+  background:var(--code-bg);
+  padding:15px 16px 19px;
+}
+.code__dots{display:flex;gap:9px;padding-bottom:20px}
+.code__dots span{width:15px;height:15px;border-radius:50%}
+.code__dots span:nth-child(1){background:#fc5953}
+.code__dots span:nth-child(2){background:#fdc235}
+.code__dots span:nth-child(3){background:#4dcd56}
+.code pre{
+  margin:0;
+  font-family:var(--mono);
+  font-size:13.8px;
+  line-height:21.5px;
+  color:#f7f9fa;
+  white-space:pre;
+  overflow-x:auto;
+}
+.t-key{color:#ff79c6}
+.t-fn{color:#8be9fd}
+.t-str{color:#a6e88a}
+.t-attr{color:#8be9fd}
+.t-name{color:#f7d774}
+.t-punc{color:#c8f2f8}
+
+.flow{display:flex;justify-content:center;padding-top:4px;color:#10283f}
+
+.preview{
+  margin-top:8px;
+  border:1.6px solid #83a2ad;
+  border-radius:12px;
+  background:#fefefe;
+  padding:7.4px 16px 14.4px;
+}
+.preview__dots{display:flex;gap:6.5px}
+.preview__dots span{width:11px;height:11px;border-radius:50%;background:#7797a4}
+.preview__out{
+  margin-top:16px;
+  text-align:center;
+  font-size:23.7px;
+  line-height:28px;
+  color:#19cdfd;
+}
+
+/* ---------- tools ---------- */
+.tools{
+  margin-top:16px;
+  padding:24.5px 0 22px;
+  border-radius:18px;
+  background:linear-gradient(180deg,var(--panel-soft-a),var(--panel-soft-b));
+}
+.tools__title{
+  margin:0 0 20.5px;
+  font-size:21.4px;
+  font-weight:700;
+  letter-spacing:.3px;
+  line-height:1;
+  text-align:center;
+  color:var(--navy);
+}
+.tools__grid{display:grid;grid-template-columns:178fr 177fr 209fr 183fr 218fr}
+.tool{position:relative;text-align:center;padding:0 14px}
+.tool+.tool::before{
+  content:"";position:absolute;left:0;top:-7px;bottom:-3px;width:1px;background:var(--line-cool);
+}
+.tool__mark{height:56px;display:flex;align-items:center;justify-content:center}
+.tool h3{margin:15px 0 0;font-size:17.7px;font-weight:700;line-height:18px;color:var(--navy)}
+.tool p{margin-top:7px;font-size:14.5px;line-height:22px;color:var(--ink)}
+
+/* ---------- why react ---------- */
+.why{
+  display:grid;
+  grid-template-columns:208fr 232fr 241fr 284fr;
+  align-items:center;
+  margin-top:14px;
+  min-height:74px;
+  border-radius:18px;
+  background:linear-gradient(180deg,var(--panel-soft-a),var(--panel-soft-b));
+}
+.why__cell{position:relative;display:flex;align-items:center;gap:13px;padding:0 6px 0 22px}
+.why__cell:first-child{gap:12px;padding-left:27px}
+.why__cell+.why__cell::before{
+  content:"";position:absolute;left:0;top:18px;bottom:17px;width:1px;background:var(--line-cool);
+}
+.why__heart{
+  flex:none;width:38px;height:38px;border-radius:50%;
+  background:#0c7af0;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+}
+.why__label{font-size:15px;font-weight:700;letter-spacing:.2px;white-space:nowrap;color:var(--navy)}
+.why__cell>svg{flex:none;color:#0a6ed6}
+.why__cell p{font-size:12.5px;line-height:18px;color:var(--ink)}
+
+/* ---------- tagline ---------- */
+.tagline{
+  display:flex;align-items:center;justify-content:center;gap:22px;
+  margin-top:15px;
+  font-size:16.4px;
+  font-weight:700;
+  letter-spacing:.35px;
+  color:var(--blue-bright);
+}
+.tagline svg{color:#2586fd}
+
+/* ---------- responsive ---------- */
+@media (max-width:1023px){
+  .sheet{width:100%;padding:0 22px 24px}
+  .lb{display:none}
+  .hero{flex-wrap:wrap;gap:26px;padding-top:32px}
+  .hero__logo{width:150px;margin-left:0}
+  .hero__text{width:auto;flex:1 1 320px;margin-left:0}
+  .hero__mock{width:100%;max-width:324px;margin:0 auto}
+  .hero h1{font-size:64px}
+  .hero__kicker{font-size:19px;line-height:28px}
+  .hero__lead{max-width:none}
+  .feature{padding:0 14px}
+  .panels{flex-wrap:wrap}
+  .panel--list,.panel--code{flex:1 1 100%}
+  .tool{padding:0 10px}
+}
+@media (max-width:760px){
+  .features{grid-template-columns:1fr 1fr;row-gap:26px}
+  .feature:nth-child(3)::before{display:none}
+  .tools__grid{grid-template-columns:1fr 1fr 1fr;row-gap:26px}
+  .tool:nth-child(4)::before{display:none}
+  .why{grid-template-columns:1fr 1fr;row-gap:4px;padding:16px 0}
+  .why__cell{padding:8px 16px}
+  .why__cell:nth-child(3)::before{display:none}
+}
+@media (max-width:560px){
+  .features,.tools__grid{grid-template-columns:1fr}
+  .feature+.feature::before,.tool+.tool::before,.why__cell+.why__cell::before{display:none}
+  .why{grid-template-columns:1fr}
+  .hero h1{font-size:52px}
+  .code pre{font-size:12px}
+  .tagline{gap:12px;font-size:16px}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <span class="spark spark--dot-1"></span>
+  <span class="spark spark--dot-2"></span>
+  <span class="spark spark--ring"></span>
+  <span class="spark spark--plus spark--plus-1"></span>
+  <span class="spark spark--plus spark--plus-2"></span>
+  <span class="spark spark--plus spark--plus-3"></span>
+
+  <!-- ================= hero ================= -->
+  <header class="hero">
+    <div class="hero__logo">
+      <svg width="195" height="174" viewBox="-11.5 -10.23174 23 20.46348" role="img" aria-label="React logosu">
+        <circle r="2.05" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1" fill="none">
+          <ellipse rx="11" ry="4.2"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero__text">
+      <h1>React.js</h1>
+      <p class="hero__kicker">KULLANICI ARAYÜZLERİ İÇİN<br>JAVASCRIPT KÜTÜPHANESİ</p>
+      <p class="hero__lead">React, etkileşimli ve yüksek performanslı web<br class="lb">
+        uygulamaları geliştirmek için kullanılan, deklaratif<br class="lb">
+        ve bileşen tabanlı bir JavaScript kütüphanesidir.</p>
+    </div>
+
+    <div class="hero__mock">
+      <svg width="324" height="260" viewBox="0 0 324 260" role="img" aria-label="React ile geliştirilmiş bir arayüz örneği">
+        <defs>
+          <linearGradient id="ph" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#a0cefe"/><stop offset="1" stop-color="#aad3fd"/>
+          </linearGradient>
+          <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#2ad4fd"/><stop offset="1" stop-color="#0fc5fa"/>
+          </linearGradient>
+          <clipPath id="phclip"><rect x="115" y="52" width="168" height="102" rx="8"/></clipPath>
+          <filter id="win" x="-14%" y="-14%" width="134%" height="134%">
+            <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0a3f74" flood-opacity=".10"/>
+          </filter>
+        </defs>
+
+        <g filter="url(#win)"><rect x="0" y="0" width="309" height="250" rx="14" fill="#fefefe"/></g>
+        <path d="M0 14A14 14 0 0 1 14 0h281a14 14 0 0 1 14 14v17H0z" fill="#0162da"/>
+        <g fill="#abd0fe">
+          <circle cx="22" cy="17" r="5"/><circle cx="38" cy="17" r="5"/><circle cx="54" cy="17" r="5"/>
+        </g>
+
+        <g fill="#e5ecf3">
+          <rect x="22" y="53" width="73" height="54" rx="8"/>
+          <rect x="22" y="122" width="44" height="8" rx="4"/>
+          <rect x="22" y="142" width="73" height="9" rx="4.5"/>
+          <rect x="22" y="163" width="59" height="9" rx="4.5"/>
+          <rect x="22" y="184" width="47" height="8" rx="4"/>
+          <rect x="22" y="204" width="33" height="9" rx="4.5"/>
+        </g>
+
+        <rect x="115" y="52" width="168" height="102" rx="8" fill="url(#ph)"/>
+        <g clip-path="url(#phclip)">
+          <circle cx="215" cy="89" r="11" fill="#7cbcfb"/>
+          <path d="M200 154 238 106 288 154z" fill="#4ea2f7"/>
+          <path d="M111 154 164 88 220 154z" fill="#489ff6"/>
+        </g>
+        <rect x="131" y="65" width="49" height="13" rx="6.5" fill="#d6e9fd"/>
+
+        <rect x="115" y="171" width="105" height="9" rx="4.5" fill="#e5ecf3"/>
+        <rect x="115" y="196" width="70" height="28" rx="6" fill="#48a1fb"/>
+
+        <circle cx="275.5" cy="210.5" r="49" fill="url(#badge)"/>
+        <g transform="translate(275.5 210.5) scale(2.87)" fill="none" stroke="#fff" stroke-width="1">
+          <circle r="2.05" fill="#fff" stroke="none"/>
+          <ellipse rx="11" ry="4.2"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
+          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
+        </g>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ================= feature row ================= -->
+  <section class="features">
+    <article class="feature">
+      <div class="feature__icon">
+        <svg width="46" height="45" viewBox="0 0 46 45" aria-hidden="true">
+          <g fill="currentColor">
+            <rect x="0" y="14" width="34" height="31" rx="5"/>
+            <circle cx="17" cy="9.4" r="8.6"/>
+            <circle cx="38" cy="30" r="8.5"/>
+          </g>
+          <circle cx="17" cy="46.6" r="8.6" fill="var(--icon-bg)"/>
+        </svg>
+      </div>
+      <h3>BİLEŞEN TABANLI</h3>
+      <p>UI’ları küçük, yeniden<br class="lb">
+        kullanılabilir bileşenler<br class="lb">
+        halinde oluşturur.</p>
+    </article>
+
+    <article class="feature">
+      <div class="feature__icon">
+        <svg width="32" height="50" viewBox="0 0 32 50" aria-hidden="true">
+          <path d="M20.5 0H7.8L0 27.5h9.6L5.4 50 32 18.4H17.6z" fill="var(--blue-soft)"/>
+        </svg>
+      </div>
+      <h3>YÜKSEK PERFORMANS</h3>
+      <p>Sanal DOM ile yalnızca değişen<br class="lb">
+        bölümleri güncelleyerek daha<br class="lb">
+        hızlı ve verimli çalışır.</p>
+    </article>
+
+    <article class="feature">
+      <div class="feature__icon">
+        <svg width="60" height="61" viewBox="0 0 47 48" aria-hidden="true">
+          <g fill="none" stroke="currentColor" stroke-width="5.2">
+            <path d="M8.3 28.9A16 16 0 0 1 35.4 13.3"/>
+            <path d="M38.7 19.1A16 16 0 0 1 11.6 34.7"/>
+          </g>
+          <g fill="currentColor">
+            <path d="M41.1 19.6 31.2 17.1 39.6 9.5z"/>
+            <path d="M5.9 28.4 15.8 30.9 7.4 38.5z"/>
+          </g>
+        </svg>
+      </div>
+      <h3>TEK YÖNLÜ VERİ AKIŞI</h3>
+      <p>Veri akışı daha öngörülebilir<br class="lb">
+        ve hataları tespit etmek<br class="lb">
+        daha kolaydır.</p>
+    </article>
+
+    <article class="feature">
+      <div class="feature__icon">
+        <svg width="45" height="50" viewBox="0 0 45 50" aria-hidden="true">
+          <g fill="currentColor">
+            <rect x="0" y="37" width="11" height="13" rx="2.5"/>
+            <rect x="17" y="30" width="11" height="20" rx="2.5"/>
+            <rect x="33" y="20" width="11" height="30" rx="2.5"/>
+          </g>
+          <path d="M2.5 35.5C13 30 24.5 21 34.5 8.5" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round"/>
+          <path d="M25.8 6.2 40.5 3.4l-2.2 14.8z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h3>GENİŞ EKOSİSTEM</h3>
+      <p>Zengin araçlar, topluluk<br class="lb">
+        desteği ve güçlü bir<br class="lb">
+        ekosisteme sahiptir.</p>
+    </article>
+  </section>
+
+  <!-- ================= panels ================= -->
+  <section class="panels">
+
+    <div class="panel panel--list">
+      <h2 class="panel__title">TEMEL ÖZELLİKLER</h2>
+      <ul class="flist">
+        <li class="flist__item">
+          <div class="flist__badge">
+            <svg width="32" height="24" viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9.5 3 2 12l7.5 9"/><path d="M22.5 3 30 12l-7.5 9"/><path d="M18.5 1.5 13.5 22.5"/>
+            </svg>
+          </div>
+          <div class="flist__body">
+            <h3>JSX</h3>
+            <p>JavaScript içine HTML benzeri sözdizimi<br class="lb">
+              yazarak daha okunabilir kodlar yazmanızı sağlar.</p>
+          </div>
+        </li>
+
+        <li class="flist__item">
+          <div class="flist__badge">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="currentColor" aria-hidden="true">
+              <rect x="0" y="0" width="12" height="12" rx="2.5"/>
+              <rect x="16" y="0" width="12" height="12" rx="2.5"/>
+              <rect x="0" y="16" width="12" height="12" rx="2.5"/>
+              <rect x="16" y="16" width="12" height="12" rx="2.5"/>
+            </svg>
+          </div>
+          <div class="flist__body">
+            <h3>BİLEŞENLER (COMPONENTS)</h3>
+            <p>UI’ı bağımsız ve yeniden kullanılabilir parçalara<br class="lb">
+              böler, geliştirmeyi kolaylaştırır.</p>
+          </div>
+        </li>
+
+        <li class="flist__item">
+          <div class="flist__badge">
+            <svg width="24" height="28" viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9.5 1.5C6 1.5 6.5 6 6.5 8.5S5.5 13 2 14c3.5 1 4.5 3 4.5 5.5S6 26.5 9.5 26.5"/>
+              <path d="M14.5 1.5c3.5 0 3 4.5 3 7s1 4.5 4.5 5.5c-3.5 1-4.5 3-4.5 5.5s.5 7-3 7"/>
+            </svg>
+          </div>
+          <div class="flist__body">
+            <h3>STATE &amp; PROPS</h3>
+            <p>State (durum) değişen verileri, Props ise bileşenler<br class="lb">
+              arası veri iletişimini yönetir.</p>
+          </div>
+        </li>
+
+        <li class="flist__item">
+          <div class="flist__badge">
+            <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+              <path fill="currentColor" d="M29.3 12.4L29.3 17.6L24.9 18.9L24.7 19.2L26.9 23.2L23.2 26.9L19.2 24.7L18.9 24.9L17.6 29.3L12.4 29.3L11.1 24.9L10.8 24.7L6.8 26.9L3.1 23.2L5.3 19.2L5.1 18.9L0.7 17.6L0.7 12.4L5.1 11.1L5.3 10.8L3.1 6.8L6.8 3.1L10.8 5.3L11.1 5.1L12.4 0.7L17.6 0.7L18.9 5.1L19.2 5.3L23.2 3.1L26.9 6.8L24.7 10.8L24.9 11.1Z"/>
+              <circle cx="15" cy="15" r="4.7" fill="var(--blue)"/>
+            </svg>
+          </div>
+          <div class="flist__body">
+            <h3>LIFECYCLE (YAŞAM DÖNGÜSÜ)</h3>
+            <p>Bileşenlerin oluşturulma, güncellenme ve<br class="lb">
+              kaldırılma aşamalarını yönetmenizi sağlar.</p>
+          </div>
+        </li>
+
+        <li class="flist__item">
+          <div class="flist__badge">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M26.4 9.2A14 14 0 1 0 24.6 24 14 14 0 0 0 22.2 4.6"/>
+              <path d="M8.6 15.4 13.4 20 24 7.2"/>
+            </svg>
+          </div>
+          <div class="flist__body">
+            <h3>SANAL DOM</h3>
+            <p>Gerçek DOM’u en verimli şekilde güncelleyerek<br class="lb">
+              daha iyi performans sunar.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="panel panel--code">
+      <h2 class="panel__title">BASİT BİR REACT BİLEŞENİ</h2>
+
+      <div class="code">
+        <div class="code__dots"><span></span><span></span><span></span></div>
+<pre><span class="t-key">import</span> React <span class="t-key">from</span> <span class="t-str">'react'</span><span class="t-punc">;</span>
+
+<span class="t-key">function</span> <span class="t-fn">MerhabaDunya</span>() <span class="t-punc">{</span>
+  <span class="t-key">return</span> <span class="t-punc">(</span>
+    <span class="t-key">&lt;div</span> <span class="t-attr">style</span><span class="t-punc">={{</span> <span class="t-attr">color</span>: <span class="t-str">'#61dafb'</span>,
+                  <span class="t-attr">fontSize</span>: <span class="t-str">'20px'</span> <span class="t-punc">}}&gt;</span>
+      Merhaba Dünya! 👋
+    <span class="t-key">&lt;/div&gt;</span>
+  <span class="t-punc">);</span>
+<span class="t-punc">}</span>
+
+<span class="t-key">export default</span> <span class="t-name">MerhabaDunya</span><span class="t-punc">;</span></pre>
+      </div>
+
+      <div class="flow">
+        <svg width="12" height="44" viewBox="0 0 12 44" aria-hidden="true">
+          <path d="M6 0v34" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M6 44 .8 33h10.4z" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <div class="preview">
+        <div class="preview__dots"><span></span><span></span><span></span></div>
+        <p class="preview__out">Merhaba Dünya! 👋</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= tools ================= -->
+  <section class="tools">
+    <h2 class="tools__title">POPÜLER ARAÇLAR &amp; KÜTÜPHANELER</h2>
+    <div class="tools__grid">
+
+      <article class="tool">
+        <div class="tool__mark">
+          <svg width="72" height="46" viewBox="0 0 72 46" aria-hidden="true">
+            <g fill="none" stroke-width="9" stroke-linecap="round">
+              <path d="M8 38 23 23" stroke="#0f2137"/>
+              <path d="M37 38 50 24" stroke="#0f2137"/>
+              <path d="M37 8 50 24 64 38" stroke="#f8434c"/>
+            </g>
+            <g fill="#0f2137"><circle cx="8" cy="38" r="8"/><circle cx="23" cy="23" r="8"/><circle cx="37" cy="38" r="8"/></g>
+            <g fill="#f8434c"><circle cx="37" cy="8" r="8"/><circle cx="50" cy="24" r="8"/><circle cx="64" cy="38" r="8"/></g>
+          </svg>
+        </div>
+        <h3>React Router</h3>
+        <p>Sayfa yönlendirme ve<br class="lb">
+          navigasyon yönetimi.</p>
+      </article>
+
+      <article class="tool">
+        <div class="tool__mark">
+          <svg width="67" height="65" viewBox="0 0 58 56" aria-hidden="true">
+            <g fill="none" stroke="#7147cc" stroke-width="4.4" stroke-linecap="round">
+              <path d="M18.6 31.5A15.5 15.5 0 1 1 39.4 31.5"/>
+              <path d="M31.1 17.3A15.5 15.5 0 1 1 20.8 35.2"/>
+              <path d="M37.2 35.2A15.5 15.5 0 1 1 26.9 17.3"/>
+            </g>
+            <g fill="#7147cc">
+              <circle cx="20.8" cy="35.2" r="4.8"/><circle cx="26.9" cy="17.3" r="4.8"/>
+            </g>
+          </svg>
+        </div>
+        <h3>Redux</h3>
+        <p>Global state yönetimi<br class="lb">
+          için öngörülebilir<br class="lb">
+          bir yapı sağlar.</p>
+      </article>
+
+      <article class="tool">
+        <div class="tool__mark">
+          <svg width="70" height="64" viewBox="0 0 61 56" aria-hidden="true">
+            <g transform="translate(30.5 28)">
+              <g fill="#f7404f" stroke="#122a52" stroke-width="3.4" stroke-linejoin="round">
+                <path d="M0-4c6-9 16-13 20-9s0 14-9 18z"/>
+                <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(72)"/>
+                <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(144)"/>
+                <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(216)"/>
+                <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(288)"/>
+              </g>
+              <circle r="8" fill="#f8ec6b" stroke="#122a52" stroke-width="3.2"/>
+            </g>
+          </svg>
+        </div>
+        <h3>React Query</h3>
+        <p>Sunucu durumunu<br class="lb">
+          çekmek, önbelleğe almak<br class="lb">
+          ve senkronize etmek için.</p>
+      </article>
+
+      <article class="tool">
+        <div class="tool__mark">
+          <svg width="72" height="44" viewBox="0 0 54 33" aria-hidden="true">
+            <path fill="#38c8e2" d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z"/>
+          </svg>
+        </div>
+        <h3>Tailwind CSS</h3>
+        <p>Hızlı ve modern<br class="lb">
+          tasarımlar için CSS<br class="lb">
+          çerçevesi.</p>
+      </article>
+
+      <article class="tool">
+        <div class="tool__mark">
+          <svg width="59" height="59" viewBox="0 0 56 56" aria-hidden="true">
+            <defs>
+              <linearGradient id="viteV" x1="0" y1="0" x2=".85" y2="1">
+                <stop offset="0" stop-color="#41d1ff"/><stop offset=".55" stop-color="#8a6ef8"/><stop offset="1" stop-color="#bd34fe"/>
+              </linearGradient>
+              <linearGradient id="viteB" x1=".2" y1="0" x2=".8" y2="1">
+                <stop offset="0" stop-color="#ffea83"/><stop offset=".5" stop-color="#ffdd35"/><stop offset="1" stop-color="#ffa800"/>
+              </linearGradient>
+            </defs>
+            <path d="M2.6 7.8 27.2 53.4a1.6 1.6 0 0 0 2.8 0L54.4 7.9c.8-1.5-.5-3.2-2.1-2.9l-23 4.2a1.7 1.7 0 0 1-.6 0L5.1 4.9c-1.7-.3-3.1 1.4-2.5 2.9z" fill="url(#viteV)"/>
+            <path d="M39.3 1.1 22.9 4.3a.9.9 0 0 0-.7.8l-1 17.1a.9.9 0 0 0 1.1.9l4.6-1c.6-.2 1.2.4 1 1.1l-1.3 6.6c-.2.7.4 1.3 1.1 1.1l2.8-.9c.7-.2 1.3.4 1.2 1.1l-2.2 10.4c-.2 1 1.1 1.5 1.6.7l.2-.4 13.4-26.6c.3-.7-.1-1.5-.9-1.4l-4.7.9c-.7.1-1.2-.5-1-1.2l3.1-10.6c.1-.7-.3-1.3-1.1-1.1z" fill="url(#viteB)"/>
+          </svg>
+        </div>
+        <h3>Vite</h3>
+        <p>Hızlı geliştirme deneyimi<br class="lb">
+          sunan modern build<br class="lb">
+          aracı.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= why react ================= -->
+  <section class="why">
+    <div class="why__cell">
+      <span class="why__heart">
+        <svg width="20" height="18" viewBox="0 0 20 18" fill="currentColor" aria-hidden="true">
+          <path d="M10 17.5S0 11.6 0 5.9A5.4 5.4 0 0 1 10 2.9 5.4 5.4 0 0 1 20 5.9c0 5.7-10 11.6-10 11.6z"/>
+        </svg>
+      </span>
+      <span class="why__label">NEDEN REACT?</span>
+    </div>
+
+    <div class="why__cell">
+      <svg width="29" height="21" viewBox="0 0 29 21" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" aria-hidden="true">
+        <path d="M14.5 7.2C12.2 3.3 9.8 1.6 7.3 2.1 3.9 2.8 1.6 6.6 1.6 10.6c0 4 2 7.3 5 7.3 2.6 0 4.4-2.6 6-5.6"/>
+        <path d="M14.5 12.3c1.6 3 3.4 5.6 6 5.6 3 0 5-3.3 5-7.3 0-4-2.3-7.8-5.7-8.5-2.5-.5-4.9 1.2-7.2 5.1"/>
+      </svg>
+      <p>Facebook (Meta) tarafından<br class="lb">
+          geliştirilir ve desteklenir.</p>
+    </div>
+
+    <div class="why__cell">
+      <svg width="33" height="24" viewBox="0 0 33 24" fill="currentColor" aria-hidden="true">
+        <circle cx="6.6" cy="7.6" r="4.4"/><circle cx="26.4" cy="7.6" r="4.4"/>
+        <path d="M0 21.4c0-3.7 3-6.6 6.6-6.6 3.7 0 6.6 3 6.6 6.6z"/>
+        <path d="M19.8 21.4c0-3.7 3-6.6 6.6-6.6 3.7 0 6.6 3 6.6 6.6z"/>
+        <circle cx="16.5" cy="5.6" r="5.6"/>
+        <path d="M8.2 22.6c0-4.6 3.7-8.3 8.3-8.3s8.3 3.7 8.3 8.3z"/>
+      </svg>
+      <p>Büyük ve aktif bir topluluğa<br class="lb">
+          sahiptir.</p>
+    </div>
+
+    <div class="why__cell">
+      <svg width="28" height="25" viewBox="0 0 28 25" fill="currentColor" aria-hidden="true">
+        <path d="M10.2 0h7.6a3 3 0 0 1 3 3v2.2h-3.2V3.2h-7.2v2H7.2V3a3 3 0 0 1 3-3z"/>
+        <path d="M0 9.6A2.4 2.4 0 0 1 2.4 7.2h23.2A2.4 2.4 0 0 1 28 9.6V22a2.6 2.6 0 0 1-2.6 2.6H2.6A2.6 2.6 0 0 1 0 22z"/>
+        <rect x="11" y="13.4" width="6" height="3.6" rx="1.8" fill="#e9f4fd"/>
+      </svg>
+      <p>Küçük projelerden kurumsal<br class="lb">
+          uygulamalara kadar ölçeklenebilir.</p>
+    </div>
+  </section>
+
+  <!-- ================= tagline ================= -->
+  <footer class="tagline">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M6 0l1.9 3.8 4.1.6-3 2.9.7 4.1L6 9.4 2.3 11.4l.7-4.1-3-2.9 4.1-.6z"/></svg>
+    <span>DAHA AZ KOD, DAHA FAZLA ÜRETKENLİK!</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M6 0l1.9 3.8 4.1.6-3 2.9.7 4.1L6 9.4 2.3 11.4l.7-4.1-3-2.9 4.1-.6z"/></svg>
+  </footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>React.js — Kullanıcı Arayüzleri İçin JavaScript Kütüphanesi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cyan:#22c1e3;
+    --cyan-dark:#12b6dc;
+    --blue:#1e5fd8;
+    --blue-2:#2563eb;
+    --ink:#12263f;
+    --ink-2:#1b3a5c;
+    --text:#41586e;
+    --panel-blue:#e8f2fd;
+    --panel-blue-2:#dcebfb;
+    --panel-green:#e8f6ee;
+    --panel-green-2:#eaf7f1;
+    --line:#cfe0f2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#eef6fb;
+    font-family:"Montserrat",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    position:relative;
+    max-width:1024px;
+    margin:0 auto;
+    padding:34px 30px 26px;
+    background:
+      radial-gradient(900px 420px at 78% 2%, #eaf6fd 0%, rgba(234,246,253,0) 60%),
+      linear-gradient(180deg,#f4fbfe 0%, #f7fcfe 45%, #ffffff 100%);
+    overflow:hidden;
+  }
+
+  /* decorative dots */
+  .dot{position:absolute;border-radius:50%;pointer-events:none;}
+  .d1{width:9px;height:9px;background:#bfe6f5;top:44px;left:592px;}
+  .d2{width:8px;height:8px;background:#d7ecf8;top:238px;left:44px;}
+  .d3{width:10px;height:10px;border:2px solid #cfe9f6;background:transparent;top:284px;left:80px;}
+  .plus{position:absolute;color:#bfe6f5;font-size:16px;line-height:1;pointer-events:none;}
+  .p1{top:38px;left:966px;}
+  .p2{top:126px;left:598px;}
+  .p3{top:152px;left:974px;font-size:11px;color:#d7ecf8;}
+
+  /* ---------- HERO ---------- */
+  .hero{display:flex;gap:16px;align-items:flex-start;}
+  .hero-logo{flex:0 0 200px;padding-top:14px;display:flex;justify-content:center;}
+  .hero-text{flex:1;min-width:0;padding-top:10px;}
+  h1{
+    margin:0;
+    font-size:70px;
+    line-height:.98;
+    letter-spacing:-2px;
+    font-weight:800;
+    color:var(--ink);
+  }
+  .subtitle{
+    margin:12px 0 0;
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:.4px;
+    line-height:1.35;
+    color:var(--cyan);
+    text-transform:uppercase;
+  }
+  .lead{
+    margin:20px 0 0;
+    max-width:365px;
+    font-size:14.5px;
+    line-height:1.75;
+    color:var(--text);
+  }
+  .hero-art{flex:0 0 348px;position:relative;padding-top:26px;}
+
+  .browser{
+    background:#fff;
+    border-radius:10px;
+    box-shadow:0 14px 34px rgba(30,80,140,.14);
+    overflow:hidden;
+  }
+  .browser-bar{background:var(--blue);height:30px;display:flex;align-items:center;gap:6px;padding:0 12px;}
+  .browser-bar i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.85);display:block;}
+  .browser-body{display:flex;gap:14px;padding:16px;}
+  .bb-left{flex:0 0 84px;}
+  .bb-right{flex:1;}
+  .ph{background:#dceaf9;border-radius:5px;}
+  .bb-left .ph{height:11px;margin-bottom:9px;}
+  .bb-left .ph.big{height:44px;margin-bottom:14px;}
+  .bb-left .ph.w70{width:70%;}
+  .bb-left .ph.w85{width:85%;}
+  .img-ph{
+    height:104px;border-radius:6px;overflow:hidden;background:#93bdf5;position:relative;
+  }
+  .bb-right .line{height:10px;border-radius:5px;background:#dceaf9;margin-top:11px;}
+  .bb-right .line.w60{width:60%;}
+  .btn-ph{margin-top:14px;height:26px;width:92px;border-radius:5px;background:#4d8ff0;}
+
+  .atom-badge{
+    position:absolute;right:-4px;bottom:-24px;
+    width:84px;height:84px;border-radius:50%;
+    background:var(--cyan);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 24px rgba(34,193,227,.35);
+  }
+
+  /* ---------- FEATURES ---------- */
+  .features{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    margin-top:56px;
+  }
+  .feature{padding:0 20px;text-align:center;position:relative;}
+  .feature + .feature::before{
+    content:"";position:absolute;left:0;top:14px;bottom:8px;width:1px;background:#d8e6f3;
+  }
+  .f-icon{
+    width:78px;height:78px;border-radius:50%;
+    background:#e4f0fc;
+    margin:0 auto 22px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .feature h3{
+    margin:0 0 12px;
+    font-size:14px;font-weight:700;letter-spacing:.3px;
+    color:var(--ink);text-transform:uppercase;
+  }
+  .feature p{margin:0;font-size:13px;line-height:1.65;color:var(--text);}
+
+  /* ---------- MIDDLE PANELS ---------- */
+  .mid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px;}
+  .panel{border-radius:14px;padding:26px 28px 30px;}
+  .panel-blue{background:linear-gradient(180deg,var(--panel-blue) 0%, var(--panel-blue-2) 100%);}
+  .panel-green{background:linear-gradient(180deg,var(--panel-green) 0%, var(--panel-green-2) 100%);}
+  .panel h2{
+    margin:0 0 22px;text-align:center;
+    font-size:20px;font-weight:700;letter-spacing:.2px;color:var(--ink);
+    text-transform:uppercase;
+  }
+
+  .flist{display:flex;flex-direction:column;}
+  .fitem{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid rgba(120,160,200,.22);}
+  .fitem:first-child{padding-top:2px;}
+  .fitem:last-child{border-bottom:0;padding-bottom:0;}
+  .fitem .ic{
+    flex:0 0 46px;height:46px;border-radius:12px;background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 2px 8px rgba(30,95,216,.10);
+  }
+  .fitem h4{
+    margin:2px 0 6px;font-size:14.5px;font-weight:700;letter-spacing:.2px;
+    color:var(--blue-2);text-transform:uppercase;
+  }
+  .fitem p{margin:0;font-size:13px;line-height:1.6;color:var(--text);}
+
+  /* code */
+  .code{
+    background:#262d3d;border-radius:10px;padding:14px 18px 20px;
+    box-shadow:0 12px 26px rgba(20,40,70,.18);
+  }
+  .code-dots{display:flex;gap:8px;margin-bottom:14px;}
+  .code-dots i{width:11px;height:11px;border-radius:50%;display:block;}
+  .code-dots i:nth-child(1){background:#ff5f57;}
+  .code-dots i:nth-child(2){background:#febc2e;}
+  .code-dots i:nth-child(3){background:#28c840;}
+  pre{
+    margin:0;font-family:"JetBrains Mono","SF Mono",Menlo,monospace;
+    font-size:12.6px;line-height:1.85;color:#e6ebf5;white-space:pre;overflow-x:auto;
+  }
+  .kw{color:#c586f0;}
+  .str{color:#f2c66d;}
+  .tag{color:#8fd6f7;}
+  .fn{color:#7fd4c1;}
+  .attr{color:#a9c6f5;}
+  .pun{color:#c9d3e6;}
+
+  .arrow{display:flex;justify-content:center;padding:16px 0 10px;}
+
+  .preview{
+    background:#fff;border:1px solid #cfe6da;border-radius:10px;overflow:hidden;
+    box-shadow:0 8px 20px rgba(40,90,70,.08);
+  }
+  .preview-bar{display:flex;gap:6px;padding:11px 14px 0;}
+  .preview-bar i{width:8px;height:8px;border-radius:50%;background:#d3dbe4;display:block;}
+  .preview-body{padding:16px 14px 26px;text-align:center;}
+  .preview-body span{font-size:21px;color:var(--cyan);font-weight:500;}
+
+  /* ---------- TOOLS ---------- */
+  .tools{
+    margin-top:26px;border-radius:14px;padding:26px 22px 30px;
+    background:linear-gradient(180deg,#e9f2fd 0%, #e2ecfa 100%);
+  }
+  .tools h2{
+    margin:0 0 24px;text-align:center;font-size:20px;font-weight:700;
+    color:var(--ink);text-transform:uppercase;letter-spacing:.2px;
+  }
+  .tools-grid{display:grid;grid-template-columns:repeat(5,1fr);}
+  .tool{padding:0 18px;text-align:center;position:relative;}
+  .tool + .tool::before{
+    content:"";position:absolute;left:0;top:6px;bottom:6px;width:1px;background:#cddcee;
+  }
+  .tool .logo{height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;}
+  .tool h3{margin:0 0 10px;font-size:15px;font-weight:700;color:var(--ink);}
+  .tool p{margin:0;font-size:12.5px;line-height:1.65;color:var(--text);}
+
+  /* ---------- WHY ---------- */
+  .why{
+    margin-top:22px;border-radius:12px;background:#eef5fd;
+    display:flex;align-items:center;gap:18px;padding:18px 22px;
+  }
+  .why-title{display:flex;align-items:center;gap:12px;flex:0 0 auto;padding-right:20px;border-right:1px solid #d3e2f2;}
+  .why-title span{font-size:13.5px;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.3px;}
+  .why-item{display:flex;align-items:center;gap:11px;flex:1;padding-left:6px;}
+  .why-item p{margin:0;font-size:12.5px;line-height:1.55;color:var(--text);}
+  .why-item + .why-item{border-left:1px solid #d3e2f2;padding-left:20px;}
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    margin-top:26px;padding-top:18px;border-top:1px solid #dbe8f4;
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    color:var(--blue-2);font-weight:700;font-size:15px;letter-spacing:.6px;
+  }
+  .footer .star{color:var(--blue-2);font-size:15px;}
+
+  @media (max-width:900px){
+    .hero{flex-direction:column;align-items:center;text-align:center;}
+    .hero-art{flex:0 0 auto;width:100%;max-width:380px;margin:0 auto;}
+    .lead{max-width:none;}
+    .features{grid-template-columns:repeat(2,1fr);row-gap:36px;}
+    .feature:nth-child(3)::before{display:none;}
+    .mid{grid-template-columns:1fr;}
+    .tools-grid{grid-template-columns:repeat(2,1fr);row-gap:30px;}
+    .tool:nth-child(odd)::before{display:none;}
+    .why{flex-wrap:wrap;}
+    .why-title{border-right:0;}
+    .why-item{flex:1 1 220px;}
+    h1{font-size:52px;}
+  }
+  @media (max-width:560px){
+    .page{padding:24px 18px;}
+    .features,.tools-grid{grid-template-columns:1fr;}
+    .feature::before,.tool::before{display:none!important;}
+    .why-item + .why-item{border-left:0;padding-left:6px;}
+    h1{font-size:42px;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <span class="dot d1"></span><span class="dot d2"></span><span class="dot d3"></span>
+  <span class="plus p1">+</span><span class="plus p2">+</span><span class="plus p3">+</span>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-logo">
+      <svg width="186" height="166" viewBox="0 0 200 178" fill="none" aria-label="React logosu">
+        <circle cx="100" cy="89" r="18" fill="#22c1e3"/>
+        <g stroke="#22c1e3" stroke-width="7" fill="none">
+          <ellipse cx="100" cy="89" rx="92" ry="35"/>
+          <ellipse cx="100" cy="89" rx="92" ry="35" transform="rotate(60 100 89)"/>
+          <ellipse cx="100" cy="89" rx="92" ry="35" transform="rotate(120 100 89)"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="hero-text">
+      <h1>React.js</h1>
+      <p class="subtitle">Kullanıcı Arayüzleri İçin<br>JavaScript Kütüphanesi</p>
+      <p class="lead">React, etkileşimli ve yüksek performanslı web uygulamaları geliştirmek için kullanılan, deklaratif ve bileşen tabanlı bir JavaScript kütüphanesidir.</p>
+    </div>
+
+    <div class="hero-art">
+      <div class="browser">
+        <div class="browser-bar"><i></i><i></i><i></i></div>
+        <div class="browser-body">
+          <div class="bb-left">
+            <div class="ph big"></div>
+            <div class="ph"></div>
+            <div class="ph w85"></div>
+            <div class="ph w70"></div>
+            <div class="ph w85"></div>
+          </div>
+          <div class="bb-right">
+            <div class="img-ph">
+              <svg viewBox="0 0 240 104" width="100%" height="100%" preserveAspectRatio="none">
+                <rect width="240" height="104" fill="#8fbaf6"/>
+                <circle cx="52" cy="30" r="12" fill="#cfe0fb"/>
+                <path d="M0 104 L78 46 L134 104 Z" fill="#cfe0fb"/>
+                <path d="M104 104 L162 60 L240 104 Z" fill="#e3edfd"/>
+              </svg>
+            </div>
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line w60"></div>
+            <div class="btn-ph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="atom-badge">
+        <svg width="54" height="48" viewBox="0 0 200 178" fill="none" aria-hidden="true">
+          <circle cx="100" cy="89" r="17" fill="#fff"/>
+          <g stroke="#fff" stroke-width="8" fill="none">
+            <ellipse cx="100" cy="89" rx="88" ry="34"/>
+            <ellipse cx="100" cy="89" rx="88" ry="34" transform="rotate(60 100 89)"/>
+            <ellipse cx="100" cy="89" rx="88" ry="34" transform="rotate(120 100 89)"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="feature">
+      <div class="f-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="#2b6ddb">
+          <path d="M20.5 11h-1.2V8.2c0-1-.8-1.8-1.8-1.8h-2.8V5.2c0-1.3-1.1-2.4-2.4-2.4S9.9 3.9 9.9 5.2v1.2H7.1c-1 0-1.8.8-1.8 1.8v2.6h1.2c1.3 0 2.4 1.1 2.4 2.4s-1.1 2.4-2.4 2.4H5.3v2.6c0 1 .8 1.8 1.8 1.8h2.6v-1.2c0-1.3 1.1-2.4 2.4-2.4s2.4 1.1 2.4 2.4V20h2.6c1 0 1.8-.8 1.8-1.8v-2.8h1.2c1.3 0 2.4-1.1 2.4-2.4S21.8 11 20.5 11z"/>
+        </svg>
+      </div>
+      <h3>Bileşen Tabanlı</h3>
+      <p>UI’ları küçük, yeniden kullanılabilir bileşenler halinde oluşturur.</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="#3b7ff0">
+          <path d="M13.5 2 4 13.2h6.1L9.9 22 20 10.6h-6.4L13.5 2z"/>
+        </svg>
+      </div>
+      <h3>Yüksek Performans</h3>
+      <p>Sanal DOM ile yalnızca değişen bölümleri güncelleyerek daha hızlı ve verimli çalışır.</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#1e5fd8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 10a8 8 0 0 1 13.6-5.2L20 7"/><path d="M20 3v4h-4"/>
+          <path d="M20 14a8 8 0 0 1-13.6 5.2L4 17"/><path d="M4 21v-4h4"/>
+        </svg>
+      </div>
+      <h3>Tek Yönlü Veri Akışı</h3>
+      <p>Veri akışı daha öngörülebilir ve hataları tespit etmek daha kolaydır.</p>
+    </div>
+    <div class="feature">
+      <div class="f-icon">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="14" width="4" height="7" rx="1" fill="#2b6ddb"/>
+          <rect x="9.5" y="10" width="4" height="11" rx="1" fill="#2b6ddb"/>
+          <rect x="16" y="6" width="4" height="15" rx="1" fill="#2b6ddb"/>
+          <path d="M3.5 9.5 9 5l3.5 3L20 2" stroke="#1e5fd8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 2h4.5v4.5" stroke="#1e5fd8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Geniş Ekosistem</h3>
+      <p>Zengin araçlar, topluluk desteği ve güçlü bir ekosisteme sahiptir.</p>
+    </div>
+  </section>
+
+  <!-- MIDDLE -->
+  <section class="mid">
+    <div class="panel panel-blue">
+      <h2>Temel Özellikler</h2>
+      <div class="flist">
+        <div class="fitem">
+          <div class="ic">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1e5fd8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 7 4 12l5 5"/><path d="M15 7l5 5-5 5"/>
+            </svg>
+          </div>
+          <div>
+            <h4>JSX</h4>
+            <p>JavaScript içine HTML benzeri sözdizimi yazarak daha okunabilir kodlar yazmanızı sağlar.</p>
+          </div>
+        </div>
+        <div class="fitem">
+          <div class="ic">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1e5fd8" stroke-width="2">
+              <rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/>
+              <rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/>
+              <rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/>
+              <rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Bileşenler (Components)</h4>
+            <p>UI’ı bağımsız ve yeniden kullanılabilir parçalara böler, geliştirmeyi kolaylaştırır.</p>
+          </div>
+        </div>
+        <div class="fitem">
+          <div class="ic">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1e5fd8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 4H8.6A2.6 2.6 0 0 0 6 6.6v2.6c0 1.5-.9 2.8-2 2.8 1.1 0 2 1.3 2 2.8v2.6A2.6 2.6 0 0 0 8.6 20H10"/>
+              <path d="M14 4h1.4A2.6 2.6 0 0 1 18 6.6v2.6c0 1.5.9 2.8 2 2.8-1.1 0-2 1.3-2 2.8v2.6a2.6 2.6 0 0 1-2.6 2.6H14"/>
+            </svg>
+          </div>
+          <div>
+            <h4>State &amp; Props</h4>
+            <p>State (durum) değişen verileri, Props ise bileşenler arası veri iletişimini yönetir.</p>
+          </div>
+        </div>
+        <div class="fitem">
+          <div class="ic">
+            <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#1e5fd8" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3.2"/>
+              <path d="M19.4 14.5a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.55 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.55-1.1 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9a1.7 1.7 0 0 0 1-1.56V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87V9a1.7 1.7 0 0 0 1.56 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1.03z"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Lifecycle (Yaşam Döngüsü)</h4>
+            <p>Bileşenlerin oluşturulma, güncellenme ve kaldırılma aşamalarını yönetmenizi sağlar.</p>
+          </div>
+        </div>
+        <div class="fitem">
+          <div class="ic">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#1e5fd8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/><path d="m8 12 2.8 2.8L16 9.5"/>
+            </svg>
+          </div>
+          <div>
+            <h4>Sanal DOM</h4>
+            <p>Gerçek DOM’u en verimli şekilde güncelleyerek daha iyi performans sunar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-green">
+      <h2>Basit Bir React Bileşeni</h2>
+      <div class="code">
+        <div class="code-dots"><i></i><i></i><i></i></div>
+<pre><span class="kw">import</span> React <span class="kw">from</span> <span class="str">'react'</span><span class="pun">;</span>
+
+<span class="kw">function</span> <span class="fn">MerhabaDunya</span><span class="pun">() {</span>
+  <span class="kw">return</span> <span class="pun">(</span>
+    <span class="tag">&lt;div</span> <span class="attr">style</span><span class="pun">={{</span> <span class="attr">color</span><span class="pun">:</span> <span class="str">'#61dafb'</span><span class="pun">,</span>
+                 <span class="attr">fontSize</span><span class="pun">:</span> <span class="str">'20px'</span> <span class="pun">}}</span><span class="tag">&gt;</span>
+      Merhaba Dünya! 👋
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="pun">);</span>
+<span class="pun">}</span>
+
+<span class="kw">export default</span> <span class="fn">MerhabaDunya</span><span class="pun">;</span></pre>
+      </div>
+
+      <div class="arrow">
+        <svg width="18" height="52" viewBox="0 0 18 52" fill="none" stroke="#12263f" stroke-width="2">
+          <path d="M9 0v42"/><path d="M2.5 38 9 47l6.5-9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="preview">
+        <div class="preview-bar"><i></i><i></i><i></i></div>
+        <div class="preview-body"><span>Merhaba Dünya! 👋</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section class="tools">
+    <h2>Popüler Araçlar &amp; Kütüphaneler</h2>
+    <div class="tools-grid">
+      <div class="tool">
+        <div class="logo">
+          <svg width="66" height="46" viewBox="0 0 66 46" fill="none">
+            <path d="M12 30c8-14 16 6 24-8 6-10 12-6 18-4" stroke="#1e2233" stroke-width="3"/>
+            <circle cx="9" cy="32" r="6" fill="#e03131"/>
+            <circle cx="24" cy="22" r="5" fill="#1e2233"/>
+            <circle cx="33" cy="30" r="5" fill="#1e2233"/>
+            <circle cx="44" cy="16" r="5" fill="#1e2233"/>
+            <circle cx="57" cy="15" r="6" fill="#e03131"/>
+          </svg>
+        </div>
+        <h3>React Router</h3>
+        <p>Sayfa yönlendirme ve navigasyon yönetimi.</p>
+      </div>
+      <div class="tool">
+        <div class="logo">
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#7d5bbe" stroke-width="1.5">
+            <path d="M15.2 15.6c1.6-.2 2.8-1.6 2.7-3.2-.1-1.6-1.4-2.9-3-2.9h-.1c-1.7.1-3 1.5-2.9 3.2 0 .8.4 1.5.9 2-1 1.9-2.5 3.3-4.7 4.5-1.5-1.6-2.2-3.3-2.4-4.5-.2-1.5.1-2.6.2-3.1 1.3-.3 4-1.2 4-4 0-.3 0-1.9-1.6-2.4-.3-.1-.7-.2-1-.2-1.1 0-2 .5-2.5 1.4-.8 1.4-.2 3.1.1 3.8-.6.2-1.9.7-2.4 2C-.1 14 .2 16.4 1.6 18.4c1.2 1.7 3.1 2.7 5.2 2.7.3 0 .6 0 .9-.1 2.7-.3 4.8-1.9 6-4.5.8.6 1.8.9 2.8.9h.2c1.9-.1 3.4-1.3 4-3 .6-1.9-.1-3.9-1.7-5.1"/>
+            <path d="M17.5 7.1c1.6.1 3 1.2 3.5 2.7.6 1.9-.3 4-2.6 5.4"/>
+          </svg>
+        </div>
+        <h3>Redux</h3>
+        <p>Global state yönetimi için öngörülebilir bir yapı sağlar.</p>
+      </div>
+      <div class="tool">
+        <div class="logo">
+          <svg width="56" height="52" viewBox="0 0 60 56" fill="none">
+            <g fill="#e8443a">
+              <ellipse cx="30" cy="10" rx="7" ry="10"/>
+              <ellipse cx="30" cy="46" rx="7" ry="10"/>
+              <ellipse cx="12" cy="20" rx="7" ry="10" transform="rotate(-60 12 20)"/>
+              <ellipse cx="48" cy="36" rx="7" ry="10" transform="rotate(-60 48 36)"/>
+              <ellipse cx="12" cy="36" rx="7" ry="10" transform="rotate(60 12 36)"/>
+              <ellipse cx="48" cy="20" rx="7" ry="10" transform="rotate(60 48 20)"/>
+            </g>
+            <circle cx="30" cy="28" r="9" fill="#f7b3ad"/>
+            <circle cx="30" cy="28" r="4.5" fill="#e8443a"/>
+          </svg>
+        </div>
+        <h3>React Query</h3>
+        <p>Sunucu durumunu çekmek, önbelleğe almak ve senkronize etmek için.</p>
+      </div>
+      <div class="tool">
+        <div class="logo">
+          <svg width="66" height="42" viewBox="0 0 66 42" fill="none" stroke="#2fb3c9" stroke-width="4" stroke-linecap="round">
+            <path d="M6 16c4-8 8-10 12-6 3 3 5 6 9 6s6-3 6-3"/>
+            <path d="M30 30c4-8 8-10 12-6 3 3 5 6 9 6s6-3 6-3"/>
+          </svg>
+        </div>
+        <h3>Tailwind CSS</h3>
+        <p>Hızlı ve modern tasarımlar için CSS çerçevesi.</p>
+      </div>
+      <div class="tool">
+        <div class="logo">
+          <svg width="46" height="52" viewBox="0 0 46 52" fill="none">
+            <path d="M23 50 2 8l21 6 21-6-21 42z" fill="#a78bfa" opacity=".9"/>
+            <path d="M27.5 6 16 14.5l6 2.5-4.5 8.5 12-9-6.5-2.5L27.5 6z" fill="#fbbf24"/>
+          </svg>
+        </div>
+        <h3>Vite</h3>
+        <p>Hızlı geliştirme deneyimi sunan modern build aracı.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why">
+    <div class="why-title">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="#1e5fd8">
+        <path d="M12 20.5s-7.5-4.7-7.5-9.7A4.3 4.3 0 0 1 12 8.2a4.3 4.3 0 0 1 7.5 2.6c0 5-7.5 9.7-7.5 9.7z"/>
+      </svg>
+      <span>Neden React?</span>
+    </div>
+    <div class="why-item">
+      <svg width="30" height="20" viewBox="0 0 34 20" fill="none" stroke="#1e5fd8" stroke-width="2.4">
+        <path d="M2 10c0-4 2-7 4.5-7S11 6.5 12.5 10s3.5 7 6 7 4.5-3 4.5-7-2-7-4.5-7S14 6.5 12.5 10 9 17 6.5 17 2 14 2 10z"/>
+      </svg>
+      <p>Facebook (Meta) tarafından geliştirilir ve desteklenir.</p>
+    </div>
+    <div class="why-item">
+      <svg width="30" height="24" viewBox="0 0 24 24" fill="#1e5fd8">
+        <circle cx="9" cy="8" r="3.4"/><circle cx="17.5" cy="9" r="2.6"/>
+        <path d="M2.5 19c0-3.4 2.9-5.6 6.5-5.6s6.5 2.2 6.5 5.6z"/>
+        <path d="M16.4 13.6c3 .2 5.1 2.1 5.1 5.4h-4.8c0-2.1-.6-3.9-1.6-5.1a6 6 0 0 1 1.3-.3z"/>
+      </svg>
+      <p>Büyük ve aktif bir topluluğa sahiptir.</p>
+    </div>
+    <div class="why-item">
+      <svg width="28" height="24" viewBox="0 0 24 24" fill="#1e5fd8">
+        <path d="M9 4.5h6a1.5 1.5 0 0 1 1.5 1.5v1H19a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h2.5V6A1.5 1.5 0 0 1 9 4.5zm.5 2.5h5V6.2h-5V7z"/>
+      </svg>
+      <p>Küçük projelerden kurumsal uygulamalara kadar ölçeklenebilir.</p>
+    </div>
+  </section>
+
+  <div class="footer">
+    <span class="star">★</span>
+    <span>DAHA AZ KOD, DAHA FAZLA ÜRETKENLİK!</span>
+    <span class="star">★</span>
+  </div>
+</div>
+</body>
+</html>
