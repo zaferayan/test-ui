@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>React.js İnfografik — AI Model Karşılaştırması</title>
-<meta name="description" content="Aynı prompt ile 22 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
+<meta name="description" content="Aynı prompt ile 28 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
 <style>
   :root {
     --bg: #0a0f1e;
@@ -324,10 +324,10 @@
   <div class="wrap hero-grid">
     <div>
       <div class="kicker">AI Kodlama Benchmark'ı</div>
-      <h1>Tek prompt, <em>22 model çıktısı</em>:<br>React.js infografiği</h1>
+      <h1>Tek prompt, <em>28 model çıktısı</em>:<br>React.js infografiği</h1>
       <p class="lead">
         ChatGPT'nin ürettiği bir infografik görseli, tek cümlelik bir prompt ile
-        6 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
+        7 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
         Sonuçları inceleyin, orijinalle veya birbiriyle karşılaştırın.
       </p>
       <div class="prompt-box">
@@ -335,8 +335,8 @@
         “Ekteki görseli web sayfası olarak kodla”
       </div>
       <div class="stats">
-        <div class="stat"><b>6</b><span>Model ailesi</span></div>
-        <div class="stat"><b>22</b><span>Çıktı</span></div>
+        <div class="stat"><b>7</b><span>Model ailesi</span></div>
+        <div class="stat"><b>28</b><span>Çıktı</span></div>
         <div class="stat"><b>6</b><span>Effort seviyesi</span></div>
       </div>
     </div>
@@ -448,6 +448,12 @@ const MODELS = [
   { id: "opus-4.8-ef-3-high",     family: "Opus 4.8",    effort: "High",   w: 2316, h: 3482, demo: "opus-4.8-ef-3-high/index.html" },
   { id: "opus-4.8-ef-4-xhigh",    family: "Opus 4.8",    effort: "XHigh",  w: 2316, h: 3608, demo: "opus-4.8-ef-4-xhigh/index.html" },
   { id: "opus-4.8-ef-5-max",      family: "Opus 4.8",    effort: "Max",    w: 2160, h: 3846, demo: "opus-4.8-ef-5-max/react-infografik.html" },
+  { id: "opus-5.0-ef-1-low",      family: "Opus 5",      effort: "Low",    w: 2346, h: 3464, demo: "opus-5.0-ef-1-low/index.html" },
+  { id: "opus-5.0-ef-2-medium",   family: "Opus 5",      effort: "Medium", w: 2346, h: 3540, demo: "opus-5.0-ef-2-medium/index.html" },
+  { id: "opus-5.0-ef-3-high",     family: "Opus 5",      effort: "High",   w: 2346, h: 3626, demo: "opus-5.0-ef-3-high/index.html" },
+  { id: "opus-5.0-ef-4-xhigh",    family: "Opus 5",      effort: "XHigh",  w: 2346, h: 3244, demo: "opus-5.0-ef-4-xhigh/index.html" },
+  { id: "opus-5.0-ef-5-max",      family: "Opus 5",      effort: "Max",    w: 2346, h: 3070, demo: "opus-5.0-ef-5-max/index.html" },
+  { id: "opus-5.0-ef-6-ultra",    family: "Opus 5",      effort: "Ultra",  w: 2346, h: 3074, demo: "opus-5.0-ef-6-ultra/index.html" },
   { id: "codex-5.6-sol-ef-1-low",    family: "Codex 5.6 Sol", effort: "Low",    w: 2316, h: 3590, demo: "codex-5.6-sol-ef-1-low/index.html" },
   { id: "codex-5.6-sol-ef-2-medium", family: "Codex 5.6 Sol", effort: "Medium", w: 2316, h: 3084, demo: "codex-5.6-sol-ef-2-medium/dist/index.html" },
   { id: "codex-5.6-sol-ef-3-high",   family: "Codex 5.6 Sol", effort: "High",   w: 2316, h: 3560, demo: null, note: "Next.js (SSR) — statik demo yok" },
@@ -524,15 +530,21 @@ chips.addEventListener("click", e => {
 /* SSIM + renk histogramı + pHash; 512x768'e ölçeklenmiş görüntüler üzerinde,
    skor = 45*ssim + 30*hist + 25*phash (0-100) */
 const SCORES = {
+  "opus-5.0-ef-5-max":         { ssim: 0.651, hist: 0.9996, phash: 0.937, score: 82.7 },
+  "opus-5.0-ef-6-ultra":       { ssim: 0.650, hist: 0.9996, phash: 0.905, score: 81.8 },
   "codex-5.6-sol-ef-5-ultra":  { ssim: 0.617, hist: 0.994, phash: 0.937, score: 81.0 },
   "codex-5.6-sol-ef-2-medium": { ssim: 0.562, hist: 0.994, phash: 0.968, score: 79.3 },
   "codex-5.6-sol-ef-1-low":    { ssim: 0.566, hist: 0.993, phash: 0.905, score: 77.8 },
   "codex-5.6-sol-ef-4-xhigh":  { ssim: 0.544, hist: 0.994, phash: 0.937, score: 77.7 },
   "composer-2.5-fast":         { ssim: 0.538, hist: 0.987, phash: 0.841, score: 74.8 },
+  "opus-5.0-ef-3-high":        { ssim: 0.505, hist: 0.998, phash: 0.873, score: 74.5 },
   "codex-5.6-sol-ef-3-high":   { ssim: 0.520, hist: 0.993, phash: 0.841, score: 74.2 },
   "grok-4.5-ef-3-high":        { ssim: 0.535, hist: 0.995, phash: 0.778, score: 73.4 },
   "fable-5-ef-5-max":          { ssim: 0.504, hist: 0.988, phash: 0.746, score: 71.0 },
   "fable-5-ef-6-ultra":        { ssim: 0.506, hist: 0.961, phash: 0.778, score: 71.0 },
+  "opus-5.0-ef-2-medium":      { ssim: 0.504, hist: 0.9994, phash: 0.714, score: 70.5 },
+  "opus-5.0-ef-4-xhigh":       { ssim: 0.486, hist: 0.998, phash: 0.714, score: 69.7 },
+  "opus-5.0-ef-1-low":         { ssim: 0.491, hist: 0.993, phash: 0.651, score: 68.2 },
   "fable-5-ef-2-medium":       { ssim: 0.494, hist: 0.994, phash: 0.651, score: 68.3 },
   "opus-4.8-ef-4-xhigh":       { ssim: 0.508, hist: 0.917, phash: 0.714, score: 68.2 },
   "fable-5-ef-1-low":          { ssim: 0.498, hist: 0.999, phash: 0.619, score: 67.9 },

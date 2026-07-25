@@ -1,11 +1,11 @@
-# Tek prompt, 22 model çıktısı: React.js infografiği
+# Tek prompt, 28 model çıktısı: React.js infografiği
 
 [![Site ekran görüntüsü](.github/screenshot.png)](https://zaferayan.github.io/test-ui/)
 
 **🔗 Canlı site:** [zaferayan.github.io/test-ui](https://zaferayan.github.io/test-ui/)
 
 ChatGPT'nin ürettiği bir React.js infografik görseli ([`_original/ss.png`](_original/ss.png)),
-tek cümlelik bir prompt ile 6 farklı AI kodlama modeline — farklı effort seviyelerinde —
+tek cümlelik bir prompt ile 7 farklı AI kodlama modeline — farklı effort seviyelerinde —
 web sayfası olarak kodlatıldı:
 
 > **PROMPT:** "Ekteki görseli web sayfası olarak kodla"
@@ -21,6 +21,7 @@ gibi bir linki doğrudan paylaşabilirsiniz.
 | Model ailesi | Effort seviyeleri | Çıktı |
 |---|---|---|
 | Fable 5 | Low · Medium · High · XHigh · Max · Ultra | 6 |
+| Opus 5 | Low · Medium · High · XHigh · Max · Ultra | 6 |
 | Opus 4.8 | Low · Medium · High · XHigh · Max | 5 |
 | Codex 5.6 Sol | Low · Medium · High · XHigh · Ultra | 5 |
 | Grok 4.5 | Low · Medium · High | 3 |
@@ -31,8 +32,8 @@ gibi bir linki doğrudan paylaşabilirsiniz.
 
 Her çıktının ekran görüntüsü orijinal görselle üç metrik üzerinden karşılaştırıldı ve
 0–100 arası bileşik bir skora çevrildi: **%45 SSIM** (yapısal benzerlik) + **%30 renk
-histogramı korelasyonu** + **%25 pHash** (algısal parmak izi). İlk üç sıra: Codex 5.6 Sol
-Ultra (81.0), Codex 5.6 Sol Medium (79.3), Codex 5.6 Sol Low (77.8). Tüm sıralama,
+histogramı korelasyonu** + **%25 pHash** (algısal parmak izi). İlk üç sıra: Opus 5 Max
+(82.7), Opus 5 Ultra (81.8), Codex 5.6 Sol Ultra (81.0). Tüm sıralama,
 metrik detayları ve etkileşimli grafik sitedeki
 [📊 Analiz bölümünde](https://zaferayan.github.io/test-ui/#analiz). Skor görsel yakınlığı
 ölçer; kod kalitesi hakkında bir şey söylemez.
