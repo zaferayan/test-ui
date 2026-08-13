@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>React.js — Kullanıcı Arayüzleri İçin JavaScript Kütüphanesi</title>
+  <meta name="description" content="React.js infografiği: bileşen tabanlı yapı, sanal DOM, temel özellikler ve popüler araçlar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="page">
+    <span class="deco plus p1" aria-hidden="true"></span>
+    <span class="deco plus p2" aria-hidden="true"></span>
+    <span class="deco plus p3" aria-hidden="true"></span>
+    <span class="deco plus p4" aria-hidden="true"></span>
+    <span class="deco plus p5" aria-hidden="true"></span>
+    <span class="deco dot d1" aria-hidden="true"></span>
+    <span class="deco dot d2" aria-hidden="true"></span>
+    <span class="deco ring" aria-hidden="true"></span>
+    <span class="deco cluster" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+
+    <header class="hero">
+      <div class="hero-logo" aria-hidden="true">
+        <svg viewBox="-11.5 -10.23174 23 20.46348" role="img" aria-label="React logosu">
+          <circle r="2.05" fill="currentColor" />
+          <g stroke="currentColor" stroke-width="1" fill="none">
+            <ellipse rx="11" ry="4.2" />
+            <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+            <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+          </g>
+        </svg>
+      </div>
+
+      <div class="hero-copy">
+        <h1>React.js</h1>
+        <p class="hero-kicker">KULLANICI ARAYÜZLERİ İÇİN<br />JAVASCRIPT KÜTÜPHANESİ</p>
+        <p class="hero-lead">
+          React, etkileşimli ve yüksek performanslı web<br class="lb" />
+          uygulamaları geliştirmek için kullanılan, deklaratif<br class="lb" />
+          ve bileşen tabanlı bir JavaScript kütüphanesidir.
+        </p>
+      </div>
+
+      <div class="hero-mock" aria-hidden="true">
+        <svg viewBox="0 0 324 260" role="img" aria-label="React ile geliştirilmiş arayüz örneği">
+          <defs>
+            <linearGradient id="ph" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#a0cefe" />
+              <stop offset="1" stop-color="#aad3fd" />
+            </linearGradient>
+            <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#2ad4fd" />
+              <stop offset="1" stop-color="#0fc5fa" />
+            </linearGradient>
+            <clipPath id="phclip">
+              <rect x="115" y="52" width="168" height="102" rx="8" />
+            </clipPath>
+            <filter id="win" x="-14%" y="-14%" width="134%" height="134%">
+              <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#0a3f74" flood-opacity=".10" />
+            </filter>
+          </defs>
+          <g filter="url(#win)">
+            <rect x="0" y="0" width="309" height="250" rx="14" fill="#fefefe" />
+          </g>
+          <path d="M0 14A14 14 0 0 1 14 0h281a14 14 0 0 1 14 14v17H0z" fill="#0162da" />
+          <g fill="#abd0fe">
+            <circle cx="22" cy="17" r="5" />
+            <circle cx="38" cy="17" r="5" />
+            <circle cx="54" cy="17" r="5" />
+          </g>
+          <g fill="#e5ecf3">
+            <rect x="22" y="53" width="73" height="54" rx="8" />
+            <rect x="22" y="122" width="44" height="8" rx="4" />
+            <rect x="22" y="142" width="73" height="9" rx="4.5" />
+            <rect x="22" y="163" width="59" height="9" rx="4.5" />
+            <rect x="22" y="184" width="47" height="8" rx="4" />
+            <rect x="22" y="204" width="33" height="9" rx="4.5" />
+          </g>
+          <rect x="115" y="52" width="168" height="102" rx="8" fill="url(#ph)" />
+          <g clip-path="url(#phclip)">
+            <circle cx="215" cy="89" r="11" fill="#7cbcfb" />
+            <path d="M200 154 238 106 288 154z" fill="#4ea2f7" />
+            <path d="M111 154 164 88 220 154z" fill="#489ff6" />
+          </g>
+          <rect x="131" y="65" width="49" height="13" rx="6.5" fill="#d6e9fd" />
+          <rect x="115" y="171" width="105" height="9" rx="4.5" fill="#e5ecf3" />
+          <rect x="115" y="196" width="70" height="28" rx="6" fill="#48a1fb" />
+          <circle cx="275.5" cy="210.5" r="49" fill="url(#badge)" />
+          <g transform="translate(275.5 210.5) scale(2.87)" fill="none" stroke="#fff" stroke-width="1">
+            <circle r="2.05" fill="#fff" stroke="none" />
+            <ellipse rx="11" ry="4.2" />
+            <ellipse rx="11" ry="4.2" transform="rotate(60)" />
+            <ellipse rx="11" ry="4.2" transform="rotate(120)" />
+          </g>
+        </svg>
+      </div>
+    </header>
+
+    <section class="pillars" aria-label="Temel avantajlar">
+      <article class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 46 45" aria-hidden="true">
+            <g fill="currentColor">
+              <rect x="0" y="14" width="34" height="31" rx="5" />
+              <circle cx="17" cy="9.4" r="8.6" />
+              <circle cx="38" cy="30" r="8.5" />
+            </g>
+            <circle cx="17" cy="46.6" r="8.6" fill="var(--icon-wash)" />
+          </svg>
+        </div>
+        <h2>BİLEŞEN TABANLI</h2>
+        <p>UI’ları küçük, yeniden<br class="lb" />kullanılabilir bileşenler<br class="lb" />halinde oluşturur.</p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 32 50" aria-hidden="true">
+            <path d="M20.5 0H7.8L0 27.5h9.6L5.4 50 32 18.4H17.6z" fill="currentColor" />
+          </svg>
+        </div>
+        <h2>YÜKSEK PERFORMANS</h2>
+        <p>Sanal DOM ile yalnızca değişen<br class="lb" />bölümleri güncelleyerek daha<br class="lb" />hızlı ve verimli çalışır.</p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 47 48" aria-hidden="true">
+            <g fill="none" stroke="currentColor" stroke-width="5.2">
+              <path d="M8.3 28.9A16 16 0 0 1 35.4 13.3" />
+              <path d="M38.7 19.1A16 16 0 0 1 11.6 34.7" />
+            </g>
+            <g fill="currentColor">
+              <path d="M41.1 19.6 31.2 17.1 39.6 9.5z" />
+              <path d="M5.9 28.4 15.8 30.9 7.4 38.5z" />
+            </g>
+          </svg>
+        </div>
+        <h2>TEK YÖNLÜ VERİ AKIŞI</h2>
+        <p>Veri akışı daha öngörülebilir<br class="lb" />ve hataları tespit etmek<br class="lb" />daha kolaydır.</p>
+      </article>
+
+      <article class="pillar">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 45 50" aria-hidden="true">
+            <g fill="currentColor">
+              <rect x="0" y="37" width="11" height="13" rx="2.5" />
+              <rect x="17" y="30" width="11" height="20" rx="2.5" />
+              <rect x="33" y="20" width="11" height="30" rx="2.5" />
+            </g>
+            <path d="M2.5 35.5C13 30 24.5 21 34.5 8.5" fill="none" stroke="currentColor" stroke-width="4.4" stroke-linecap="round" />
+            <path d="M25.8 6.2 40.5 3.4l-2.2 14.8z" fill="currentColor" />
+          </svg>
+        </div>
+        <h2>GENİŞ EKOSİSTEM</h2>
+        <p>Zengin araçlar, topluluk<br class="lb" />desteği ve güçlü bir<br class="lb" />ekosisteme sahiptir.</p>
+      </article>
+    </section>
+
+    <section class="core">
+      <div class="card card-features">
+        <h2>TEMEL ÖZELLİKLER</h2>
+        <ul class="feat-list">
+          <li>
+            <span class="feat-badge" aria-hidden="true">
+              <svg viewBox="0 0 32 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9.5 3 2 12l7.5 9" />
+                <path d="M22.5 3 30 12l-7.5 9" />
+                <path d="M18.5 1.5 13.5 22.5" />
+              </svg>
+            </span>
+            <div>
+              <h3>JSX</h3>
+              <p>JavaScript içine HTML benzeri sözdizimi<br class="lb" />yazarak daha okunabilir kodlar yazmanızı sağlar.</p>
+            </div>
+          </li>
+          <li>
+            <span class="feat-badge" aria-hidden="true">
+              <svg viewBox="0 0 28 28" fill="currentColor">
+                <rect x="0" y="0" width="12" height="12" rx="2.5" />
+                <rect x="16" y="0" width="12" height="12" rx="2.5" />
+                <rect x="0" y="16" width="12" height="12" rx="2.5" />
+                <rect x="16" y="16" width="12" height="12" rx="2.5" />
+              </svg>
+            </span>
+            <div>
+              <h3>BİLEŞENLER (COMPONENTS)</h3>
+              <p>UI’ı bağımsız ve yeniden kullanılabilir parçalara<br class="lb" />böler, geliştirmeyi kolaylaştırır.</p>
+            </div>
+          </li>
+          <li>
+            <span class="feat-badge" aria-hidden="true">
+              <svg viewBox="0 0 24 28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9.5 1.5C6 1.5 6.5 6 6.5 8.5S5.5 13 2 14c3.5 1 4.5 3 4.5 5.5S6 26.5 9.5 26.5" />
+                <path d="M14.5 1.5c3.5 0 3 4.5 3 7s1 4.5 4.5 5.5c-3.5 1-4.5 3-4.5 5.5s.5 7-3 7" />
+              </svg>
+            </span>
+            <div>
+              <h3>STATE &amp; PROPS</h3>
+              <p>State (durum) değişen verileri, Props ise bileşenler<br class="lb" />arası veri iletişimini yönetir.</p>
+            </div>
+          </li>
+          <li>
+            <span class="feat-badge" aria-hidden="true">
+              <svg viewBox="0 0 30 30">
+                <path fill="currentColor" d="M29.3 12.4v5.2l-4.4 1.3-.2.3 2.2 4-3.7 3.7-4-2.2-.3.2-1.3 4.4h-5.2l-1.3-4.4-.3-.2-4 2.2-3.7-3.7 2.2-4-.2-.3L.7 17.6v-5.2l4.4-1.3.2-.3-2.2-4L6.8 3.1l4 2.2.3-.2L12.4.7h5.2l1.3 4.4.3.2 4-2.2 3.7 3.7-2.2 4 .2.3z" />
+                <circle cx="15" cy="15" r="4.7" fill="var(--badge)" />
+              </svg>
+            </span>
+            <div>
+              <h3>LIFECYCLE (YAŞAM DÖNGÜSÜ)</h3>
+              <p>Bileşenlerin oluşturulma, güncellenme ve<br class="lb" />kaldırılma aşamalarını yönetmenizi sağlar.</p>
+            </div>
+          </li>
+          <li>
+            <span class="feat-badge" aria-hidden="true">
+              <svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M26.4 9.2A14 14 0 1 0 24.6 24 14 14 0 0 0 22.2 4.6" />
+                <path d="M8.6 15.4 13.4 20 24 7.2" />
+              </svg>
+            </span>
+            <div>
+              <h3>SANAL DOM</h3>
+              <p>Gerçek DOM’u en verimli şekilde güncelleyerek<br class="lb" />daha iyi performans sunar.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card card-demo">
+        <h2>BASİT BİR REACT BİLEŞENİ</h2>
+        <div class="editor">
+          <div class="dots mac" aria-hidden="true"><i></i><i></i><i></i></div>
+          <pre><code><span class="k">import</span> React <span class="k">from</span> <span class="s">'react'</span><span class="o">;</span>
+
+<span class="k">function</span> <span class="fn">MerhabaDunya</span>() <span class="o">{</span>
+  <span class="k">return</span> <span class="o">(</span>
+    <span class="k">&lt;div</span> <span class="a">style</span><span class="o">={{</span> <span class="a">color</span>: <span class="s">'#61dafb'</span>,
+                  <span class="a">fontSize</span>: <span class="s">'20px'</span> <span class="o">}}&gt;</span>
+      Merhaba Dünya! 👋
+    <span class="k">&lt;/div&gt;</span>
+  <span class="o">);</span>
+<span class="o">}</span>
+
+<span class="k">export default</span> <span class="n">MerhabaDunya</span><span class="o">;</span></code></pre>
+        </div>
+        <div class="arrow" aria-hidden="true">
+          <svg viewBox="0 0 12 44">
+            <path d="M6 0v34" stroke="currentColor" stroke-width="2.2" />
+            <path d="M6 44 .8 33h10.4z" fill="currentColor" />
+          </svg>
+        </div>
+        <div class="preview">
+          <div class="dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <p>Merhaba Dünya! 👋</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="tools">
+      <h2>POPÜLER ARAÇLAR &amp; KÜTÜPHANELER</h2>
+      <div class="tools-grid">
+        <article class="tool">
+          <div class="tool-logo">
+            <svg viewBox="0 0 72 46" aria-hidden="true">
+              <g fill="none" stroke-width="9" stroke-linecap="round">
+                <path d="M8 38 23 23" stroke="#0f2137" />
+                <path d="M37 38 50 24" stroke="#0f2137" />
+                <path d="M37 8 50 24 64 38" stroke="#f8434c" />
+              </g>
+              <g fill="#0f2137">
+                <circle cx="8" cy="38" r="8" />
+                <circle cx="23" cy="23" r="8" />
+                <circle cx="37" cy="38" r="8" />
+              </g>
+              <g fill="#f8434c">
+                <circle cx="37" cy="8" r="8" />
+                <circle cx="50" cy="24" r="8" />
+                <circle cx="64" cy="38" r="8" />
+              </g>
+            </svg>
+          </div>
+          <h3>React Router</h3>
+          <p>Sayfa yönlendirme ve<br class="lb" />navigasyon yönetimi.</p>
+        </article>
+
+        <article class="tool">
+          <div class="tool-logo">
+            <svg viewBox="0 0 58 56" aria-hidden="true">
+              <g fill="none" stroke="#764abc" stroke-width="4.4" stroke-linecap="round">
+                <path d="M18.6 31.5A15.5 15.5 0 1 1 39.4 31.5" />
+                <path d="M31.1 17.3A15.5 15.5 0 1 1 20.8 35.2" />
+                <path d="M37.2 35.2A15.5 15.5 0 1 1 26.9 17.3" />
+              </g>
+              <g fill="#764abc">
+                <circle cx="20.8" cy="35.2" r="4.8" />
+                <circle cx="26.9" cy="17.3" r="4.8" />
+              </g>
+            </svg>
+          </div>
+          <h3>Redux</h3>
+          <p>Global state yönetimi<br class="lb" />için öngörülebilir<br class="lb" />bir yapı sağlar.</p>
+        </article>
+
+        <article class="tool">
+          <div class="tool-logo">
+            <svg viewBox="0 0 61 56" aria-hidden="true">
+              <g transform="translate(30.5 28)">
+                <g fill="#ff4154" stroke="#122a52" stroke-width="3.4" stroke-linejoin="round">
+                  <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" />
+                  <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(72)" />
+                  <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(144)" />
+                  <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(216)" />
+                  <path d="M0-4c6-9 16-13 20-9s0 14-9 18z" transform="rotate(288)" />
+                </g>
+                <circle r="8" fill="#f8ec6b" stroke="#122a52" stroke-width="3.2" />
+              </g>
+            </svg>
+          </div>
+          <h3>React Query</h3>
+          <p>Sunucu durumunu<br class="lb" />çekmek, önbelleğe almak<br class="lb" />ve senkronize etmek için.</p>
+        </article>
+
+        <article class="tool">
+          <div class="tool-logo">
+            <svg viewBox="0 0 54 33" aria-hidden="true">
+              <path fill="#38bdf8" d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z" />
+            </svg>
+          </div>
+          <h3>Tailwind CSS</h3>
+          <p>Hızlı ve modern<br class="lb" />tasarımlar için CSS<br class="lb" />çerçevesi.</p>
+        </article>
+
+        <article class="tool">
+          <div class="tool-logo">
+            <svg viewBox="0 0 56 56" aria-hidden="true">
+              <defs>
+                <linearGradient id="viteV" x1="0" y1="0" x2=".85" y2="1">
+                  <stop offset="0" stop-color="#41d1ff" />
+                  <stop offset=".55" stop-color="#bd34fe" />
+                  <stop offset="1" stop-color="#bd34fe" />
+                </linearGradient>
+                <linearGradient id="viteB" x1=".2" y1="0" x2=".8" y2="1">
+                  <stop offset="0" stop-color="#ffea83" />
+                  <stop offset=".5" stop-color="#ffdd35" />
+                  <stop offset="1" stop-color="#ffa800" />
+                </linearGradient>
+              </defs>
+              <path d="M2.6 7.8 27.2 53.4a1.6 1.6 0 0 0 2.8 0L54.4 7.9c.8-1.5-.5-3.2-2.1-2.9l-23 4.2a1.7 1.7 0 0 1-.6 0L5.1 4.9c-1.7-.3-3.1 1.4-2.5 2.9z" fill="url(#viteV)" />
+              <path d="M39.3 1.1 22.9 4.3a.9.9 0 0 0-.7.8l-1 17.1a.9.9 0 0 0 1.1.9l4.6-1c.6-.2 1.2.4 1 1.1l-1.3 6.6c-.2.7.4 1.3 1.1 1.1l2.8-.9c.7-.2 1.3.4 1.2 1.1l-2.2 10.4c-.2 1 1.1 1.5 1.6.7l.2-.4 13.4-26.6c.3-.7-.1-1.5-.9-1.4l-4.7.9c-.7.1-1.2-.5-1-1.2l3.1-10.6c.1-.7-.3-1.3-1.1-1.1z" fill="url(#viteB)" />
+            </svg>
+          </div>
+          <h3>Vite</h3>
+          <p>Hızlı geliştirme deneyimi<br class="lb" />sunan modern build<br class="lb" />aracı.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="why" aria-label="Neden React">
+      <div class="why-item">
+        <span class="heart" aria-hidden="true">
+          <svg viewBox="0 0 20 18" fill="currentColor">
+            <path d="M10 17.5S0 11.6 0 5.9A5.4 5.4 0 0 1 10 2.9 5.4 5.4 0 0 1 20 5.9c0 5.7-10 11.6-10 11.6z" />
+          </svg>
+        </span>
+        <strong>NEDEN REACT?</strong>
+      </div>
+      <div class="why-item">
+        <svg class="why-ico" viewBox="0 0 29 21" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" aria-hidden="true">
+          <path d="M14.5 7.2C12.2 3.3 9.8 1.6 7.3 2.1 3.9 2.8 1.6 6.6 1.6 10.6c0 4 2 7.3 5 7.3 2.6 0 4.4-2.6 6-5.6" />
+          <path d="M14.5 12.3c1.6 3 3.4 5.6 6 5.6 3 0 5-3.3 5-7.3 0-4-2.3-7.8-5.7-8.5-2.5-.5-4.9 1.2-7.2 5.1" />
+        </svg>
+        <p>Facebook (Meta) tarafından<br class="lb" />geliştirilir ve desteklenir.</p>
+      </div>
+      <div class="why-item">
+        <svg class="why-ico" viewBox="0 0 33 24" fill="currentColor" aria-hidden="true">
+          <circle cx="6.6" cy="7.6" r="4.4" />
+          <circle cx="26.4" cy="7.6" r="4.4" />
+          <path d="M0 21.4c0-3.7 3-6.6 6.6-6.6 3.7 0 6.6 3 6.6 6.6z" />
+          <path d="M19.8 21.4c0-3.7 3-6.6 6.6-6.6 3.7 0 6.6 3 6.6 6.6z" />
+          <circle cx="16.5" cy="5.6" r="5.6" />
+          <path d="M8.2 22.6c0-4.6 3.7-8.3 8.3-8.3s8.3 3.7 8.3 8.3z" />
+        </svg>
+        <p>Büyük ve aktif bir topluluğa<br class="lb" />sahiptir.</p>
+      </div>
+      <div class="why-item">
+        <svg class="why-ico" viewBox="0 0 28 25" fill="currentColor" aria-hidden="true">
+          <path d="M10.2 0h7.6a3 3 0 0 1 3 3v2.2h-3.2V3.2h-7.2v2H7.2V3a3 3 0 0 1 3-3z" />
+          <path d="M0 9.6A2.4 2.4 0 0 1 2.4 7.2h23.2A2.4 2.4 0 0 1 28 9.6V22a2.6 2.6 0 0 1-2.6 2.6H2.6A2.6 2.6 0 0 1 0 22z" />
+          <rect x="11" y="13.4" width="6" height="3.6" rx="1.8" fill="#eaf5fd" />
+        </svg>
+        <p>Küçük projelerden kurumsal<br class="lb" />uygulamalara kadar ölçeklenebilir.</p>
+      </div>
+    </section>
+
+    <footer class="slogan">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.9 3.8 4.1.6-3 2.9.7 4.1L6 9.4 2.3 11.4l.7-4.1-3-2.9 4.1-.6z" /></svg>
+      <p>DAHA AZ KOD, DAHA FAZLA ÜRETKENLİK!</p>
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0l1.9 3.8 4.1.6-3 2.9.7 4.1L6 9.4 2.3 11.4l.7-4.1-3-2.9 4.1-.6z" /></svg>
+    </footer>
+  </main>
+</body>
+</html>

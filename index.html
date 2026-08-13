@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>React.js İnfografik — AI Model Karşılaştırması</title>
-<meta name="description" content="Aynı prompt ile 28 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
+<meta name="description" content="Aynı prompt ile 36 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
 <style>
   :root {
     --bg: #0a0f1e;
@@ -324,10 +324,10 @@
   <div class="wrap hero-grid">
     <div>
       <div class="kicker">AI Kodlama Benchmark'ı</div>
-      <h1>Tek prompt, <em>28 model çıktısı</em>:<br>React.js infografiği</h1>
+      <h1>Tek prompt, <em>36 model çıktısı</em>:<br>React.js infografiği</h1>
       <p class="lead">
         ChatGPT'nin ürettiği bir infografik görseli, tek cümlelik bir prompt ile
-        7 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
+        8 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
         Sonuçları inceleyin, orijinalle veya birbiriyle karşılaştırın.
       </p>
       <div class="prompt-box">
@@ -335,8 +335,8 @@
         “Ekteki görseli web sayfası olarak kodla”
       </div>
       <div class="stats">
-        <div class="stat"><b>7</b><span>Model ailesi</span></div>
-        <div class="stat"><b>28</b><span>Çıktı</span></div>
+        <div class="stat"><b>8</b><span>Model ailesi</span></div>
+        <div class="stat"><b>36</b><span>Çıktı</span></div>
         <div class="stat"><b>6</b><span>Effort seviyesi</span></div>
       </div>
     </div>
@@ -462,6 +462,14 @@ const MODELS = [
   { id: "grok-4.5-ef-1-low",      family: "Grok 4.5",    effort: "Low",    w: 2316, h: 2714, demo: "grok-4.5-ef-1-low/index.html" },
   { id: "grok-4.5-ef-2-medium",   family: "Grok 4.5",    effort: "Medium", w: 2316, h: 3312, demo: "grok-4.5-ef-2-medium/index.html" },
   { id: "grok-4.5-ef-3-high",     family: "Grok 4.5",    effort: "High",   w: 2316, h: 3194, demo: "grok-4.5-ef-3-high/index.html" },
+  { id: "grok-4.6-ef-1-low",         family: "Grok 4.6", effort: "Low",        w: 2346, h: 2752, demo: "grok-4.6-ef-1-low/index.html" },
+  { id: "grok-4.6-ef-1-low-fast",    family: "Grok 4.6", effort: "Low Fast",   w: 2346, h: 3122, demo: "grok-4.6-ef-1-low-fast/index.html" },
+  { id: "grok-4.6-ef-2-medium",      family: "Grok 4.6", effort: "Medium",     w: 2346, h: 3068, demo: "grok-4.6-ef-2-medium/index.html" },
+  { id: "grok-4.6-ef-2-medium-fast", family: "Grok 4.6", effort: "Medium Fast", w: 2346, h: 2962, demo: "grok-4.6-ef-2-medium-fast/index.html" },
+  { id: "grok-4.6-ef-3-high",        family: "Grok 4.6", effort: "High",       w: 2346, h: 3072, demo: "grok-4.6-ef-3-high/index.html" },
+  { id: "grok-4.6-ef-3-high-fast",   family: "Grok 4.6", effort: "High Fast",  w: 2346, h: 3040, demo: "grok-4.6-ef-3-high-fast/index.html" },
+  { id: "grok-4.6-ef-4-xhigh",       family: "Grok 4.6", effort: "XHigh",      w: 2346, h: 3072, demo: "grok-4.6-ef-4-xhigh/index.html" },
+  { id: "grok-4.6-ef-4-xhigh-fast",  family: "Grok 4.6", effort: "XHigh Fast", w: 2346, h: 3072, demo: "grok-4.6-ef-4-xhigh-fast/index.html" },
   { id: "composer-2.5-fast",      family: "Composer 2.5", effort: "Fast",   w: 2316, h: 2880, demo: "composer-2.5-fast/index.html" },
   { id: "composer-2.5",           family: "Composer 2.5", effort: "Normal", w: 2316, h: 3306, demo: "composer-2.5/index.html" },
   { id: "kimi-k3-ef-5-max",       family: "Kimi K3",      effort: "Max",    w: 2346, h: 3498, demo: "kimi-k3-ef-5-max/index.html" },
@@ -492,7 +500,7 @@ FAMILIES.forEach(fam => {
           <div class="card-body">
             <div class="card-title-row">
               <span class="card-title">${m.family}</span>
-              <span class="badge b-${m.effort.toLowerCase()}">${m.effort}</span>
+              <span class="badge b-${m.effort.toLowerCase().split(" ")[0]}">${m.effort}</span>
             </div>
             <div class="card-meta">${m.w}×${m.h}px${m.note ? " · " + m.note : ""}</div>
             <div class="card-actions">
@@ -530,6 +538,14 @@ chips.addEventListener("click", e => {
 /* SSIM + renk histogramı + pHash; 512x768'e ölçeklenmiş görüntüler üzerinde,
    skor = 45*ssim + 30*hist + 25*phash (0-100) */
 const SCORES = {
+  "grok-4.6-ef-3-high":        { ssim: 0.657, hist: 0.9997, phash: 0.937, score: 83.0 },
+  "grok-4.6-ef-4-xhigh":       { ssim: 0.630, hist: 0.9997, phash: 0.937, score: 81.8 },
+  "grok-4.6-ef-4-xhigh-fast":  { ssim: 0.630, hist: 0.994, phash: 0.937, score: 81.6 },
+  "grok-4.6-ef-2-medium-fast": { ssim: 0.472, hist: 0.995, phash: 0.651, score: 67.4 },
+  "grok-4.6-ef-3-high-fast":   { ssim: 0.469, hist: 0.994, phash: 0.587, score: 65.6 },
+  "grok-4.6-ef-1-low":         { ssim: 0.456, hist: 0.989, phash: 0.587, score: 64.9 },
+  "grok-4.6-ef-1-low-fast":    { ssim: 0.483, hist: 0.995, phash: 0.524, score: 64.7 },
+  "grok-4.6-ef-2-medium":      { ssim: 0.473, hist: 0.993, phash: 0.524, score: 64.2 },
   "opus-5.0-ef-5-max":         { ssim: 0.651, hist: 0.9996, phash: 0.937, score: 82.7 },
   "opus-5.0-ef-6-ultra":       { ssim: 0.650, hist: 0.9996, phash: 0.905, score: 81.8 },
   "codex-5.6-sol-ef-5-ultra":  { ssim: 0.617, hist: 0.994, phash: 0.937, score: 81.0 },
