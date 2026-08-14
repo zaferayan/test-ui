@@ -149,3 +149,7 @@ dist
 # Vitrin sitesinin ihtiyaç duyduğu build çıktısı (canlı demo)
 !codex-5.6-sol-ef-2-medium/dist/
 !codex-5.6-sol-ef-2-medium/dist/**
+
+# Model çıktılarının demo build'leri repoya dahil (Pages'te canlı demo için)
+!*/dist/
+!*/dist/**
