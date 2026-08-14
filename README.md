@@ -1,11 +1,11 @@
-# Tek prompt, 36 model çıktısı: React.js infografiği
+# Tek prompt, 37 model çıktısı: React.js infografiği
 
 [![Site ekran görüntüsü](.github/screenshot.png)](https://zaferayan.github.io/test-ui/)
 
 **🔗 Canlı site:** [zaferayan.github.io/test-ui](https://zaferayan.github.io/test-ui/)
 
 ChatGPT'nin ürettiği bir React.js infografik görseli ([`_original/ss.png`](_original/ss.png)),
-tek cümlelik bir prompt ile 8 farklı AI kodlama modeline — farklı effort seviyelerinde —
+tek cümlelik bir prompt ile 9 farklı AI kodlama modeline — farklı effort seviyelerinde —
 web sayfası olarak kodlatıldı:
 
 > **PROMPT:** "Ekteki görseli web sayfası olarak kodla"
@@ -28,6 +28,7 @@ gibi bir linki doğrudan paylaşabilirsiniz.
 | Grok 4.6 | Low · Medium · High · XHigh (+ her birinin Fast varyantı) | 8 |
 | Composer 2.5 | Fast · Normal | 2 |
 | Kimi K3 | Max | 1 |
+| Gemini 3.7 Flash | High | 1 |
 
 ## Orijinale benzerlik skoru
 

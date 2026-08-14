@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>React.js İnfografik — AI Model Karşılaştırması</title>
-<meta name="description" content="Aynı prompt ile 36 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
+<meta name="description" content="Aynı prompt ile 37 farklı AI model/effort kombinasyonunun ürettiği web sayfalarının karşılaştırması">
 <style>
   :root {
     --bg: #0a0f1e;
@@ -324,10 +324,10 @@
   <div class="wrap hero-grid">
     <div>
       <div class="kicker">AI Kodlama Benchmark'ı</div>
-      <h1>Tek prompt, <em>36 model çıktısı</em>:<br>React.js infografiği</h1>
+      <h1>Tek prompt, <em>37 model çıktısı</em>:<br>React.js infografiği</h1>
       <p class="lead">
         ChatGPT'nin ürettiği bir infografik görseli, tek cümlelik bir prompt ile
-        8 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
+        9 farklı AI kodlama modeline (farklı effort seviyelerinde) web sayfası olarak kodlatıldı.
         Sonuçları inceleyin, orijinalle veya birbiriyle karşılaştırın.
       </p>
       <div class="prompt-box">
@@ -335,8 +335,8 @@
         “Ekteki görseli web sayfası olarak kodla”
       </div>
       <div class="stats">
-        <div class="stat"><b>8</b><span>Model ailesi</span></div>
-        <div class="stat"><b>36</b><span>Çıktı</span></div>
+        <div class="stat"><b>9</b><span>Model ailesi</span></div>
+        <div class="stat"><b>37</b><span>Çıktı</span></div>
         <div class="stat"><b>6</b><span>Effort seviyesi</span></div>
       </div>
     </div>
@@ -473,6 +473,7 @@ const MODELS = [
   { id: "composer-2.5-fast",      family: "Composer 2.5", effort: "Fast",   w: 2316, h: 2880, demo: "composer-2.5-fast/index.html" },
   { id: "composer-2.5",           family: "Composer 2.5", effort: "Normal", w: 2316, h: 3306, demo: "composer-2.5/index.html" },
   { id: "kimi-k3-ef-5-max",       family: "Kimi K3",      effort: "Max",    w: 2346, h: 3498, demo: "kimi-k3-ef-5-max/index.html" },
+  { id: "gemini-3.7-flash-ef-3-high", family: "Gemini 3.7 Flash", effort: "High", w: 2330, h: 4572, demo: "gemini-3.7-flash-ef-3-high/dist/index.html" },
 ];
 
 const ALL = [ORIGINAL, ...MODELS];
@@ -574,6 +575,7 @@ const SCORES = {
   "grok-4.5-ef-2-medium":      { ssim: 0.475, hist: 0.997, phash: 0.556, score: 65.2 },
   "fable-5-ef-4-xhigh":        { ssim: 0.484, hist: 0.841, phash: 0.619, score: 62.5 },
   "opus-4.8-ef-2-medium":      { ssim: 0.475, hist: 0.865, phash: 0.619, score: 62.8 },
+  "gemini-3.7-flash-ef-3-high": { ssim: 0.492, hist: 0.9965, phash: 0.460, score: 63.5 },
 };
 /* Tek seri (skor) → tek renk; aile kimliği satır etiketinde. 6 aileyi aynı anda
    6 renkle kodlamak CVD/normal-görüş ayrım tabanını geçemiyor (doğrulayıcı: en kötü
